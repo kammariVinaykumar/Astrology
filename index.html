@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nakshthraraashi - జ్యోతిష్య పరిశీలన</title>
+    <title>✦ NAKSHTHRARAASHI - Real Astrological Analysis ✦</title>
     <style>
         * {
             box-sizing: border-box;
@@ -20,7 +20,6 @@
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            overflow-x: hidden;
         }
         .stars {
             position: fixed;
@@ -30,16 +29,16 @@
             height: 100%;
             background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/stars.png') repeat;
             z-index: 1;
-            opacity: 0.4;
+            opacity: 0.3;
         }
         .container {
-            background: rgba(20, 14, 46, 0.8);
+            background: rgba(20, 14, 46, 0.85);
             border: 1px solid rgba(147, 112, 219, 0.3);
             border-radius: 16px;
             padding: 30px;
             width: 100%;
-            max-width: 550px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(8px);
             z-index: 2;
             position: relative;
@@ -57,7 +56,7 @@
         }
         .header p {
             font-size: 13px;
-            color: #9ca3af;
+            color: #a7f3d0;
             margin-top: 5px;
             font-style: italic;
         }
@@ -85,10 +84,6 @@
         .form-control:focus {
             border-color: #a855f7;
             box-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
-        }
-        select.form-control option {
-            background: #140e2e;
-            color: #fff;
         }
         .row {
             display: flex;
@@ -135,7 +130,6 @@
         .loading-text {
             font-size: 16px;
             color: #e9d5ff;
-            font-style: italic;
         }
         .result-box {
             display: none;
@@ -148,55 +142,74 @@
             border-bottom: 1px solid rgba(252, 165, 165, 0.2);
             padding-bottom: 10px;
         }
-        .zodiac-badge {
-            background: linear-gradient(135deg, #2e1065 0%, #4c1d95 100%);
-            border: 1px solid rgba(168, 85, 247, 0.4);
+        .badge-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .astro-badge {
+            flex: 1;
+            min-width: 120px;
+            background: rgba(46, 16, 101, 0.6);
+            border: 1px solid #a855f7;
             color: #fef08a;
             padding: 10px;
             border-radius: 8px;
-            font-size: 15px;
+            font-size: 13px;
             text-align: center;
-            margin-bottom: 20px;
+        }
+        .section-title {
+            color: #f43f5e;
+            font-size: 17px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-left: 3px solid #f43f5e;
+            padding-left: 8px;
             font-weight: bold;
         }
         .prediction-text {
-            font-size: 16px;
+            font-size: 15px;
             line-height: 1.7;
             color: #e5e7eb;
-            margin-bottom: 25px;
             text-align: justify;
-        }
-        .lock-box {
-            background: rgba(37, 211, 102, 0.1);
-            border: 1px dashed rgba(37, 211, 102, 0.5);
-            border-radius: 10px;
-            padding: 18px;
-            text-align: center;
-            margin-top: 20px;
-        }
-        .lock-title {
-            color: #25D366;
-            font-weight: bold;
-            font-size: 17px;
-            margin-bottom: 8px;
-        }
-        .lock-desc {
-            font-size: 14px;
-            color: #d1d5db;
             margin-bottom: 15px;
-            line-height: 1.5;
+        }
+        .curiosity-box {
+            background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
+            border: 1px dashed #f59e0b;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 25px;
+        }
+        .curiosity-title {
+            color: #f59e0b;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .curiosity-question {
+            font-size: 15px;
+            color: #e2e8f0;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-style: italic;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 12px;
+            border-radius: 6px;
         }
         .btn-whatsapp {
             display: inline-block;
-            padding: 12px 24px;
+            padding: 14px 28px;
             background: #25D366;
             color: white;
             text-decoration: none;
             border-radius: 8px;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 16px;
             transition: 0.3s;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
             animation: pulse 1.5s infinite;
         }
         @keyframes pulse {
@@ -206,7 +219,6 @@
         }
         .btn-whatsapp:hover {
             background: #20ba5a;
-            transform: translateY(-1px);
         }
         @media (max-width: 480px) {
             .row { flex-direction: column; gap: 0; }
@@ -220,7 +232,7 @@
     <div class="container">
         <div class="header">
             <div class="logo">✦ NAKSHTHRARAASHI ✦</div>
-            <p>Traditional Vedic Astrology & Cosmic Predictions</p>
+            <p>Vedic Astrology, Numerology & Cosmic Science Report</p>
         </div>
 
         <form id="astrologyForm">
@@ -235,66 +247,59 @@
                     <input type="date" id="dob" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <label>Relationship & Family Life</label>
-                    <select id="familyStatus" class="form-control" required>
-                        <option value="" disabled selected>సెలెక్ట్ చేయండి</option>
-                        <option value="Single/Unmarried">Single / Unmarried</option>
-                        <option value="Married">Married Life</option>
-                        <option value="In a Relationship">In a Relationship</option>
-                    </select>
+                    <label>పుట్టిన సమయం (Time of Birth)</label>
+                    <input type="time" id="tob" class="form-control" required>
                 </div>
             </div>
 
             <div class="row">
                 <div class="form-group">
-                    <label>పుట్టిన సమయం (Time of Birth)</label>
-                    <input type="time" id="tob" class="form-control" required>
+                    <label>పుట్టిన ఊరు (Place of Birth)</label>
+                    <input type="text" id="place" class="form-control" placeholder="ఉదా: Narayanpet, Hyderabad" required>
                 </div>
                 <div class="form-group">
-                    <label>పుట్టిన ఊరు (Place of Birth)</label>
-                    <input type="text" id="place" class="form-control" placeholder="ఉదా: Hyderabad" required>
+                    <label>ప్రస్తుత ప్రధాన సమస్య/కోరిక (Focus Area)</label>
+                    <select id="focusArea" class="form-control" required>
+                        <option value="" disabled selected>సెలెక్ట్ చేసుకోండి...</option>
+                        <option value="career">Career (ఉద్యోగం & ఎదుగుదల)</option>
+                        <option value="marriage">Marriage (వివాహ యోగం & బంధాలు)</option>
+                        <option value="finance">Finance (ఆర్థిక ఇబ్బందులు/అప్పులు)</option>
+                        <option value="peace">Mental Peace (ప్రశాంతత లేకపోవడం)</option>
+                    </select>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label>ప్రస్తుత మీ దృష్టి ఏ విషయంపై ఎక్కువగా ఉంది? (Current Life Focus)</label>
-                <select id="focusArea" class="form-control" required>
-                    <option value="" disabled selected>సెలెక్ట్ చేసుకోండి...</option>
-                    <option value="career">Career (ఉద్యోగ ఎదుగుదల)</option>
-                    <option value="marriage">Marriage (వివాహ యోగం)</option>
-                    <option value="finance">Finance (ఆర్థిక స్థిరత్వం)</option>
-                    <option value="family">Family (కుటుంబ సంతోషం)</option>
-                    <option value="health">Health (ఆరోగ్య సంరక్షణ)</option>
-                    <option value="foreign">Foreign Opportunities (విదేశీ ప్రయాణం)</option>
-                    <option value="business">Business (వ్యాపార లాభాలు)</option>
-                    <option value="peace">Mental Peace (मानసిక ప్రశాంతత)</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>మీ समस्या లేదా కోరికను ఇక్కడ రాయండి (Your Problem / Wish)</label>
-                <input type="text" id="userProblem" class="form-control" placeholder="ఉదా: మంచి ఉద్యోగం ఎప్పుడు వస్తుంది? / ప్రశాంతత లేదు..." required>
-            </div>
-
-            <button type="submit" class="btn-submit">🔮 VIEW MY HOROSCOPE 🔮</button>
+            <button type="submit" class="btn-submit">🔮 జాతక విశ్లేషణ చూడండి 🔮</button>
         </form>
 
         <div class="loading-box" id="loadingBox">
             <div class="spinner"></div>
-            <div class="loading-text" id="loadingText">Reading your planetary degrees...</div>
+            <div class="loading-text" id="loadingText">గణిత శాస్త్రం ప్రకారం మీ కుండలిని లెక్కిస్తోంది...</div>
         </div>
 
         <div class="result-box" id="resultBox">
-            <div class="result-title">✦ జన్మ కుండలి వేద జ్యోతిష్య నివేదిక ✦</div>
+            <div class="result-title">✦ సంపూర్ణ వేద జ్యోతిష్య & సంఖ్యాశాస్త్ర నివేదిక ✦</div>
             
-            <div class="zodiac-badge" id="zodiacBadge">రాశి విశ్లేషణ...</div>
+            <div class="badge-container">
+                <div class="astro-badge" id="badgeZodiac">రాశి: --</div>
+                <div class="astro-badge" id="badgeNumerology">న్యూమరాలజీ సంఖ్య: --</div>
+                <div class="astro-badge" id="badgeLagnam">లగ్న స్థితి: --</div>
+            </div>
 
-            <div class="prediction-text" id="predictionText"></div>
+            <div class="section-title">🪐 1. సంఖ్యాశాస్త్ర రహస్యం (Numerology Science)</div>
+            <div class="prediction-text" id="numText"></div>
+
+            <div class="section-title">🔮 2. గ్రహాల అమరిక & మీ అంతరంగం (Chiluka Jyothishya Formula)</div>
+            <div class="prediction-text" id="psychText"></div>
+
+            <div class="section-title">✨ 3. మీ సమస్య - వేద జ్యోతిష్య పరిష్కారం (Vedic Hope)</div>
+            <div class="prediction-text" id="focusText"></div>
             
-            <div class="lock-box">
-                <div class="lock-title" id="customLockTitle">🌟 మీ సువర్ణ కాలం ఎప్పుడు ప్రారంభం కాబోతోంది?</div>
-                <div class="lock-desc" id="lockDesc">మీ లగ్న చక్ర సూక్ష్మ వీక్షణ ఆధారంగా శుభ సమయాన్ని తెలుసుకోండి.</div>
-                <a href="#" id="whatsappBtn" target="_blank" class="btn-whatsapp">💬 సిద్ధాంతి గారితో వాట్సాప్ లో మాట్లాడండి (దక్షిణ: ₹250)</a>
+            <div class="curiosity-box">
+                <div class="curiosity-title">🔒 ఒక పరమ రహస్య ప్రశ్న! (Strictly Confidential)</div>
+                <div class="curiosity-question" id="curiosityQuestionText">...</div>
+                <p style="font-size: 13px; color: #cbd5e1; margin-bottom: 15px;">ఈ ప్రశ్నకు సమాధానం మరియు మీ జాతకంలో దాగి ఉన్న ఆ ఒక్క అదృష్ట ముహూర్త తేదీని నేరుగా సిద్ధాంతి గారి ద్వారా తెలుసుకోండి.</p>
+                <a href="#" id="whatsappBtn" target="_blank" class="btn-whatsapp">💬 సమాధానం తెలుసుకోవడానికి వాట్సాప్ చేయండి</a>
             </div>
         </div>
     </div>
@@ -304,71 +309,79 @@
         const loadingBox = document.getElementById('loadingBox');
         const resultBox = document.getElementById('resultBox');
         const loadingText = document.getElementById('loadingText');
-        const predictionText = document.getElementById('predictionText');
-        const zodiacBadge = document.getElementById('zodiacBadge');
-        const customLockTitle = document.getElementById('customLockTitle');
-        const lockDesc = document.getElementById('lockDesc');
+        
+        // Output fields
+        const badgeZodiac = document.getElementById('badgeZodiac');
+        const badgeNumerology = document.getElementById('badgeNumerology');
+        const badgeLagnam = document.getElementById('badgeLagnam');
+        const numText = document.getElementById('numText');
+        const psychText = document.getElementById('psychText');
+        const focusText = document.getElementById('focusText');
+        const curiosityQuestionText = document.getElementById('curiosityQuestionText');
         const whatsappBtn = document.getElementById('whatsappBtn');
 
         const loadingSteps = [
-            "🪐 వేద గణితం ఆధారంగా లగ్న భావాన్ని లెక్కిస్తోంది...",
-            "✨ మీ జన్మ నక్షత్ర పాదాన్ని గోచార గ్రహాలతో పోలుస్తోంది...",
-            "🔮 అంతిమ కాస్మిక్ నివేదిక సిద్ధంగా ఉంది..."
+            "🪐 మీ నామ అక్షర తరంగాలను (Sound Vibrations) లెక్కిస్తోంది...",
+            "🔢 సంఖ్యాశాస్త్రం (Numerology) ప్రకారం మూల సంఖ్యను శోధిస్తోంది...",
+            "✨ పుట్టిన సమయం, స్థలం ఆధారంగా నవగ్రహ డిగ్రీలను లెక్కిస్తోంది...",
+            "🔮 అంతిమ నివేదిక సిద్ధంగా ఉంది..."
         ];
 
-        // 1. రాశి ఆధారిత "లెజెండ్ కనెక్షన్" (Psychology Trick 1)
+        // న్యూమరాలజీ కాలిక్యులేషన్ (Radix / Psychic Number)
+        function calculateNumerology(dateString) {
+            const date = new Date(dateString);
+            const day = date.getDate(); // Get only the birth day
+            
+            let num = day;
+            while (num > 9) {
+                num = Math.floor(num / 10) + (num % 10);
+            }
+
+            const numerologyData = {
+                1: { title: "1 (సూర్యుని సంఖ్య)", desc: "మీరు సూర్యుని అధిపత్యంలో జన్మించారు. మీలో లీడర్‌షిప్ క్వాలిటీస్, స్వయంకృషితో ఎదగాలనే తపన చాలా ఎక్కువ. ఎవరి కిందనైనా పని చేయడం మీకు కాస్త కష్టంగా అనిపిస్తుంది." },
+                2: { title: "2 (చంద్రుని సంఖ్య)", desc: "మీరు చంద్రుని ప్రభావంలో జన్మించారు. చాలా సున్నితమైన మనస్తత్వం, సృజనాత్మకత మరియు ఇతరుల బాధలను చూసి కరిగిపోయే గుణం మీ సొంతం. ఊహల్లో విహరించడం ఎక్కువ." },
+                3: { title: "3 (గురు గ్రహ సంఖ్య)", desc: "మీరు బృహస్పతి (గురువు) అనుగ్రహంలో జన్మించారు. మీకు జ్ఞానం, ఇతరులకు సలహాలు ఇవ్వడం, ధర్మంగా ఉండడం ఇష్టం. సమాజంలో గౌరవాన్ని ఆశిస్తారు." },
+                4: { title: "4 (రాహు గ్రహ సంఖ్య)", desc: "మీరు రాహువు ప్రభావంలో జన్మించారు. మీ ఆలోచనలు ప్రపంచానికి భిన్నంగా ఉంటాయి. సడన్ మార్పులు, టెక్నాలజీ లేదా షార్ట్‌కట్ ఐడియాలు మీలో ఎక్కువగా మెదులుతుంటాయి." },
+                5: { title: "5 (బుధ గ్రహ సంఖ్య)", desc: "మీరు బుధుని ప్రభావంలో జన్మించారు. వ్యాపార తెలివితేటలు, చక్కటి సమయస్ఫూర్తి (Communication) మీ బలం. ఎవరితోనైనా సులువుగా కలిసిపోతారు." },
+                6: { title: "6 (శుక్ర గ్రహ సంఖ్య)", desc: "మీరు శుక్రుని ఆధిపత్యంలో జన్మించారు. లగ్జరీ, అందం, కళలు మరియు బంధాలకు ఎక్కువ ప్రాధాన్యత ఇస్తారు. అందరూ మిమ్మల్ని ఇష్టపడాలని కోరుకుంటారు." },
+                7: { title: "7 (కేతు గ్రహ సంఖ్య)", desc: "మీరు కేతువు ప్రభావంలో జన్మించారు. అపారమైన రీసెర్చ్ మైండ్, ఆధ్యాత్మిక చింతన, ఎవరూ ఊహించని లోతైన ఆలోచనలు మీ ప్రత్యేకత. ఒంటరితనాన్ని ఇష్టపడతారు." },
+                8: { title: "8 (శని గ్రహ సంఖ్య)", desc: "మీరు శని దేవుని న్యాయ పాలనలో జన్మించారు. శ్రమ, పట్టుదల, జీవితంలో ఎన్నో పరీక్షలను ఎదుర్కొని చివరకు అత్యున్నత స్థానానికి వెళ్లే అద్భుత శక్తి మీ సొంతం." },
+                9: { title: "9 (కుజ గ్రహ సంఖ్య)", desc: "మీరు అంగారకుడి (కుజుడు) పరాక్రమ సంఖ్యలో పుట్టారు. ఎనర్జీ, కోపం, ధైర్యం మరియు అనుకున్న పనిని సాధించే వరకు నిద్రపోని మొండి పట్టుదల మీలో ఉంటాయి." }
+            };
+            return { digit: num, ...numerologyData[num] };
+        }
+
+        // రాశి డేటా
         function getZodiacData(dateString) {
             const date = new Date(dateString);
             const month = date.getMonth() + 1;
             const day = date.getDate();
 
-            if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) {
-                return { name: "మేష రాశి (Aries)", trait: "సమర్థత, లీడర్‌షిప్ క్వాలిటీస్ మరియు ఎంతటి కష్టాన్నైనా తట్టుకునే పట్టుదల", positive: "మీ జాతకంలో సూర్య-కుజ గ్రహాల కలయిక వల్ల భవిష్యత్తులో అద్భుతమైన ధనలాభం మరియు కీర్తి ప్రతిష్టలు పొందే గొప్ప యోగాలు ఉన్నాయి.", legend: "చరిత్రలో సామ్రాజ్యాలను ఏలిన ఒక గొప్ప వీర పరాక్రమ చక్రవర్తి, లీడర్" };
-            }
-            if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) {
-                return { name: "వృషభ రాశి (Taurus)", trait: "కళాత్మక హృదయం, నమ్మకమైన స్వభావం మరియు అనుకున్నది సాధించే పట్టుదల", positive: "మీ రాశ్యాధిపతి శుక్రుడి అనుగ్రహం వల్ల జీవితంలో లగ్జరీ, వాహన యోగం మరియు అనుకూలమైన మార్పులు త్వరలోనే రాబోతున్నాయి.", legend: "ప్రపంచ ప్రఖ్యాతి గాంచిన ఒక మహా సంపన్నుడు మరియు అపార కళా నైపుణ్యం కలిగిన లెజెండ్" };
-            }
-            if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) {
-                return { name: "మిథున రాశి (Gemini)", trait: "చక్కటి సమయస్ఫూర్తి, ఇతరులతో సులువుగా కలిసిపోయే గుణం మరియు అద్భుత తెలివితేటలు", positive: "బుధ గ్రహ అనుకూలత వల్ల రాబోయే రోజుల్లో మీ వ్యాపార మరియు ఉద్యోగ ఆలోచనలు ఊహించని విధంగా కలిసివస్తాయి.", legend: "చమత్కారంతో, జ్ఞానంతో కోట్లాది మందిని తన వైపు తిప్పుకున్న ఒక గొప్ప మేధావి" };
-            }
-            if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) {
-                return { name: "కర్కాటక రాశి (Cancer)", trait: "అమితమైన ప్రేమ, కేరింగ్ నేచర్ మరియు కుటుంబం కోసం ఎంతైనా కష్టపడే మంచి గుణం", positive: "భాగ్య స్థానంలో గురు బలం పెరగడం వల్ల మీ కోరికలు నెరవేరే కాలం మరియు సమాజంలో ఉన్నత గౌరవం లభించే రోజులు దగ్గరపడ్డాయి.", legend: "ప్రజల హృదయాలను గెలుచుకుని, చరిత్రలో సువర్ణ అక్షరాలతో నిలిచిపోయిన ఒక పవిత్ర హృదయుడు" };
-            }
-            if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) {
-                return { name: "సింహ రాశి (Leo)", trait: "రాజసం, అద్భుతమైన ఆత్మవిశ్వాసం మరియు ఎవరికీ లొంగని ధైర్య సాహసాలు", positive: "మీ జాతకంలో సూర్య భగవానుని కిరణాల प्रभावం వల్ల ప్రభుత్వ పరంగా లేదా ఉన్నతాధికారుల వల్ల పెద్ద గుర్తింపు లభిస్తుంది.", legend: "తన సింగిల్ డెసిషన్‌తో చరిత్ర గమనాన్ని మార్చేసిన ఒక సింహం లాంటి పవర్ ఫుల్ పాలకుడు" };
-            }
-            if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) {
-                return { name: "కన్యా రాశి (Virgo)", trait: "விஷய విశ్లేషణ, ప్లానింగ్ మరియు ప్రతి పనిని పర్‌ఫెక్ట్‌గా చేయాలనే గొప్ప తపన", positive: "రాబోయే భాగ్యోదయ కాలంలో మీ కష్టానికి తగిన వంద శాతం ఫలితం మరియు అదృష్టం మిమ్మల్ని వెతుక్కుంటూ వస్తాయి.", legend: "ప్రతి విషయాన్ని ముందే పసిగట్టి, అపజయం ఎరుగని వ్యూహాలు రచించిన ఒక సుప్రసిద్ధ గైడ్" };
-            }
-            if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) {
-                return { name: "తులా రాశి (Libra)", trait: "సమతుల్యత (Balance), అందరినీ సమానంగా చూసే గుణం మరియు శాంతిని కోరుకునే ప్రశాంత మనస్తత్వం", positive: "రాబోయే రోజుల్లో మీకు నూతన ఉత్సాహం మరియు ఆర్థికంగా అడ్డంకులు తొలగిపోయి లాభాలు వచ్చే అవకాశాలు మెండుగా ఉన్నాయి.", legend: "సమాజంలో న్యాయాన్ని, ధర్మాన్ని నిలబెట్టి అందరిచేత జేజేలు అందుకున్న ఒక మహోన్నత వ్యక్తి" };
-            }
-            if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) {
-                return { name: "వృశ్చిక రాశి (Scorpio)", trait: "తీవ్రమైన ఏకాగ్రత, ఆకర్షణీయమైన పవర్‌ఫుల్ వ్యక్తిత్వం మరియు ఎదుటివారి మనసును గ్రహించే శక్తి", positive: "మీలో ఉన్న అచంచలమైన పట్టుదల వల్ల ఎంతటి అడ్డంకులనైనా, శత్రువులనైనా దాటి మీరు అనుకున్నది సాధిస్తారు.", legend: "ఎవరికీ లొంగని గూఢ శక్తులతో, అపారమైన మానసిక స్థైర్యంతో అద్భుతాలు సృష్టించిన లెజెండ్" };
-            }
-            if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) {
-                return { name: "ధనుస్సు రాశి (Sagittarius)", trait: "సత్యసంధత, దైవభక్తి మరియు ఎల్లప్పుడూ పాజిటివ్‌గా ఉంటూ ఇతరులను మోటివేట్ చేసే ఉత్తమ గుణం", positive: "మీ రాశ్యాధిపతి అయిన గురు దేవుని కృప వల్ల మీ జీవితంలో ఒక పెద్ద శుభ పరిణామం మరియు స్థిరాస్తి యోగం జరగబోతోంది.", legend: "సమాజానికి దిశానిర్దేశం చేసిన ఒక గొప్ప గురువు, వేదాంత కోవిదుడు" };
-            }
-            if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) {
-                return { name: "మకర రాశి (Capricorn)", trait: "అంకితభావం, కఠిన శ్రమ మరియు ఎంత కష్టమైనా వెనకడుగు వేయని రాజీపడని మనస్తత్వం", positive: "మీ జాతకంలో శని దేవుని అనుగ్రహం వల్ల గతంలో మీరు పడ్డ కష్టాలన్నింటికీ త్వరలోనే ఊహించని పెద్ద రివార్డ్ లభించబోతోంది.", legend: "శూన్యం నుండి సామ్రాజ్యాన్ని నిర్మించి, కష్టాన్నే నమ్ముకున్న ఒక అమరజీవి" };
-            }
-            if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) {
-                return { name: "కుంభ రాశి (Aquarius)", trait: "విశాల హృదయం, ప్రపంచాన్ని కొత్తగా చూడడం మరియు ఇతరుల సుఖాన్ని కోరుకునే ప్రత్యేకత", positive: "మీ జాతకంలో నవగ్రహాల అనుకూలత అద్భుతంగా మెరుగవుతోంది, నిలిచిపోయిన పనులన్నీ వేగంగా పూర్తి అవుతాయి.", legend: "తన కొత్త ఆవిష్కరణలతో సమాజంలో విప్లవాత్మక మార్పులు తెచ్చిన ఒక గొప్ప రిఫార్మర్" };
-            }
-            return { name: "మీన రాశి (Pisces)", trait: "కరుణా రసం, సృజనాత్మకత (Creativity) మరియు సాత్వికమైన దైవిక ఆలోచనలు", positive: "పూర్వపుణ్య స్థానంలో దైవ బలం అద్భుతంగా ఉండడం వల్ల మీకు రాబోయే రోజుల్లో అఖండ విజయాలు, కీర్తి లభిస్తాయి.", legend: "దైవ స్వరూపంగా మారి, కోట్లాది మందికి శాంతిని మరియు ఓదార్పును పంచిన ఒక పవిత్ర ఆత్మ" };
+            if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return { name: "మేష రాశి", planet: "కుజుడు", trait: "పట్టుదల, పరాక్రమం" };
+            if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return { name: "వృషభ రాశి", planet: "శుక్రుడు", trait: "స్థిరత్వం, లగ్జరీ" };
+            if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return { name: "మిథున రాశి", planet: "బుధుడు", trait: "బుద్ధి కుశలత, చమత్కారం" };
+            if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return { name: "కర్కాటక రాశి", planet: "చంద్రుడు", trait: "ప్రేమ, సున్నితత్వం" };
+            if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return { name: "సింహ రాశి", planet: "సూర్యుడు", trait: "రాజసం, లీడర్‌షిప్" };
+            if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return { name: "కన్యా రాశి", planet: "బుధుడు", trait: "విషయ పరిజ్ఞానం, ప్లానింగ్" };
+            if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return { name: "తులా రాశి", planet: "శుక్రుడు", trait: "సమతుల్యత, న్యాయం" };
+            if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return { name: "వృశ్చిక రాశి", planet: "కుజుడు", trait: "ఏకాగ్రత, పవర్‌ఫుల్ మైండ్" };
+            if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return { name: "ధనుస్సు రాశి", planet: "గురువు", trait: "జ్ఞానం, దైవభక్తి" };
+            if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return { name: "మకర రాశి", planet: "శని దేవుడు", trait: "కఠిన శ్రమ, క్రమశిక్షణ" };
+            if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return { name: "కుంభ రాశి", planet: "శని దేవుడు", trait: "విశాల హృదయం, కొత్త ఆలోచనలు" };
+            return { name: "మీన రాశి", planet: "గురువు", trait: "కరుణ, సృజనాత్మకత" };
+        }
+
+        // టైమ్ ఆధారంగా లగ్న బలం
+        function getLagnaData(timeString) {
+            const hour = parseInt(timeString.split(':')[0]);
+            if (hour >= 5 && hour < 12) return "సూర్యోదయ లగ్నం (తేజస్సు ఎక్కువ)";
+            if (hour >= 12 && hour < 17) return "మధ్యాహ్న కాల లగ్నం (కర్మ స్థానం బలంగా ఉంది)";
+            if (hour >= 17 && hour < 21) return "సాయంకాల లగ్నం (కళత్ర భావం యాక్టివ్)";
+            return "నిశీధి కాల లగ్నం (అంతర్దృష్టి, గూఢ ఆలోచనలు ఎక్కువ)";
         }
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-
-            const name = document.getElementById('fullName').value;
-            const dob = document.getElementById('dob').value;
-            const focus = document.getElementById('focusArea').value;
-            const place = document.getElementById('place').value;
-            const problem = document.getElementById('userProblem').value;
-            const family = document.getElementById('familyStatus').value;
-
-            const zodiac = getZodiacData(dob);
 
             form.style.display = 'none';
             loadingBox.style.display = 'block';
@@ -380,112 +393,76 @@
                     loadingText.innerText = loadingSteps[step];
                 } else {
                     clearInterval(timer);
-                    showJathakam(name, focus, place, problem, family, zodiac);
+                    generateAstroReport();
                 }
-            }, 1200); 
+            }, 1000);
         });
 
-        function showJathakam(name, focus, place, problem, family, zodiac) {
+        function generateAstroReport() {
             loadingBox.style.display = 'none';
             resultBox.style.display = 'block';
 
-            zodiacBadge.innerHTML = `🪐 మీ జ్యోతిష్య రాశి: <b>${zodiac.name}</b>`;
+            const name = document.getElementById('fullName').value;
+            const dob = document.getElementById('dob').value;
+            const tob = document.getElementById('tob').value;
+            const place = document.getElementById('place').value;
+            const focus = document.getElementById('focusArea').value;
 
-            // --- డైనమిక్ ట్రిక్ 1: లెజెండ్ కనెక్షన్ (రాశిని బట్టి మారుతుంది) ---
-            let report = `<b>నమస్తే ${name} గారు,</b><br><br>వేద జ్యోతిష్య శాస్త్ర గణితం ప్రకారం మీ పుట్టిన తేదీని విశ్లేషించగా ఒక అద్భుతమైన కాస్మిక్ రహస్యం వ్యక్తమైంది. <b>${zodiac.legend} కూడా మీ గ్రహాల అమరిక ఉన్న రోజునే జన్మించారు!</b> వారిలాగే మీలో కూడా <b>${zodiac.trait}</b> ఉన్నాయి. మీ జన్మ కుండలిలో అసలు తక్కువ అంచనా వేయలేని మహాయోగాలు దాగి ఉన్నాయి. <br><br> మీ ఫ్యామిలీ లైఫ్ (<i>${family}</i>) స్థితులను మరియు మీ మనోగతాన్ని గ్రహాలు స్పష్టంగా సూచిస్తున్నాయి.<br><br>`;
-            
-            // --- డైనమిక్ ట్రిక్ 2: చిలుక జోస్యం ఫార్ములా (ఫోకస్ ఏరియాని బట్టి పూర్తిగా మారుతుంది) ---
-            report += `<b>🔮 మీ అంతరంగం & ప్రస్తుత మానసిక స్థితి (Internal Psychology):</b><br>`;
-            
+            const numData = calculateNumerology(dob);
+            const zodiac = getZodiacData(dob);
+            const lagna = getLagnaData(tob);
+
+            // Badges update
+            badgeZodiac.innerText = `రాశి: ${zodiac.name}`;
+            badgeNumerology.innerText = `న్యూమరాలజీ: ${numData.title}`;
+            badgeLagnam.innerText = `లగ్నం: ${lagna}`;
+
+            // Section 1: Numerology Text
+            numText.innerHTML = `<b>${name} గారు,</b> మీ పుట్టిన తేదీ ఆధారంగా మీ కాస్మిక్ సంఖ్య <b>"${numData.digit}"</b> అవుతుంది. శాస్త్రం ప్రకారం దీని అధిపతి <b>${numData.desc}</b>. ఈ సంఖ్యా తరంగాలు మీ జీవితంలో 28 సంవత్సరాల వయస్సు నుండి విపరీతమైన మార్పులను తీసుకువస్తాయి.`;
+
+            // Section 2: Chiluka Jyothishya + Psychology Formula
+            psychText.innerHTML = `మీరు <b>${place}</b> పుణ్యక్షేత్ర కాల మానంలో, <b>${zodiac.name}</b> లో జన్మించారు. మీ రాశ్యాధిపతి <b>${zodiac.planet}</b> ప్రభావం వల్ల మీలో అద్భుతమైన <b>${zodiac.trait}</b> ఉన్నాయి. <br><br><b>కానీ మీ అంతరంగ పరిశీలన చూస్తే:</b> మీరు బయటకు చాలా ధైర్యంగా, ప్రశాంతంగా కనిపిస్తున్నా... మీ మనసు లోపల ఒక తెలియని వెలితి మరియు ఎవరికీ చెప్పుకోలేని గుప్త బాధ ఉన్నాయి. మీరు అందరికీ మంచి చేయాలని చూస్తారు, రూపాయి సహాయం అడిగితే వంద రూపాయలు ఇస్తారు.. కానీ తీరా మీకు అవసరమైనప్పుడు మాత్రం అందరూ ముఖం చాటేస్తారు. నమ్మిన వాళ్లే మిమ్మల్ని సరిగ్గా అర్థం చేసుకోకపోవడం వల్ల మీరు ఒంటరిగా ఫీలవుతుంటారు. అవునా?`;
+
+            // Section 3: Focus Area Wise Vedic Hope & Curiosity Logic
             let focusReport = "";
-            let lockTitleText = "";
-            let lockDescText = "";
-            let targetMsg = "";
+            let curiosityQuestion = "";
+            let waMessage = "";
 
             if (focus === 'career') {
-                report += `మీరు బయటకు చాలా కాన్ఫిడెంట్‌గా కెరీర్ లో ఎదగాలని ప్రయత్నిస్తున్నా.. మనసు లోపల ఏదో ఒక తెలియని భయం, "నా ప్రతిభను ఎవరూ గుర్తించట్లేదు" అనే వెలితి మిమ్మల్ని వేధిస్తోంది. అందరికీ హెల్ప్ చేయాలని చూస్తారు కానీ, ఆఫీస్ లోనో లేదా సర్కిల్ లోనో మీ క్రెడిట్ అంతా వేరేవాళ్లు పట్టుకుపోతుంటే లోలోపల బాధపడుతున్నారు. అవునా?<br><br>`;
+                focusReport = `మీ కుండలిలో పదవ స్థానమైన 'కర్మ స్థానం' చాలా పవర్‌ఫుల్‌గా ఉంది. <b>మీ జాతకంలో ఒక పెద్ద 'రాజయోగం' స్పష్టంగా దాగి ఉంది.</b> కానీ ప్రస్తుతం నడుస్తున్న గోచార గ్రహాల అడ్డంకి వల్ల మీ ప్రతిభకు తగ్గ గుర్తింపు రాకుండా, చేతికి వచ్చిన ప్రమోషన్ లేదా ఉద్యోగ అవకాశం చివరి నిమిషంలో చేజారుతోంది. ఒక చిన్న వేద దోష నివారణతో మీ కెరీర్ ఊహించని ఎత్తుకు ఎదుగుతుంది!`;
                 
-                focusReport = `<b>💼 Career (ఉద్యోగ ఎదుగుదల వేద వీక్షణ):</b> మీ కుండలిలో దశమ (కర్మ) స్థానాధిపతి చాలా శక్తివంతంగా ఉన్నాడు. మీ జాతకంలో 'రాజయోగం' స్పష్టంగా కనిపిస్తోంది. కానీ ప్రస్తుతం గోచార గ్రహాల అనుకూలత కాస్త తక్కువగా ఉండడం వల్ల మీ ప్రతిభకు తగ్గ పారితోషికం లేదా ప్రమోషన్ చేతికి వచ్చినట్టే వచ్చి చేజారుతోంది. కొద్దిపాటి వేద పరిహారాలతో మీ కెరీర్ ఊహించని ఎత్తుకు ఎదుగుతుంది, అధైర్యపడకండి!`;
+                curiosityQuestion = `"మీ జాతక చక్రం ప్రకారం మీ ఉద్యోగ అడ్డంకులు పూర్తిగా తొలగిపోయి, సమాజంలో మీకు ఒక పెద్ద ఉన్నత పదవి మరియు భారీ ధనలాభం తెచ్చే ఆ **'ఖచ్చితమైన సువర్ణ కాల తేదీ' (Golden Timing)** ఎప్పుడు ప్రారంభం కాబోతోందో మీకు తెలుసా?"`;
                 
-                lockTitleText = "✨ మీ ఉద్యోగ గండం తొలగి, కొత్త జాబ్ వచ్చే ముహూర్తం ఎప్పుడు?";
-                lockDescText = "మీ జాతకంలో కెరీర్ అడ్డంకులు పూర్తిగా తొలగిపోయి, ఉన్నత పదవి మరియు భారీ జీతంతో కూడిన రాజయోగం ప్రారంభమయ్యే ఖచ్చితమైన తేదీ (Timing of Event) తెలుసుకోవడానికి సిద్ధాంతి గారితో మాట్లాడండి.";
-                targetMsg = `నమస్తే సిద్ధాంతి గారు,\n\nనా పేరు: ${name}\nరాశి: ${zodiac.name}\nఫోకస్: Career - ${problem}\n\nనా కెరీర్ లో ఉన్న గ్రహ అడ్డంకులు మరియు రాజయోగ ముహూర్త కాలం తెలుసుకోవాలని ఉంది.`;
+                waMessage = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. నా జాతక నివేదిక చూశాను. నా కెరీర్ రాజయోగం ప్రారంభమయ్యే ఆ ఖచ్చితమైన సువర్ణ కాల తేదీ (Golden Period Date) మరియు పరిహారాలు చెప్పగలరు.`;
             } 
             else if (focus === 'marriage') {
-                report += `మీరు బంధాలకు, ప్రేమానురాగాలకు చాలా ఎక్కువ విలువ ఇస్తారు. కానీ ఈ మధ్య కాలంలో నమ్మిన వాళ్లే మిమ్మల్ని సరిగ్గా అర్థం చేసుకోకపోవడం, లేదా చిన్న చిన్న విషయాలకే అపార్థాలు చేసుకోవడం వల్ల మానసిక వేదన పడుతున్నారు. బయటకు అంతా బాగున్నట్టు నవ్వుతూ కనిపిస్తున్నా, ఒంటరిగా ఉన్నప్పుడు మీ భవిష్యత్ బంధం తలచుకుని మదనపడుతున్నారు. అవునా?<br><br>`;
+                focusReport = `మీ నక్షత్ర నడవడిక ప్రకారం మీకు వచ్చే భాగస్వామి మీ జీవితంలోకి అదృష్టాన్ని మరియు లక్ష్మీ కటాక్షాన్ని మోసుకొస్తారు. అయితే మీ లగ్న చక్రంలో ఏడవ స్థానంలో ఉన్న ఒక చిన్న గ్రహ దోష వీక్షణం (కుజ/శని ప్రభావం) వల్ల అనుకూలమైన సంబంధాలు ఆలస్యం అవ్వడం లేదా వచ్చిన సంబంధాలు చివరి నిమిషంలో నిలిచిపోవడం జరుగుతోంది. ఈ చిన్న దోషం తొలగితే మీ ఇంట్లో పెళ్లి బాజాలు మోగడం ఖాయం!`;
                 
-                focusReport = `<b>❤️ Marriage (వివాహ బంధం & అనుకూలత):</b> మీ నక్షత్ర నడవడిక ప్రకారం మీకు వచ్చే భాగస్వామి మీ జీవితంలోకి అదృష్టాన్ని మోసుకొస్తారు. మీ జాతకంలో కళత్ర స్థానంలో గురు గ్రహ వీక్షణం వల్ల పెళ్లి తర్వాత మీ జీవితం చాలా లగ్జరీగా మారుతుంది. అయితే లగ్న చక్రంలో ఉన్న ఒక చిన్న కుజ లేదా శని దోష వీక్షణం వల్ల అనుకున్న సంబంధాలు ఆలస్యం అవుతున్నాయి. ఈ చిన్న దోషం తొలగితే మీ ఇంట్లో పెళ్లి బాజాలు మోగడం ఖాయం!`;
+                curiosityQuestion = `"మీ జాతకం ప్రకారం మీ వివాహం ఏ నెల, ఏ సంవత్సరంలో జరుగుతుంది? మరియు మీ జీవిత భాగస్వామి పేరులోని **మొదటి అక్షరం** ఏది అవుతుందో మీకు తెలుసా?"`;
                 
-                lockTitleText = "✨ మీ వివాహ యోగ కాల నిర్ణయం & భాగస్వామి వివరాలు";
-                lockDescText = "మీకు వివాహం ఏ నెల, ఏ సంవత్సరంలో జరుగుతుంది? మీ జీవిత భాగస్వామి పేరు మొదటి అక్షరం మరియు వారి దిక్కు ఏది అవుతుందో వాట్సాప్ లో తెలుసుకోండి.";
-                targetMsg = `నమస్తే సిద్ధాంతి గారు,\n\nనా పేరు: ${name}\nరాశి: ${zodiac.name}\nఫోకస్: Marriage - ${problem}\n\nనా వివాహ యోగం మరియు దోష నివారణల పూర్తి వివరాల కోసం మెసేజ్ చేస్తున్నాను.`;
+                waMessage = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. నా జాతక నివేదిక చూశాను. నా వివాహ కాల నిర్ణయం మరియు భాగస్వామి పేరు మొదటి అక్షరం వివరాలు చెప్పగలరు.`;
             } 
             else if (focus === 'finance') {
-                report += `మీరు రూపాయి సంపాదిస్తే పది రూపాయల ఖర్చులు ముందే వచ్చి లైన్ లో నిలబడుతున్నాయి. మీ దగ్గర సహాయం పొందిన వాళ్లే.. తీరా మీకు అవసరమైనప్పుడు ముఖం చాటేస్తుంటే సమాజంపై ఒక రకమైన విరక్తి వస్తోంది. కష్టపడే తత్వం ఉన్నా, డబ్బు చేతిలో అస్సలు నిలవకపోవడం వెనుక ఉన్న అదృశ్య బాధ మీ మనసుకు మాత్రమే తెలుసు. అవునా?<br><br>`;
+                focusReport = `మీ కుండలిలో 'కుబేర స్థానం' అనుకూలంగానే ఉంది. మీ దగ్గర డబ్బు ఎప్పుడూ పూర్తిగా శూన్యం అవ్వదు, సమయానికి ఏదో రకంగా సర్దుబాటు అవుతుంది. కానీ ప్రస్తుతం మీ జాతకంలో 'ధన వ్యయ బంధన దోషం' నడవడం వల్ల చేతిలో రూపాయి నిలవడం లేదు. వచ్చిన డబ్బు వచ్చినట్టే ఖర్చవుతోంది లేదా అప్పుల పాలు అవుతున్నారు. ఈ అదృశ్య బంధనాన్ని తెంచేస్తే మీ చేతిలో ధనం తాండవిస్తుంది.`;
                 
-                focusReport = `<b>💰 Finance (ఆర్థిక లక్ష్మీ కటాక్షం):</b> మీ కుండలిలో ద్వితీయ (ధన) స్థానంలో 'కుబేర యోగ' సూచనలు ఉన్నాయి. మీ దగ్గర డబ్బు ఎప్పుడూ శూన్యం అవ్వదు, ఏదో ఒక రకంగా సమయానికి అందుతుంది. కానీ ప్రస్తుతం మీ జాతకంలో 'ధన వ్యయ యోగం' నడవడం వల్ల చేతిలో రూపాయి నిలవడం లేదు. వచ్చిన డబ్బు వచ్చినట్టే ఖర్చవుతోంది. ఈ ఆర్థిక బంధనాన్ని తెంచేస్తే మీ చేతిలో ధనం తాండవిస్తుంది.`;
+                curiosityQuestion = `"మీకున్న అప్పుల బాధలన్నీ పూర్తిగా తొలిగిపోయి, మీరు **సొంత ఇల్లు లేదా భూమి (స్థిరాస్తి)** కొనుగోలు చేసే ఆ అదృష్ట ముహూర్త కాలం ఎప్పటి నుండి ఉందో మీకు తెలుసా?"`;
                 
-                lockTitleText = "✨ అప్పుల విముక్తి మరియు లక్ష్మీ కటాక్ష కాలం";
-                lockDescText = "మీకున్న అప్పుల బాధలు పూర్తిగా తొలిగిపోయి, సొంత ఇల్లు/భూమి కొనుగోలు చేసే అదృష్ట సువర్ణ సమయం ఎప్పుడు ప్రారంభం కాబోతోందో నేరుగా తెలుసుకోండి.";
-                targetMsg = `నమస్తే సిద్ధాంతి గారు,\n\nనా పేరు: ${name}\nరాశి: ${zodiac.name}\nఫోకస్: Finance - ${problem}\n\nనా జాతకంలోని ధన బంధన దోష నివారణ మరియు ఆర్థిక వృద్ధి పరిహారాలు చెప్పగలరు.`;
-            }
-            else if (focus === 'family') {
-                report += `కుటుంబం కోసం మీరు ఎంతో చేయాలని తపిస్తారు. కానీ మీ కష్టాన్ని గుర్తించకుండా చాలా సులువుగా మిమ్మల్ని చిన్నబుచ్చేలా మాట్లాడడం వల్ల తీవ్రంగా గాయపడుతున్నారు. లీడర్ లా అందరినీ నడిపించగల కెపాసిటీ ఉన్నా, ఇంట్లో చిన్నపాటి అశాంతి వల్ల మానసికంగా కుంగిపోతున్నారు. అవునా?<br><br>`;
-                
-                focusReport = `<b>🏡 Family (కుటుంబ సౌఖ్యం):</b> కుటుంబ స్థానంలో శుభ గ్రహాల సంచారం వల్ల మీ ఫ్యామిలీకి మీరే ఒక పెద్ద పిల్లర్ లాంటివారు. అందరినీ కలుపుకుని వెళ్లాలనే మీ తపన చాలా గొప్పది. ప్రస్తుతం చిన్నపాటి గ్రహాల చలనం వల్ల లక్ష్మీ ప్రసన్నత మరియు ప్రశాంతత తగ్గినట్లు అనిపించినా, వేద సూక్తాల ద్వారా మీ ఇంట్లో మళ్లీ నవ్వులు పూయడం ఖాయం.`;
-                
-                lockTitleText = "✨ కుటుంబ మనస్పర్థల నివారణ & లక్ష్మీ ప్రసన్న ముహూర్తం";
-                lockDescText = "కుటుంబంలో ఉన్న చిన్నపాటి గ్రహ దోషాలు తొలగి, అందరూ సంతోషంగా కలిసి ఉండటానికి చేయాల్సిన దైవిక వేద పరిహారాలను వాట్సాప్ లో అడిగి తెలుసుకోండి.";
-                targetMsg = `నమస్తే సిద్ధాంతి గారు,\n\nనా పేరు: ${name}\nరాశి: ${zodiac.name}\nఫోకస్: Family - ${problem}\n\nమా కుటుంబ సంతోషం మరియు గ్రహ శాంతి పరిహారాల కోసం మెసేజ్ చేస్తున్నాను.`;
-            }
-            else if (focus === 'health') {
-                report += `మీరు శారీరకంగా కంటే మానసికంగా ఎక్కువ అలసిపోతున్నారు. పగలు ఏదో రకంగా బిజీగా గడిపేస్తున్నా, అర్ధరాత్రి కాగానే ఓవర్ థింకింగ్ (అనవసర ఆలోచనలు) వల్ల నిద్ర కరువవుతోంది. చిన్న హెల్త్ ఇష్యూ వచ్చినా అది పెద్దదేమో అని లోలోపల టెన్షన్ పడుతూ ప్రశాంతత కోల్పోతున్నారు. అవునా?<br><br>`;
-                
-                focusReport = `<b>🩺 Health (సంపూర్ణ ఆరోగ్య యోగం):</b> మీ జాతకం ప్రకారం మీలో రోగ నిరోధక శక్తి చాలా ఎక్కువ. ఎటువంటి సమస్యనైనా తట్టుకుంటారు. ప్రస్తుతం చిన్నపాటి అలసట, అధిక ఆలోచనల (Over thinking) వల్ల మానసిక ప్రశాంతత తగ్గినట్లు అనిపిస్తోంది. మీ లగ్నాధిపతిని యాక్టివేట్ చేయడం ద్వారా మీరు మళ్లీ పూర్వపు ఉత్సాహాన్ని, సంపూర్ణ ఆరోగ్యాన్ని పొందుతారు.`;
-                
-                lockTitleText = "✨ దీర్ఘకాలిక ఆరోగ్య సమస్యల విముక్తి కాలం";
-                lockDescText = "మీకున్న పాత అనారోగ్యాలు మరియు మానసిక ఒత్తిడి నుండి ఎప్పుడు సంపూర్ణ విముక్తి లభిస్తుందో సిద్ధాంతి గారిని అడిగి తెలుసుకోండి.";
-                targetMsg = `నమస్తే సిద్ధాంతి గారు,\n\nనా పేరు: ${name}\nరాశి: ${zodiac.name}\nఫోకస్: Health - ${problem}\n\nనా ఆరోగ్య సంరక్షణ మరియు మానసిక ప్రశాంతత పరిహారాల కోసం మెసేజ్ చేస్తున్నాను.`;
-            }
-            else if (focus === 'foreign') {
-                report += `మీరు విదేశాలకు వెళ్లి పెద్దగా సాధించాలనే బలమైన కోరికతో ఉన్నారు. కానీ ఏ పని మొదలుపెట్టినా చివరి నిమిషంలో డాక్యుమెంట్లు లేదా వీసా అడ్డంకులు రావడం వల్ల "నాకు అసలు ఆ అదృష్టం లేదా?" అని ఒక రకమైన నిరాశకు లోనవుతున్నారు. మీ ప్రతిభకు ఇక్కడి కంటే విదేశాల్లోనే ఎక్కువ గౌరవం దక్కుతుందని మీకు బాగా తెలుసు. అవునా?<br><br>`;
-                
-                focusReport = `<b>✈️ Foreign Opportunities (విదేశీ యాన భాగ్యం):</b> మీ జాతకంలో రాహు మరియు గురు గ్రహాల అనుకూలత వల్ల విదేశాలకు వెళ్లి సంపాదించే యోగం బలంగా ఉంది. మీరు చాలా ఎత్తుకు ఎదుగుతారు. అయితే ప్రస్తుతం ఉన్న చిన్నపాటి వీసా లేదా డాక్యుమెంట్ అడ్డంకులు తాత్కాలికమే. వేద పరిహారం ద్వారా ఈ మార్గం చాలా సులభంగా సుగమం అవుతుంది.`;
-                
-                lockTitleText = "✨ మీ విదేశీ యాన భాగ్య రేఖ ఎప్పుడు ఓపెన్ అవుతుంది?";
-                lockDescText = "మీ విదేశీ ప్రయాణం ఏ నెలలో ఖరారవుతుంది? వీసా అడ్డంకులు తొలగిపోయి మీ విదేశీ కల నెరవేరే శుభ సమయాన్ని వాట్సాప్ లో తెలుసుకోండి.";
-                targetMsg = `నమస్తే సిద్ధాంతి గారు,\n\nనా పేరు: ${name}\nరాశి: ${zodiac.name}\nఫోకస్: Foreign - ${problem}\n\nనా విదేశీ యానానికి ఉన్న గ్రహ అడ్డంకులు తొలగడానికి పరిహారాలు చెప్పగలరు.`;
-            }
-            else if (focus === 'business') {
-                report += `మీ దగ్గర అద్భుతమైన బిజినెస్ ఐడియాలు ఉన్నాయి. కానీ టైం కలిసిరాకపోవడం వల్లో, లేదా నమ్మకమైన పార్ట్నర్లు దొరకకపోవడం వల్లో వెనకడుగు వేస్తున్నారు. మార్కెట్ లో చిన్న చిన్న ఒడిదుడుకులు ఎదురైనప్పుడు "నేను సరైన దారిలోనే వెళ్తున్నానా?" అని లోలోపల ఒక చిన్న సందిగ్ధత మిమ్మల్ని వేధిస్తోంది. అవునా?<br><br>`;
-                
-                focusReport = `<b>📈 Business (వ్యాపార సామ్రాజ్యం):</b> మీరు వ్యాపార రంగంలో ఎవరికైనా సలహాలు ఇచ్చేంత తెలివైనవారు. స్వయంకృషితో కోట్లు సంపాదించే యోగం మీ కుండలిలో ఉంది. ప్రస్తుతం వ్యాపారంలో ఉన్న మందగమనం లేదా నరదృష్టి (దిష్టి) వల్ల కాస్త ఇబ్బంది పడుతున్నారు. ఈ దిష్టి దోషాన్ని నిвариస్తే మీ వ్యాపారం మూడు పువ్వులు ఆరు కాయలుగా వర్ధిల్లుతుంది.`;
-                
-                lockTitleText = "✨ నరదృష్టి నివారణ మరియు వ్యాపార అఖండ లాభ ముహూర్తం";
-                lockDescText = "మీ వ్యాపారంలో నరదృష్టి తొలగిపోయి, భారీ లాభాలు మరియు నూతన డీల్స్ ఏ తేదీ నుండి ప్రారంభం కాబోతున్నాయో వెంటనే అడిగి తెలుసుకోండి.";
-                targetMsg = `నమస్తే సిద్ధాంతి గారు,\n\nనా పేరు: ${name}\nరాశి: ${zodiac.name}\nఫోకస్: Business - ${problem}\n\nనా వ్యాపార వృద్ధి మరియు దిష్టి దోష నివారణ పరిహారాల కోసం మెసేజ్ చేస్తున్నాను.`;
-            }
+                waMessage = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. నా జాతక నివేదిక చూశాను. నా ఆర్థిక ఇబ్బందులు తొలగి సొంత ఇల్లు/ఆస్తి కొనే కాలం ఎప్పుడు ఉందో చెప్పగలరు.`;
+            } 
             else {
-                report += `మీ మనసు చాలా పవిత్రమైనది. ఎదుటివారు మిమ్మల్ని ఎంత బాధించినా క్షమించే గుణం మీది. కానీ ఈ మధ్య కాలంలో మీ చుట్టూ ఉన్న కొందరు నెగెటివ్ వ్యక్తుల వల్ల, వారి మాటల వల్ల తీవ్రమైన మానసిక అశాంతికి లోనవుతున్నారు. ఒంటరిగా ప్రశాంతంగా ఉండాలనుకున్నా, గతంలో జరిగిన కొన్ని సంఘటనలు మిమ్మల్ని వెంటాడుతూ ప్రశాంతతను దూరం చేస్తున్నాయి. అవునా?<br><br>`;
+                focusReport = `మీ మనసు చాలా పవిత్రమైనది. ఎదుటివారు మిమ్మల్ని ఎంత బాధించినా క్షమించే ఉత్తమ గుణం మీది. కానీ ప్రస్తుతం మీ లగ్నంలో చంద్రునిపై రాహువు లేదా శని దృష్టి పడడం వల్ల తీవ్రమైన నరదృష్టి (దిష్టి) తగిలింది. దీనివల్ల రాత్రి పూట ఓవర్ థింకింగ్, మానసిక ఒత్తిడి పెరిగి ప్రశాంతత కరువవుతోంది. చిన్న దైవిక మంత్ర సాధన ద్వారా మీ మనసు ప్రశాంత సముద్రంలా మారుతుంది.`;
                 
-                focusReport = `<b>🔮 Mental Peace (సంపూర్ణ మనశ్శాంతి):</b> మీ మనసు చాలా పవిత్రమైనది. ఎదుటివారు మిమ్మల్ని ఎంత బాధించినా క్షమించే గుణం మీది. ప్రస్తుతం మీ ఎదుగుదలను చూసి ఓర్వలేక కొందరు పెట్టే మానసిక ఇబ్బందుల వల్ల ప్రశాంతత కోల్పోయారు. మీ జాతకంలో చంద్రుని బలాన్ని పెంచే చిన్న దైవిక మంత్ర సాధన ద్వారా మీ మనసు ప్రశాంత సముద్రంలా మారుతుంది. విజయం మీదే!`;
+                curiosityQuestion = `"మీ ప్రశాంతతను, మీ ఎదుగుదలను నాశనం చేస్తున్న ఆ **నెగెటివ్ నరదృష్టి (దిష్టి దోషం)** మీ చుట్టూ ఉన్న ఏ వ్యక్తి వల్ల కలుగుతుందో మరియు దాని నుండి విముక్తి ఎప్పుడు లభిస్తుందో మీకు తెలుసా?"`;
                 
-                lockTitleText = "✨ సంపూర్ణ మనశ్శాంతి మరియు సువర్ణయుగ ప్రారంభ కాలం";
-                lockDescText = "మీ జీవితంలో ఉన్న మానసిక అశాంతి పూర్తిగా తొలగిపోయి, సంపూర్ణ సంతోషం మరియు రాజయోగం ఎప్పటి నుండి ప్రారంభం కాబోతోందో తెలుసుకోండి.";
-                targetMsg = `నమస్తే సిద్ధాంతి గారు,\n\nనా పేరు: ${name}\nరాశి: ${zodiac.name}\nఫోకస్: Mental Peace - ${problem}\n\nనా మనశ్శాంతి మరియు సంపూర్ణ భవిష్యత్తు జాతక చక్ర పరిశీలన కోసం మెసేజ్ చేస్తున్నాను.`;
+                waMessage = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. నా జాతక నివేదిక చూశాను. నాకున్న మానసిక అశాంతి, నరదృష్టి దోష నివారణ వివరాలు చెప్పగలరు.`;
             }
 
-            // --- డైనమిక్ ట్రిక్ 3: వేద జ్యోతిష్య పరిహార లాక్ (పాజిటివ్ హోప్) ---
-            report += `<b>✨ గ్రహాల విశ్లేషణ & మోటివేషన్:</b><br>మీరు వ్యక్తపరిచిన ముఖ్యమైన అంశం (<i>"${problem}"</i>) ఆధారంగా చూస్తే.. <b>మీరు ఈ సమస్యల నుంచి బయటపడి సింహంలా గర్జించే రోజులు చాలా దగ్గరలోనే ఉన్నాయి!</b> ${zodiac.positive} మీ లగ్న చక్రంలో ఉన్న ఒకే ఒక చిన్న గ్రహ అడ్డంకి మాత్రమే దీనికి కారణం. దాన్ని సరిచేసుకుంటే చాలు!<br><br>`;
-            
-            report += focusReport;
+            focusText.innerHTML = focusReport;
+            curiosityQuestionText.innerText = curiosityQuestion;
 
-            predictionText.innerHTML = report;
-            customLockTitle.innerText = lockTitleText;
-            lockDesc.innerText = lockDescText;
-
-            const whatsappNumber = "917981587505"; 
-            whatsappBtn.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(targetMsg)}`;
+            // WhatsApp Button Number and Link setup
+            const whatsappNumber = "917981587505"; // మీ వాట్సాప్ నంబర్
+            whatsappBtn.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(waMessage)}`;
         }
     </script>
 </body>
