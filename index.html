@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nakshatra AI - జ్యోతిష్య పరిశీలన</title>
+    <style>
+        /* కాస్మిక్ డార్క్ థీమ్ స్టైలింగ్ */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0b071e;
+            background-image: radial-gradient(circle at 50% 50%, #1a123a 0%, #0b071e 100%);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/stars.png') repeat;
+            z-index: 1;
+            opacity: 0.4;
+        }
+        .container {
+            background: rgba(20, 14, 46, 0.8);
+            border: 1px solid rgba(147, 112, 219, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 2;
+            position: relative;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .header .logo {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #d8b4fe;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+        }
+        .header p {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #c084fc;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background: rgba(10, 6, 28, 0.6);
+            border: 1px solid rgba(147, 112, 219, 0.4);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .form-control:focus {
+            border-color: #a855f7;
+            box-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
+        }
+        .row {
+            display: flex;
+            gap: 15px;
+        }
+        .row .form-group {
+            flex: 1;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+            margin-top: 10px;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.6);
+        }
+        /* లోడింగ్ స్క్రీన్ స్టైల్ */
+        .loading-box {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(168, 85, 247, 0.3);
+            border-radius: 50%;
+            border-top-color: #a855f7;
+            animation: spin 1s ease-in-out infinite;
+            margin: 0 auto 20px auto;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loading-text {
+            font-size: 16px;
+            color: #e9d5ff;
+            font-style: italic;
+        }
+        /* జాతక ఫలితాల స్క్రీన్ స్టైల్ */
+        .result-box {
+            display: none;
+        }
+        .result-title {
+            font-size: 22px;
+            color: #fca5a5;
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(24ca, 165, 165, 0.2);
+            padding-bottom: 10px;
+        }
+        .prediction-text {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #e5e7eb;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+        .lock-box {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px dashed rgba(239, 68, 68, 0.4);
+            border-radius: 10px;
+            padding: 18px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .lock-title {
+            color: #f87171;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        .lock-desc {
+            font-size: 14px;
+            color: #d1d5db;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .btn-whatsapp {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #25D366;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 15px;
+            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+        }
+        .btn-whatsapp:hover {
+            background: #20ba5a;
+            transform: translateY(-1px);
+        }
+        @media (max-width: 480px) {
+            .row { flex-direction: column; gap: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stars"></div>
+
+    <div class="container">
+        <div class="header">
+            <div class="logo">✦ NAKSHATRA AI ✦</div>
+            <p>Traditional Vedic Astrology & Cosmic Predictions</p>
+        </div>
+
+        <form id="astrologyForm">
+            <div class="form-group">
+                <label>పూర్తి పేరు (Full Name)</label>
+                <input type="text" id="fullName" class="form-control" placeholder="మీ పేరు ఇక్కడ టైప్ చేయండి..." required>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>పుట్టిన తేదీ (Date of Birth)</label>
+                    <input type="date" id="dob" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <label>పుట్టిన సమయం (Time of Birth)</label>
+                    <input type="time" id="tob" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>పుట్టిన ఊరు (Place of Birth)</label>
+                    <input type="text" id="place" class="form-control" placeholder="ఉదా: Hyderabad" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>ప్రస్తుత ప్రధాన समस्या/ప్రశ్న (Select Your Focus)</label>
+                <select id="focusArea" class="form-control" required>
+                    <option value="" disabled selected>సెలెక్ట్ చేసుకోండి...</option>
+                    <option value="career">ఉద్యోగం / వ్యాపారం (Career & Wealth)</option>
+                    <option value="marriage">పెళ్లి / ప్రేమ జీవితం (Marriage & Love)</option>
+                    <option value="health">ఆరోగ్య సమస్యలు (Health Insights)</option>
+                    <option value="future">భవిష్యత్తు / జనరల్ లైఫ్ (General Future)</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-submit">🔮 REVEAL MY JATHAKAM 🔮</button>
+        </form>
+
+        <div class="loading-box" id="loadingBox">
+            <div class="spinner"></div>
+            <div class="loading-text" id="loadingText">Reading your planetary degrees...</div>
+        </div>
+
+        <div class="result-box" id="resultBox">
+            <div class="result-title" id="resultTitle">✦ జన్మ కుండలి ప్రాథమిక పరిశీలన ✦</div>
+            <div class="prediction-text" id="predictionText"></div>
+            
+            <div class="lock-box">
+                <div class="lock-title">🔮 ఖచ్చితమైన కాల నిర్ణయ లాక్ (Timing of Events Locked)</div>
+                <div class="lock-desc" id="lockDesc">మీ ఉద్యోగ సమయం లేదా వివాహ కాలాన్ని పక్కా తేదీలతో తెలుసుకోవడానికి మీ లగ్న చక్ర సూక్ష్మ వీక్షణ అవసరం. మా ప్రధాన సిద్ధాంతి గారితో నేరుగా మాట్లాడండి.</div>
+                <a href="#" id="whatsappBtn" target="_blank" class="btn-whatsapp">💬 Connect on WhatsApp (దక్షిణ: ₹250)</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('astrologyForm');
+        const loadingBox = document.getElementById('loadingBox');
+        const resultBox = document.getElementById('resultBox');
+        const loadingText = document.getElementById('loadingText');
+        const predictionText = document.getElementById('predictionText');
+        const lockDesc = document.getElementById('lockDesc');
+        const whatsappBtn = document.getElementById('whatsappBtn');
+
+        // లోడింగ్ టెక్స్ట్ యానిమేషన్ మ్యాజిక్
+        const loadingSteps = [
+            "📄 Reading your planetary degrees...",
+            "✨ Analyzing Lagna and Nakshatra Pada...",
+            "🔮 Generating your cosmic destiny report..."
+        ];
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // యూజర్ ఇచ్చిన డేటా తీసుకోవడం
+            const name = document.getElementById('fullName').value;
+            const focus = document.getElementById('focusArea').value;
+            const place = document.getElementById('place').value;
+
+            // ఫామ్ దాచి లోడింగ్ చూపించడం
+            form.style.display = 'none';
+            loadingBox.style.display = 'block';
+
+            let step = 0;
+            const timer = setInterval(() => {
+                step++;
+                if (step < loadingSteps.length) {
+                    loadingText.innerText = loadingSteps[step];
+                } else {
+                    clearInterval(timer);
+                    showJathakam(name, focus, place);
+                }
+            }, 1200); // ఒక్కో స్టెప్ కి 1.2 సెకన్లు ఆగుతుంది
+        });
+
+        function showJathakam(name, focus, place) {
+            loadingBox.style.display = 'none';
+            resultBox.style.display = 'block';
+
+            let report = `<b>నమస్తే ${name} గారు,</b><br><br>మీరు జన్మించిన సమయం మరియు ప్రదేశం (${place}) లోని ఆకాశ గ్రహ స్థితులను పరిశీలించగా.. మీ జాతకంలో కొన్ని అరుదైన పవర్‌ఫుల్ యోగాలు కనిపిస్తున్నాయి. మీరు స్వతహాగా చాలా ప్రతిభావంతులు, ఎవరికైనా సహాయం చేసే గుణం మీలో ఎక్కువ. సమాజంలో మంచి గౌరవాన్ని ఆశిస్తారు. కానీ, మీ మనసులో కొన్ని విషయాల పట్ల తీవ్రమైన గుప్త ఆందోళన లేదా ఒత్తిడి దాగి ఉంది. మీ శ్రమకు తగ్గ గుర్తింపు కొన్నిసార్లు ఆలస్యంగా అందుతోంది.<br><br>`;
+            
+            let targetMsg = "";
+
+            if (focus === 'career') {
+                report += `<b>💼 ఉద్యోగ/వ్యాపార విషయాలు:</b> మీ జాతక చక్రంలో దశమ స్థానం (ఉద్యోగ స్థానం) పై బుధుడు మరియు రాహువు ప్రభావం బలంగా ఉంది. ఇది వ్యాపారవేత్తలు మరియు సెలబ్రిటీల జాతకాల్లో ఉండే ప్రత్యేక లక్షణం. మీ ఆలోచనలు చాలా ఉన్నతంగా ఉంటాయి. కానీ గత కొంతకాలంగా ధన వ్యయం (అనవసర ఖర్చులు) పెరగడం లేదా అనుకున్న పనులు చివరి నిమిషంలో వాయిదా పడడం జరుగుతోంది. మీ జాతక బలం ప్రకారం మీకు సొంతంగా ఎదగాలనే తపన ఎక్కువ, భవిష్యత్తులో స్థిరమైన రాజయోగం పొందే అవకాశాలు మెండుగా ఉన్నాయి.`;
+                lockDesc.innerText = "మీకు ఉద్యోగం ఎప్పుడు వస్తుంది? ప్రమోషన్ లేదా వ్యాపారంలో భారీ లాభాలు ఏ నెల నుండి ప్రారంభం అవుతాయి? అనే ఖచ్చితమైన కాల నిర్ణయాలు తెలుసుకోవడానికి కింద క్లిక్ చేయండి.";
+                targetMsg = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. నేను Nakshatra AI వెబ్‌సైట్‌లో నా జాతకం చూశాను. నాకు కెరీర్/ఉద్యోగ విషయాలపై పూర్తి జాతక చక్ర పరిశీలన మరియు పరిహారాలు కావాలి.`;
+            } 
+            else if (focus === 'marriage') {
+                report += `<b>❤️ పెళ్లి/ప్రేమ జీవితం:</b> మీ నక్షత్ర నడవడిక ప్రకారం మీరు బంధాలకు చాలా ఎక్కువ విలువ ఇస్తారు. అవతలి వాళ్లు మిమ్మల్ని కొన్నిసార్లు సరిగ్గా అర్థం చేసుకోకపోయినా భరిస్తారు. ప్రస్తుతం మీ సప్తమ స్థానం (వివాహ స్థానం) పై గోచార శని/రాహువు దృష్టి పడడం వల్ల.. అనుకున్న సంబంధాలు చేజారడం లేదా అనవసరమైన మనస్పర్థలు రావడం జరగవచ్చు. కానీ మీ జాతకంలో గురు బలం అద్భుతంగా ఉండడం వల్ల, మీకు వచ్చే భాగస్వామి చాలా కేరింగ్‌గా మరియు మీ అదృష్టాన్ని పెంచేలా ఉంటారు.`;
+                lockDesc.innerText = "మీకు వివాహం ఏ సంవత్సరంలో జరుగుతుంది? మీ లైఫ్ పార్ట్నర్ ది ఏ ఊరు అవుతుంది? వైవాహిక దోషాల నివారణల కోసం సిద్ధాంతి గారితో నేరుగా మాట్లాడండి.";
+                targetMsg = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. నేను Nakshatra AI వెబ్‌సైట్‌లో నా జాతకం చూశాను. నాకు వివాహ/ప్రేమ విషయాలపై పూర్తి జాతక చక్ర పరిశీలన కావాలి.`;
+            } 
+            else if (focus === 'health') {
+                report += `<b>🩺 ఆరోగ్య విషయాలు:</b> మీ జాతకంలో షష్టమ స్థానాధిపతి ప్రభావం వల్ల శరీరంలో ఉష్ణ సంబంధిత సమస్యలు లేదా మానసిక ఆందోళన వల్ల నిద్రలేమి, అలసట వచ్చే అవకాశాలు ఉన్నాయి. మీ శక్తి సామర్థ్యాలు చాలా ఎక్కువ, కానీ అనవసరమైన విషయాలను తలకెక్కించుకోవడం వల్ల ఆరోగ్యంపై ప్రభావం పడుతోంది. సరైన ఆహార నియమాలు మరియు చిన్నపాటి గ్రహ శాంతి ద్వారా మీ ఆరోగ్యం చాలా మెరుగ్గా మారుతుంది.`;
+                lockDesc.innerText = "మీకున్న పాత ఆరోగ్య సమస్యలు ఎప్పుడు తొలగిపోతాయి? మానసిక ప్రశాంతత కోసం ఎలాంటి దైవిక పరిహారాలు చేయాలో నేరుగా తెలుసుకోండి.";
+                targetMsg = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. నేను Nakshatra AI వెబ్‌సైట్‌లో నా జాతకం చూశాను. నాకు ఆరోగ్య సమస్యల నివారణల కోసం పూర్తి జాతక పరిశీలన కావాలి.`;
+            } 
+            else {
+                report += `<b>🔮 జనరల్ లైఫ్ & భవిష్యత్తు:</b> మీ జాతకం చాలా విలక్షణమైనది. మీరు జీవితంలో ఎన్నో ఎత్తుపల్లాలను చూసి ఉంటారు. ప్రస్తుతం మీ నవగ్రహాల గోచార స్థితి ప్రకారం ఒక మిశ్రమ కాలం నడుస్తోంది. ఒకవైపు అభివృద్ధికి మార్గాలు సుగమం అవుతున్నా, మరోవైపు ఏదో తెలియని అడ్డంకులు మిమ్మల్ని వేధిస్తున్నాయి. లక్కీ నెంబర్స్ మరియు లక్కీ కలర్స్ వాడడం వల్ల మీకు పాజిటివ్ ఎనర్జీ పెరుగుతుంది.`;
+                lockDesc.innerText = "మీ జీవితంలో స్వర్ణయుగం ఎప్పటి నుండి ప్రారంభం కాబోతోంది? మీ జాతకంలోని పితృదోషాలు లేదా ఇతర దోషాల పూర్తి నివారణల కోసం వాట్సాప్ లో సంప్రదించండి.";
+                targetMsg = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. నేను Nakshatra AI వెబ్‌సైట్‌లో నా జాతకం చూశాను. నా పూర్తి భవిష్యత్తు జాతక చక్ర పరిశీలన కోసం మెసేజ్ చేస్తున్నాను.`;
+            }
+
+            // టెక్స్ట్ డిస్ప్లే చేయడం
+            predictionText.innerHTML = report;
+
+            // మీ వాట్సాప్ నెంబర్ లింక్ క్రియేట్ చేయడం (మీ నెంబర్ 7981587505 ఇక్కడ పెట్టాను)
+            const whatsappNumber = "917981587505"; 
+            whatsappBtn.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(targetMsg)}`;
+        }
+    </script>
+</body>
+</html>
