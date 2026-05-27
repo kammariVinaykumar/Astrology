@@ -77,6 +77,41 @@
             transform: translateY(-1px); box-shadow: 0 6px 25px rgba(91, 33, 182, 0.45);
             border-color: #facc15;
         }
+
+        /* --- 12 RASHI PORTAL NEW STYLES --- */
+        .rashi-portal-section {
+            margin-top: 40px; border-top: 1px solid rgba(168, 85, 247, 0.2); padding-top: 30px;
+        }
+        .rashi-section-title {
+            font-family: 'Cinzel', serif; text-align: center; color: #facc15;
+            font-size: 15px; letter-spacing: 2px; margin-bottom: 20px;
+        }
+        .rashi-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px;
+        }
+        .rashi-card {
+            background: rgba(4, 1, 15, 0.7); border: 1px solid rgba(168, 85, 247, 0.15);
+            border-radius: 10px; padding: 12px 5px; text-align: center; cursor: pointer;
+            transition: 0.2s ease;
+        }
+        .rashi-card:hover, .rashi-card.active {
+            border-color: #facc15; background: rgba(91, 33, 182, 0.2);
+            box-shadow: 0 0 10px rgba(250, 204, 21, 0.15);
+        }
+        .rashi-icon { font-size: 18px; margin-bottom: 4px; display: block; }
+        .rashi-name { font-size: 11.5px; color: #ebd9ff; font-weight: 500; }
+        
+        .rashi-result-box {
+            background: rgba(4, 1, 15, 0.9); border: 1px solid rgba(250, 204, 21, 0.2);
+            border-radius: 12px; padding: 20px; display: none; margin-top: 15px;
+            animation: fadeIn 0.4s ease;
+        }
+        .rashi-result-header {
+            font-family: 'Cinzel', serif; color: #facc15; font-size: 13px;
+            margin-bottom: 10px; display: flex; justify-content: space-between;
+            border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 8px;
+        }
+        .rashi-result-text { font-size: 13.5px; line-height: 1.8; color: #ebd9ff; text-align: justify; }
         
         /* Loading Phase */
         .loading-box { display: none; text-align: center; padding: 60px 20px; }
@@ -106,7 +141,6 @@
         .matrix-item { font-size: 13px; color: #a494c4; border-bottom: 1px dashed rgba(168, 85, 247, 0.08); padding-bottom: 6px; }
         .matrix-item span { color: #fff; font-weight: 500; margin-left: 4px; }
 
-        /* Dynamic Timeline Tabs Component */
         .timeline-tabs {
             display: flex; background: rgba(4, 1, 15, 0.8);
             border: 1px solid rgba(168, 85, 247, 0.3);
@@ -122,7 +156,6 @@
             color: #facc15; box-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
-        /* Ephemeris Longitude Display */
         .deg-container {
             background: rgba(4, 1, 15, 0.4); border: 1px solid rgba(168, 85, 247, 0.15);
             border-radius: 12px; padding: 14px 18px; margin-bottom: 25px;
@@ -135,8 +168,6 @@
             background: rgba(4, 1, 15, 0.3); border: 1px solid rgba(168, 85, 247, 0.12);
             border-radius: 14px; padding: 18px 22px; margin-bottom: 30px;
         }
-        .energy-bar-group { margin-bottom: 14px; }
-        .energy-bar-group:last-child { margin-bottom: 0; }
         .energy-label { display: flex; justify-content: space-between; font-size: 12px; color: #a494c4; margin-bottom: 5px; }
         .energy-track { width: 100%; height: 5px; background: rgba(255, 255, 255, 0.03); border-radius: 10px; overflow: hidden; }
         .energy-fill { height: 100%; background: linear-gradient(90deg, #5b21b6, #facc15); border-radius: 10px; width: 0%; transition: width 1.6s ease; }
@@ -168,11 +199,13 @@
         }
         .btn-whatsapp:hover { background: #14532d; transform: translateY(-1px); border-color: #facc15; }
         .disclaimer { text-align: center; font-size: 11px; color: #9f8fbf; opacity: 0.45; line-height: 1.6; }
+        
         @media (max-width: 480px) {
             .row { flex-direction: column; gap: 0; }
             .container { padding: 25px 16px; }
             .summary-matrix { grid-template-columns: 1fr; gap: 8px; }
             .timeline-tabs { font-size: 10px; }
+            .rashi-grid { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
 </head>
@@ -181,47 +214,75 @@
     <div class="stars"></div>
 
     <div class="container">
-        <div class="header">
-            <div class="logo">✦ NAKSHTHRARAASHI ✦</div>
-            <p>Mathematical Sidereal Engine & Deterministic Jyotish Analysis</p>
+        <div id="mainWorkbench">
+            <div class="header">
+                <div class="logo">✦ NAKSHTHRARAASHI ✦</div>
+                <p>Mathematical Sidereal Engine & Deterministic Jyotish Analysis</p>
+            </div>
+
+            <form id="astrologyForm">
+                <div class="form-group">
+                    <label>పూర్తి పేరు (Full Name - English alphabet determines Name Vibration)</label>
+                    <input type="text" id="fullName" class="form-control" placeholder="e.g., K. Srinivas Rao" required>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label>పుట్టిన తేదీ (Date of Birth)</label>
+                        <input type="date" id="dob" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>పుట్టిన సమయం (Time of Birth)</label>
+                        <input type="time" id="tob" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label>పుట్టిన స్థలం (Place of Birth)</label>
+                        <input type="text" id="place" class="form-control" placeholder="e.g., Visakhapatnam" required>
+                    </div>
+                    <div class="form-group">
+                        <label>ప్రస్తుత ప్రాధాన్యత (Active Bhava Focus)</label>
+                        <select id="focusArea" class="form-control" required>
+                            <option value="" disabled selected>Select focus area...</option>
+                            <option value="career">10th House: Karma & Profession (జీవన వృత్తి - ఉద్యోగం)</option>
+                            <option value="marriage">7th House: Kalatra & Union (కళత్ర స్థానం - బంధాలు)</option>
+                            <option value="finance">2nd & 11th House: Dhana & Labha (ఆర్థిక నిలకడ - లాభాలు)</option>
+                            <option value="peace">4th House: Sukha & Inner Equilibrium (మానసిక ప్రశాంతత)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">గణిత ఆధారిత వేద కుండలిని గణించండి</button>
+            </form>
+
+            <div class="rashi-portal-section" id="rashiPortalWrapper">
+                <div class="rashi-section-title">✦ నేటి ద్వాదశ రాశిఫలాలు (Daily Horoscopes) ✦</div>
+                <div class="rashi-grid">
+                    <div class="rashi-card" onclick="showQuickRashi('మేషం', '♈')"><span class="rashi-icon">♈</span><span class="rashi-name">మేషం</span></div>
+                    <div class="rashi-card" onclick="showQuickRashi('వృషభం', '♉')"><span class="rashi-icon">♉</span><span class="rashi-name">వృషభం</span></div>
+                    <div class="rashi-card" onclick="showQuickRashi('మిథునం', '♊')"><span class="rashi-icon">♊</span><span class="rashi-name">మిథునం</span></div>
+                    <div class="rashi-card" onclick="showQuickRashi('కర్కాటకం', '♋')"><span class="rashi-icon">♋</span><span class="rashi-name">కర్కాటకం</span></div>
+                    <div class="rashi-card" onclick="showQuickRashi('సింహం', '♌')"><span class="rashi-icon">♌</span><span class="rashi-name">సింహం</span></div>
+                    <div class="rashi-card" onclick="showQuickRashi('కన్యా', '♍')"><span class="rashi-icon">♍</span><span class="rashi-name">కన్యా</span></div>
+                    <div class="rashi-card" onclick="showQuickRashi('तुला', '♎')"><span class="rashi-icon">♎</span><span class="rashi-name">తులా</span></div>
+                    <div class="rashi-card" onclick="showQuickRashi('వృశ్చికం', '♏')"><span class="rashi-icon">♏</span><span class="rashi-name">వృశ్చికం</span></div>
+                    <div class="rashi-card" onclick="showQuickRashi('ధనుస్సు', '♐')"><span class="rashi-icon">♐</span><span class="rashi-name">ధనుస్సు</span></div>
+                    <div class="rashi-card" onclick="showQuickRashi('మకరం', '♑')"><span class="rashi-icon">♑</span><span class="rashi-name">మకరం</span></div>
+                    <div class="rashi-card" onclick="showQuickRashi('కుంభం', '♒')"><span class="rashi-icon">♒</span><span class="rashi-name">కుంభం</span></div>
+                    <div class="rashi-card" onclick="showQuickRashi('మీనం', '♓')"><span class="rashi-icon">♓</span><span class="rashi-name">మీనం</span></div>
+                </div>
+                
+                <div class="rashi-result-box" id="rashiResultDisplay">
+                    <div class="rashi-result-header">
+                        <span id="rashiResTitle">--</span>
+                        <span style="color: #a494c4;" id="liveDateStamp">--</span>
+                    </div>
+                    <div class="rashi-result-text" id="rashiResText">...</div>
+                </div>
+            </div>
         </div>
-
-        <form id="astrologyForm">
-            <div class="form-group">
-                <label>పూర్తి పేరు (Full Name - English alphabet determines Name Vibration)</label>
-                <input type="text" id="fullName" class="form-control" placeholder="e.g., K. Srinivas Rao" required>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label>పుట్టిన తేదీ (Date of Birth)</label>
-                    <input type="date" id="dob" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label>పుట్టిన సమయం (Time of Birth)</label>
-                    <input type="time" id="tob" class="form-control" required>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-group">
-                    <label>పుట్టిన స్థలం (Place of Birth)</label>
-                    <input type="text" id="place" class="form-control" placeholder="e.g., Visakhapatnam" required>
-                </div>
-                <div class="form-group">
-                    <label>ప్రస్తుత ప్రాధాన్యత (Active Bhava Focus)</label>
-                    <select id="focusArea" class="form-control" required>
-                        <option value="" disabled selected>Select focus area...</option>
-                        <option value="career">10th House: Karma & Profession (జీవన వృత్తి - ఉద్యోగం)</option>
-                        <option value="marriage">7th House: Kalatra & Union (కళత్ర స్థానం - બં‍ధాలు)</option>
-                        <option value="finance">2nd & 11th House: Dhana & Labha (ఆర్థిక నిలకడ - లాభాలు)</option>
-                        <option value="peace">4th House: Sukha & Inner Equilibrium (మానసిక ప్రశాంతత)</option>
-                    </select>
-                </div>
-            </div>
-
-            <button type="submit" class="btn-submit">గణిత ఆధారిత వేద కుండలిని గణించండి</button>
-        </form>
 
         <div class="loading-box" id="loadingBox">
             <div class="spinner"></div>
@@ -232,7 +293,7 @@
             <div class="result-title">✦ స్పష్ట జన్మ పత్రికా సాంకేతిక విశ్లేషణ ✦</div>
             
             <div class="summary-matrix">
-                <div class="matrix-item">వేద చంద్ర రాశి: <span id="mZodiac">--</span></div>
+                <div class="matrix-item">веద చంద్ర రాశి: <span id="mZodiac">--</span></div>
                 <div class="matrix-item">జనన నక్షత్రం: <span id="mStar">--</span></div>
                 <div class="matrix-item">స్పష్ట లగ్నం (Ascendant): <span id="mLagna">--</span></div>
                 <div class="matrix-item">వింశోత్తరి దశా శేషం: <span id="mDasha">--</span></div>
@@ -265,7 +326,7 @@
             </div>
 
             <div class="section-block">
-                <div class="section-title" id="titleEmotional">Emotional Disposition (అन्तरंग విశ్లేషణ)</div>
+                <div class="section-title" id="titleEmotional">Emotional Disposition (అంతరంగ విశ్లేషణ)</div>
                 <div class="prediction-text" id="secEmotional"></div>
             </div>
 
@@ -299,10 +360,11 @@
         const form = document.getElementById('astrologyForm');
         const loadingBox = document.getElementById('loadingBox');
         const resultBox = document.getElementById('resultBox');
+        const mainWorkbench = document.getElementById('mainWorkbench');
         const loadingText = document.getElementById('loadingText');
         const whatsappBtn = document.getElementById('whatsappBtn');
         
-        let globalCachedData = {}; // Stores core values to enable swift tab switching
+        let globalCachedData = {};
 
         const loadingSteps = [
             "జన్మ గ్రహ స్థితులు విశ్లేషించబడుతున్నాయి...",
@@ -311,15 +373,64 @@
             "లగ్న భావ రేఖాంశములు స్థిరపరచబడుతున్నాయి..."
         ];
 
+        // --- EXTENSIVE SCIENTIFIC PREDICTION MATRICES FOR THE ROTATION ENGINE ---
+        const transitTrends = [
+            "కుజ గ్రహ అనుకూలత వల్ల కార్యసిద్ధి బలంగా ఉంది. ఉద్యోగంలో మీ ప్రతిభకు తగిన గుర్తింపు లభిస్తుంది. నూతన పెట్టుబడుల విషయంలో కొంత ఆచితూచి వ్యవహరించడం మంచిది. కంటి నిండా నిద్ర అవసరం.",
+            "రాశి ఇంట చంద్ర సంచారం వల్ల ఈ రోజు అత్యంత ఉత్సాహంగా గడుస్తుంది. ఆర్థిక లావాదేవీలు లాభసాటిగా సాగుతాయి. కుటుంబ సభ్యులతో చిన్నపాటి అపార్థాలు వచ్చే సూచనలు ఉన్నాయి, మాట్లాడేటప్పుడు సంయమనం వహించండి.",
+            "రాశిలో గురు వీక్షణం మీకు ఉన్నత యోగాన్ని ఇస్తోంది. ఆగిపోయిన పనులు వేగం పుంజుకుంటాయి. వృత్తిపరంగా కీలకమైన నిర్ణయాలు తీసుకుంటారు. బంధువుల నుండి శుభవార్తలు వింటారు.",
+            "ఈ రోజు ఖర్చులు నియంత్రించుకోవడం అవసరం. మానసిక ఒత్తిడి స్వల్పంగా పెరగవచ్చు. ఇష్టదైవ ప్రార్థన వల్ల ఉపశమనం లభిస్తుంది. ఉద్యోగస్తులకు అధికారుల నుండి పని ఒత్తిడి ఎక్కువగా ఉంటుంది.",
+            "సూర్యుని అనుకూల దృష్టి వల్ల కీర్తి ప్రతిష్టలు పెరుగుతాయి. వ్యాపారస్తులకు ఆకస్మిక ధనలాభం సూచిస్తోంది. మిత్రుల సహాయంతో ఒక ముఖ్యమైన సమస్య పరిష్కారం అవుతుంది. ఆరోగ్యం అనుకూలిస్తుంది.",
+            "వృత్తి, ఉద్యోగ రంగాలలో ప్రమోషన్ లేదా సానుకూల మార్పుల సూచనలు బలంగా ఉన్నాయి. సామాజిక సేవా కార్యక్రమాల్లో పాల్గొంటారు. కోర్టు వ్యవహారాలు సానుకూల మలుపు తిరుగుతాయి. సమయం ఎంతో బాగుంది.",
+            "భాగ్య స్థానంలో గ్రహాల సంచారం వల్ల అదృష్టం కలిసివస్తుంది. దూర ప్రయాణాలు అనుకూలిస్తాయి. తండ్రి గారి ఆరోగ్యం పై శ్రద్ధ వహించండి. ఆధ్యాత్మిక చింతన మానసిక శాంతిని ఇస్తుంది.",
+            "అష్టమ స్థానంలో చంద్రుని సంచారం వల్ల ఈ రోజు పనులలో స్వల్ప ఆటంకాలు ఎదురవుతాయి. వాహనాలు నడిపేటప్పుడు అత్యంత జాగ్రత్త అవసరం. అనవసర వాదనలకు దూరంగా ఉండటం శ్రేయస్కరం.",
+            "భాగస్వామ్య వ్యాపారాలు లాభిస్తాయి. జీవిత భాగస్వామితో సంతోషకరమైన సమయం గడుపుతారు. నూతన పరిచయాలు వ్యాపార విస్తరణకు ఉపయోగపడతాయి. ఆరోగ్యం పట్ల శ్రద్ధ అవసరం.",
+            "శత్రువులపై విజయం సాధిస్తారు. కోర్టు కేసులు లేదా పాత రుణాలు తీరిపోయే మార్గం సుగమం అవుతుంది. అనారోగ్య సమస్యల నుండి ఉపశమనం లభిస్తుంది. శ్రమకు తగిన ప్రతిఫలం దక్కుతుంది.",
+            "సంతాన పరంగా శుభవార్తలు వింటారు. మీ మేధస్సుకు తగిన గుర్తింపు లభిస్తుంది. ప్రయాణాలలో నూతన మిత్రులు పరిచయమవుతారు. కళాకారులకు, విద్యార్థులకు అత్యంత అనుకూలమైన రోజు.",
+            "రాశిలో శని వేధ సంచారం వల్ల శారీరక శ్రమ ఎక్కువగా ఉంటుంది. స్థిరాస్తి కొనుగోలు వ్యవహారాల్లో జాగ్రత్త అవసరం. తల్లి గారి ఆరోగ్యం పై శ్రద్ధ పెట్టండి. సాయంత్రానికి వాతావరణం అనుకూలంగా మారుతుంది."
+        ];
+
+        // --- ASTRONOMICAL DATE-ROTATION ALGORITHM (WONT DUPLICATE ON THE SAME DAY) ---
+        function showQuickRashi(rashiName, symbol) {
+            document.querySelectorAll('.rashi-card').forEach(card => {
+                if(card.innerText.includes(rashiName)) card.classList.add('active');
+                else card.classList.remove('active');
+            });
+            
+            const today = new Date();
+            // Format Telugu Date Stamp (May 28, 2026 format dynamically calculated)
+            const options = { month: 'long', day: 'numeric', year: 'numeric' };
+            document.getElementById('liveDateStamp').innerText = today.toLocaleDateString('te-IN', options);
+
+            // Compute a mathematical base using Year, Month and Day to dynamically rotate the database indexes
+            const rashiOffsetMap = {
+                "మేషం": 0, "వృషభం": 1, "మిథునం": 2, "కర్కాటకం": 3, "సింహం": 4, "కన్యా": 5,
+                "తులా": 6, "వృశ్చికం": 7, "ధనుస్సు": 8, "మకరం": 9, "కుంభం": 10, "మీనం": 11
+            };
+
+            const dayFactor = today.getDate(); // 1 to 31
+            const monthFactor = today.getMonth() + 1; // 1 to 12
+            const rashiBaseIndex = rashiOffsetMap[rashiName];
+
+            // Deterministic dynamic index generation matrix based on Gregorian Epoch Shifts
+            const finalizedPredictionIndex = (rashiBaseIndex + dayFactor + monthFactor) % transitTrends.length;
+            const liveResultText = transitTrends[finalizedPredictionIndex];
+
+            const displayBox = document.getElementById('rashiResultDisplay');
+            const title = document.getElementById('rashiResTitle');
+            const text = document.getElementById('rashiResText');
+            
+            displayBox.style.display = 'block';
+            title.innerText = `${symbol} ${rashiName} రాశి దినఫలం`;
+            text.innerText = liveResultText;
+            
+            displayBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // --- MATH RE-ENGINEERING BASE CORE FUNCTIONS ---
         function createSeed(str) {
             let hash = 0;
             for (let i = 0; i < str.length; i++) { hash = str.charCodeAt(i) + ((hash << 5) - hash); }
             return Math.abs(hash);
-        }
-
-        function getDeterministicItem(arr, seedValue, offset = 0) {
-            const idx = (seedValue + offset) % arr.length;
-            return arr[idx];
         }
 
         function calculateSiderealPlanets(dateString, timeString) {
@@ -375,7 +486,7 @@
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            form.style.display = 'none';
+            mainWorkbench.style.display = 'none';
             loadingBox.style.display = 'block';
 
             let step = 0;
@@ -405,7 +516,7 @@
 
             const nakshatras = [
                 "అశ్విని", "భరణి", "కృత్తిక", "రోహిణి", "మృగశిర", "ఆరుద్ర", "పునర్వసు", "పుష్యమి", "ఆశ్లేష",
-                "మఖ", "పూర్వాఫల్గుణి", "ఉత్తరాఫల్గుణి", "హస్త", "చిత్త", "स्वाती", "విశాఖ", "అనూరాధ", "జ్యేష్ఠ",
+                "మఖ", "పూర్వాఫల్గుణి", "ఉత్తరాఫల్గుణి", "హస్త", "चित्ता", "స్వాతి", "విశాఖ", "అనూరాధ", "జ్యేష్ఠ",
                 "మూల", "పూర్వాషాఢ", "ఉత్తరాషాఢ", "శ్రవణం", "ధనిష్ఠ", "శతభిషం", "పూర్వాభాద్ర", "ఉత్తరాభాద్ర", "రేవతి"
             ];
             const dashaLords = ["కేతువు", "శుక్రుడు", "సూర్యుడు", "చంద్రుడు", "కుజుడు", "రాహువు", "గురువు", "శని దేవుడు", "బుధుడు"];
@@ -414,24 +525,21 @@
             const nakIndex = Math.floor(totalMoonDegrees / 13.3333) % 27;
             const remDeg = totalMoonDegrees % 13.3333;
             const pada = Math.floor(remDeg / 3.3333) + 1;
-            const nakLord = dashaLords[nakIndex % 9];
 
             const hour = parseInt(tob.split(':')[0]);
             const lagnaIndex = Math.floor(((hour + 4) % 24) / 2);
             const lagnaRashis = ["మేషం", "వృషభం", "మిథునం", "కర్కాటకం", "సింహం", "కన్యా", "తులా", "వృశ్చికం", "ధనుస్సు", "మకరం", "కుంభం", "మీనం"];
             const exactLagna = lagnaRashis[lagnaIndex];
 
-            const tithiArr = ["ప్రథమ", "ద్వితీయ", "తృతీయ", "చతుర్థి", "పంచమి", "షష్ਠి", "సప్తమి", "అష్టమి", "నవమి", "దశమి", "ఏకాదశి", "ద్వాదశి", "త్రయోదశి", "చతుర్దశి", "పూర్ణిమ"];
+            const tithiArr = ["ప్రథమ", "ద్వితీయ", "తృతీయ", "చతుర్థి", "పంచమి", "షష్ఠి", "సప్తమి", "అష్టమి", "నవమి", "దశమి", "ఏకాదశి", "ద్వాదశి", "త్రయోదశి", "చతుర్దశి", "పూర్ణిమ"];
             const derivedTithi = tithiArr[masterSeed % 15] + " తిథి";
             const dashaMain = dashaLords[(nakIndex) % 9];
             const dashaSub = dashaLords[(nakIndex + 2) % 9];
 
-            // Cache computations for the Dynamic Switch Engine
             globalCachedData = {
-                name, focus, astro, num, masterSeed, exactLagna, nakshatras, nakIndex, pada, nakLord, dashaMain, dashaSub, derivedTithi
+                name, focus, astro, num, masterSeed, exactLagna, nakshatras, nakIndex, pada, dashaMain, dashaSub, derivedTithi
             };
 
-            // Static Render Core Matrix UI Elements
             document.getElementById('mZodiac').innerText = astro.Moon.rashi;
             document.getElementById('mStar').innerText = `${nakshatras[nakIndex]} (${pada}వ పాదం)`;
             document.getElementById('mLagna').innerText = `${exactLagna} లగ్న భావం`;
@@ -449,21 +557,17 @@
                 <div class="deg-item">కుజుడు: <b>${astro.Mars.deg}° ${astro.Mars.rashi}</b></div>
             `;
 
-            // Display Default Daily Target Matrix View
             switchTimeline('daily');
         }
 
-        // --- TIME-VARIANT HOROSCOPE TRANSLATION SWITCH ENGINE ---
         function switchTimeline(mode) {
-            // Adjust active CSS states dynamically
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             const clickedBtn = event ? event.target : document.querySelector(`.tab-btn[onclick="switchTimeline('${mode}')"]`);
             if (clickedBtn) clickedBtn.classList.add('active');
 
             const d = globalCachedData;
-            if(!d.name) return; // Guard clause if data missing
+            if(!d.name) return;
 
-            // Dynamic Progress Scoring Metrics Adjustments
             let bar1 = 65, bar2 = 70;
             if(mode === 'daily') { bar1 = 78; bar2 = 65; }
             else if(mode === 'weekly') { bar1 = 72; bar2 = 82; }
@@ -475,7 +579,6 @@
             document.getElementById('fillSpi').style.width = bar1 + "%";
             document.getElementById('fillMen').style.width = bar2 + "%";
 
-            // Local Dynamic Translation Engine Content Layers
             if(mode === 'daily') {
                 document.getElementById('titlePersonality').innerText = "Daily Core Energy (నేటి ఖగోళ తరంగాలు)";
                 document.getElementById('titleEmotional').innerText = "Daily Mind & Mood (నేటి మనఃస్థితి)";
@@ -488,7 +591,7 @@
                 
                 let bText = "";
                 if(d.focus==='career') bText = `మీ 10వ ఇంట కర్మ కారక శని వీక్షణం వల్ల ఉద్యోగంలో పైఅధికారులతో మాట్లాడేటప్పుడు సంయమనం అవసరం. కొత్త బాధ్యతలు దరిచేరుతాయి.`;
-                else if(d.focus==='marriage') bText = `సప్తమ స్థానంలో నక్షత్ర నాథుని సంచారం బంధాల మధ్య సత్సంబంధాలకు దారితీస్తుంది. జీవితభాగస్వామి సలహా కలిసివస్తుంది.`;
+                else if(d.focus==='marriage') bText = `సપ્તమ స్థానంలో నక్షత్ర నాథుని సంచారం బంధాల మధ్య సత్సంబంధాలకు దారితీస్తుంది. జీవితభాగస్వామి సలహా కలిసివస్తుంది.`;
                 else if(d.focus==='finance') bText = `ధన స్థానంలో బుధ సంచారం వల్ల నేడు ఆర్థిక లావాదేవీలు ఫలవంతం అవుతాయి. అనవసర ఖర్చులు తగ్గుతాయి.`;
                 else bText = `చతుర్థ భావన ప్రశాంతంగా ఉంది. కుటుంబ సభ్యులతో గడిపే సమయం మానసిక ఉపశమనాన్ని ఇస్తుంది.`;
                 document.getElementById('secCareer').innerHTML = bText;
@@ -511,7 +614,7 @@
                 let bText = "";
                 if(d.focus==='career') bText = `వృత్తిపరంగా ఈ వారం సానుకూల మార్పులు ఉంటాయి. చాలా రోజులుగా ఆగుతున్న పనులు బుధవారం తర్వాత వేగం పుంజుకుంటాయి.`;
                 else if(d.focus==='marriage') bText = `బంధాల మధ్య ఉన్న పాత అపార్థాలు తొలగిపోవడానికి ఈ వారంలోని గురు సంచారం అద్భుతంగా సహకరిస్తుంది.`;
-                else if(d.focus==='finance') bText = `ఆర్థికంగా నూతన ఆదాయ వనరులు వెతుక్కునే ప్రయత్నాలు సఫలం అవుతాయి. శుక్రుని అనుకూలత వల్ల ధన యోగం కనిపిస్తోంది.`;
+                else if(d.focus==='finance') bText = `ఆर्थिकంగా నూతన ఆదాయ వనరులు వెతుక్కునే ప్రయత్నాలు సఫలం అవుతాయి. శుక్రుని అనుకూలత వల్ల ధన యోగం కనిపిస్తోంది.`;
                 else bText = `గృహంలో శుభకార్య చర్చలకు ఈ వారం ఎంతో అనుకూలమైనదిగా గ్రహాలు సూచిస్తున్నాయి.`;
                 document.getElementById('secCareer').innerHTML = bText;
 
@@ -533,7 +636,7 @@
                 let bText = "";
                 if(d.focus==='career') bText = `ఉద్యోగంలో స్థానచలన లేదా నూతన ప్రాజెక్ట్ వచ్చే అవకాశాలు దట్టంగా ఉన్నాయి. 10వ ఇంట గ్రహాల కూటమి అనుకూలంగా ఉంది.`;
                 else if(d.focus==='marriage') bText = `వివాహ ప్రయత్నాలు చేస్తున్న వారికి ఈ నెల చివరి వారంలో ఒక స్పష్టమైన మరియు అనుకూలమైన సంబంధం కుదిరే యోగం ఉంది.`;
-                else if(d.focus==='finance') bText = `పెట్టుబడులకు ఈ నెల సాధారణంగా ఉంటుంది. ఊహాజనిత వ్యాపారాల (Speculation) జోలికి వెళ్ళకుండా ఉండటం మంచిది.`;
+                else if(d.focus==='finance') bText = `పెట్టుబడులకు ఈ నెల సాధారణంగా ఉంటుంది. ఊహాజనిత వ్యాపారాల జోలికి వెళ్ళకుండా ఉండటం మంచిది.`;
                 else bText = `మానసిక సుఖాన్ని ఇచ్చే చతుర్థ స్థానంపై శుభ గ్రహ వీక్షణం వల్ల గృహోపకరణాలు కొనుగోలు చేస్తారు.`;
                 document.getElementById('secCareer').innerHTML = bText;
 
@@ -553,7 +656,7 @@
                 document.getElementById('secEmotional').innerHTML = `గత రెండేళ్లుగా ఉన్న మానసిక సందిగ్ధత, శూన్యత ఈ ఏడాది పూర్తిగా తొలగిపోతాయి. ఆధ్యాత్మిక చైతన్యం వైపు మీ అడుగులు పడతాయి.`;
                 
                 let bText = "";
-                if(d.focus==='career') bText = `కెరీర్ పరంగా 2026 అద్భుతమైన ఎదుగుదలను ఇస్తుంది. దశమాంశ (D-10) చక్రం ప్రకారం, అక్టోబర్ 2026 లోపు ఉన్నత పదవి లేదా వ్యాపార విస్తరణ ఖాయంగా కనిపిస్తోంది.`;
+                if(d.focus==='career') bText = `కెరీర్ పరంగా 2026 అద్భుతమైన ఎదుగుదలను ఇస్తుంది.  చక్రం ప్రకారం, అక్టోబర్ 2026 లోపు ఉన్నత పదవి లేదా వ్యాపార విస్తరణ ఖాయంగా కనిపిస్తోంది.`;
                 else if(d.focus==='marriage') bText = `నవమాంశ (D-9) చక్రంలో గురు దృష్టి పడటం వల్ల దంపతుల మధ్య సయోధ్య కుదురుతుంది, అవివాహితులకు గట్టి సంబంధం నిశ్చయం అవుతుంది.`;
                 else if(d.focus==='finance') bText = `ఆర్థిక సామ్రాజ్యం బలపడుతుంది. గతంలో ఆగిపోయిన మొండి బకాయిలు వసూలు అవుతాయి. ఆస్తి కొనుగోలు యోగం బలంగా ఉంది.`;
                 else bText = `కుటుంబ సౌఖ్యం, వాహన యోగం మరియు సొంత ఇల్లు నిర్మించాలనే కల నెరవేరడానికి గ్రహాలు సంపూర్ణంగా సహకరిస్తాయి.`;
@@ -565,7 +668,6 @@
                 document.getElementById('curiosityQuestionText').innerText = `"2026 వర్షఫల సిద్ధాంతం ప్రకారం, మీ జాతకంలో ఉన్న పితృదోషం లేదా శని వేధ పూర్తిగా తొలగిపోయి అఖండ ధనలాభం కలిగే ఆ మహోత్కృష్ట నెల ఏది?"`;
             }
 
-            // Dynamically update WhatsApp consultation deep-link mapping
             const whatsappNumber = "917981587505";
             let waMsg = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${d.name}. నా స్పష్ట జాతక వివరాలు చూశాను. నా కుండలి ఆధారిత ${mode.toUpperCase()} కాల నిర్ణయం మరియు పరిహారాల పూర్తి వివరాల కోసం సంప్రదిస్తున్నాను.`;
             whatsappBtn.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(waMsg)}`;
