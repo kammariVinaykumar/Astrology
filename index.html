@@ -1,469 +1,99 @@
-<!DOCTYPE html>
-<html lang="te">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>✦ NAKSHTHRARAASHI - Real Astrological Analysis ✦</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #0b071e;
-            background-image: radial-gradient(circle at 50% 50%, #1a123a 0%, #0b071e 100%);
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/stars.png') repeat;
-            z-index: 1;
-            opacity: 0.3;
-        }
-        .container {
-            background: rgba(20, 14, 46, 0.85);
-            border: 1px solid rgba(147, 112, 219, 0.3);
-            border-radius: 16px;
-            padding: 30px;
-            width: 100%;
-            max-width: 600px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            z-index: 2;
-            position: relative;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        .header .logo {
-            font-size: 28px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            color: #d8b4fe;
-            text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
-        }
-        .header p {
-            font-size: 13px;
-            color: #a7f3d0;
-            margin-top: 5px;
-            font-style: italic;
-        }
-        .form-group {
-            margin-bottom: 18px;
-        }
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            color: #c084fc;
-            margin-bottom: 6px;
-            font-weight: 500;
-        }
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            background: rgba(10, 6, 28, 0.6);
-            border: 1px solid rgba(147, 112, 219, 0.4);
-            border-radius: 8px;
-            color: #fff;
-            font-size: 15px;
-            outline: none;
-            transition: 0.3s;
-        }
-        .form-control:focus {
-            border-color: #a855f7;
-            box-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
-        }
-        .row {
-            display: flex;
-            gap: 15px;
-        }
-        .row .form-group {
-            flex: 1;
-        }
-        .btn-submit {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
-            margin-top: 10px;
-        }
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.6);
-        }
-        .loading-box {
-            display: none;
-            text-align: center;
-            padding: 40px 20px;
-        }
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(168, 85, 247, 0.3);
-            border-radius: 50%;
-            border-top-color: #a855f7;
-            animation: spin 1s ease-in-out infinite;
-            margin: 0 auto 20px auto;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        .loading-text {
-            font-size: 16px;
-            color: #e9d5ff;
-        }
-        .result-box {
-            display: none;
-        }
-        .result-title {
-            font-size: 22px;
-            color: #fca5a5;
-            text-align: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(252, 165, 165, 0.2);
-            padding-bottom: 10px;
-        }
-        .badge-container {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        .astro-badge {
-            flex: 1;
-            min-width: 120px;
-            background: rgba(46, 16, 101, 0.6);
-            border: 1px solid #a855f7;
-            color: #fef08a;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 13px;
-            text-align: center;
-        }
-        .section-title {
-            color: #f43f5e;
-            font-size: 17px;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            border-left: 3px solid #f43f5e;
-            padding-left: 8px;
-            font-weight: bold;
-        }
-        .prediction-text {
-            font-size: 15px;
-            line-height: 1.7;
-            color: #e5e7eb;
-            text-align: justify;
-            margin-bottom: 15px;
-        }
-        .curiosity-box {
-            background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
-            border: 1px dashed #f59e0b;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            margin-top: 25px;
-        }
-        .curiosity-title {
-            color: #f59e0b;
-            font-weight: bold;
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-        .curiosity-question {
-            font-size: 15px;
-            color: #e2e8f0;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            font-style: italic;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 12px;
-            border-radius: 6px;
-        }
-        .btn-whatsapp {
-            display: inline-block;
-            padding: 14px 28px;
-            background: #25D366;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 16px;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
-        }
-        .btn-whatsapp:hover {
-            background: #20ba5a;
-        }
-        @media (max-width: 480px) {
-            .row { flex-direction: column; gap: 0; }
-        }
-    </style>
-</head>
-<body>
+Improve the astrology result page to feel like a premium Vedic astrology analysis platform — psychologically deep, authentic, emotionally intelligent, and believable.
 
-    <div class="stars"></div>
+IMPORTANT CHANGES:
 
-    <div class="container">
-        <div class="header">
-            <div class="logo">✦ NAKSHTHRARAASHI ✦</div>
-            <p>Vedic Astrology, Numerology & Cosmic Science Report</p>
-        </div>
+1. Remove fake or gimmicky terms:
+Replace phrases like:
+- "Chiluka Jyothishya Formula"
+- "Secret Formula"
+- "Hidden Truth"
+- "Dark Secret"
 
-        <form id="astrologyForm">
-            <div class="form-group">
-                <label>పూర్తి పేరు (Full Name)</label>
-                <input type="text" id="fullName" class="form-control" placeholder="మీ పేరు ఇక్కడ టైప్ చేయండి..." required>
-            </div>
+with authentic astrology-style headings such as:
+- గ్రహ ప్రభావ విశ్లేషణ (Planetary Influence Analysis)
+- జన్మ గ్రహ స్థితి విశ్లేషణ
+- ప్రస్తుత గ్రహ దశ ప్రభావం
+- వ్యక్తిత్వ & భావోద్వేగ విశ్లేషణ
 
-            <div class="row">
-                <div class="form-group">
-                    <label>పుట్టిన తేదీ (Date of Birth)</label>
-                    <input type="date" id="dob" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label>పుట్టిన సమయం (Time of Birth)</label>
-                    <input type="time" id="tob" class="form-control" required>
-                </div>
-            </div>
+2. Remove random country-specific predictions like:
+"You may go to America"
 
-            <div class="row">
-                <div class="form-group">
-                    <label>పుట్టిన ఊరు (Place of Birth)</label>
-                    <input type="text" id="place" class="form-control" placeholder="ఉదా: Narayanpet, Hyderabad" required>
-                </div>
-                <div class="form-group">
-                    <label>ప్రస్తుత ప్రధాన సమస్య/కోరిక (Focus Area)</label>
-                    <select id="focusArea" class="form-control" required>
-                        <option value="" disabled selected>సెలెక్ట్ చేసుకోండి...</option>
-                        <option value="career">Career (ఉద్యోగం & ఎదుగుదల)</option>
-                        <option value="marriage">Marriage (వివాహ యోగం & బంధాలు)</option>
-                        <option value="finance">Finance (ఆర్థిక ఇబ్బందులు/అప్పులు)</option>
-                        <option value="peace">Mental Peace (ప్రశాంతత లేకపోవడం)</option>
-                    </select>
-                </div>
-            </div>
+Instead use broader believable statements:
+- "Foreign opportunities or distant place influences may become important in this phase."
+- "Travel or relocation indications appear active."
 
-            <button type="submit" class="btn-submit">🔮 జాతక విశ్లేషణ చూడండి 🔮</button>
-        </form>
+3. Reduce overdramatic emotional writing.
+The report should feel:
+- calm
+- intelligent
+- spiritually mature
+- psychologically realistic
 
-        <div class="loading-box" id="loadingBox">
-            <div class="spinner"></div>
-            <div class="loading-text" id="loadingText">గణిత శాస్త్రం ప్రకారం మీ కుండలిని లెక్కిస్తోంది...</div>
-        </div>
+Avoid fake WhatsApp astrologer style wording.
 
-        <div class="result-box" id="resultBox">
-            <div class="result-title">✦ సంపూర్ణ వేద జ్యోతిష్య & సంఖ్యాశాస్త్ర నివేదిక ✦</div>
-            
-            <div class="badge-container">
-                <div class="astro-badge" id="badgeZodiac">రాశి: --</div>
-                <div class="astro-badge" id="badgeNumerology">న్యూమరాలజీ సంఖ్య: --</div>
-                <div class="astro-badge" id="badgeLagnam">లగ్న స్థితి: --</div>
-            </div>
+4. Rewrite the “Strictly Confidential” section completely.
+Do NOT use:
+- “Only you know this”
+- “Nobody understands you”
+- “Hidden secret”
+- “Dark truth”
 
-            <div class="section-title">🪐 1. సంఖ్యాశాస్త్ర రహస్యం (Numerology Science)</div>
-            <div class="prediction-text" id="numText"></div>
+Instead create subtle emotional analysis like:
 
-            <div class="section-title">🔮 2. గ్రహాల అమరిక & మీ అంతరంగం (Chiluka Jyothishya Formula)</div>
-            <div class="prediction-text" id="psychText"></div>
+"మీ జాతకంలో బయటకు చెప్పని భావోద్వేగాలు మరియు అంతర్గత ఒత్తిళ్ల ప్రభావం కనిపిస్తోంది. కొన్ని నిర్ణయాలు మీరు బయట ప్రశాంతంగా కనిపించినా లోపల ఎక్కువగా ఆలోచించి తీసుకునే స్వభావాన్ని సూచిస్తున్నాయి."
 
-            <div class="section-title">✨ 3. మీ సమస్య - వేద జ్యోతిష్య పరిష్కారం (Vedic Hope)</div>
-            <div class="prediction-text" id="focusText"></div>
-            
-            <div class="curiosity-box">
-                <div class="curiosity-title">🔒 ఒక పరమ రహస్య ప్రశ్న! (Strictly Confidential)</div>
-                <div class="curiosity-question" id="curiosityQuestionText">...</div>
-                <p style="font-size: 13px; color: #cbd5e1; margin-bottom: 15px;">ఈ ప్రశ్నకు సమాధానం మరియు మీ జాతకంలో దాగి ఉన్న ఆ ఒక్క అదృష్ట ముహూర్త తేదీని నేరుగా సిద్ధాంతి గారి ద్వారా తెలుసుకోండి.</p>
-                <a href="#" id="whatsappBtn" target="_blank" class="btn-whatsapp">💬 సమాధానం తెలుసుకోవడానికి వాట్సాప్ చేయండి</a>
-            </div>
-        </div>
-    </div>
+The goal is:
+deep emotional realism without sounding fake.
 
-    <script>
-        const form = document.getElementById('astrologyForm');
-        const loadingBox = document.getElementById('loadingBox');
-        const resultBox = document.getElementById('resultBox');
-        const loadingText = document.getElementById('loadingText');
-        
-        // Output fields
-        const badgeZodiac = document.getElementById('badgeZodiac');
-        const badgeNumerology = document.getElementById('badgeNumerology');
-        const badgeLagnam = document.getElementById('badgeLagnam');
-        const numText = document.getElementById('numText');
-        const psychText = document.getElementById('psychText');
-        const focusText = document.getElementById('focusText');
-        const curiosityQuestionText = document.getElementById('curiosityQuestionText');
-        const whatsappBtn = document.getElementById('whatsappBtn');
+5. Make all predictions indirect and flexible.
+Never directly say:
+- You are unmarried
+- You will definitely marry
+- You will become rich
+- Exact future dates
 
-        const loadingSteps = [
-            "🪐 మీ నామ అక్షర తరంగాలను (Sound Vibrations) లెక్కిస్తోంది...",
-            "🔢 సంఖ్యాశాస్త్రం (Numerology) ప్రకారం మూల సంఖ్యను శోధిస్తోంది...",
-            "✨ పుట్టిన సమయం, స్థలం ఆధారంగా నవగ్రహ డిగ్రీలను లెక్కిస్తోంది...",
-            "🔮 అంతిమ నివేదిక సిద్ధంగా ఉంది..."
-        ];
+Instead use:
+- indications
+- possibilities
+- life patterns
+- planetary influence
+- emotional tendencies
+- current phase
 
-        // న్యూమరాలజీ కాలిక్యులేషన్ (Radix / Psychic Number)
-        function calculateNumerology(dateString) {
-            const date = new Date(dateString);
-            const day = date.getDate(); // Get only the birth day
-            
-            let num = day;
-            while (num > 9) {
-                num = Math.floor(num / 10) + (num % 10);
-            }
+6. Reduce text length.
+Current report is too long.
+Each section should contain:
+- 2 to 4 meaningful lines only
+- better spacing
+- readable formatting
 
-            const numerologyData = {
-                1: { title: "1 (సూర్యుని సంఖ్య)", desc: "మీరు సూర్యుని అధిపత్యంలో జన్మించారు. మీలో లీడర్‌షిప్ క్వాలిటీస్, స్వయంకృషితో ఎదగాలనే తపన చాలా ఎక్కువ. ఎవరి కిందనైనా పని చేయడం మీకు కాస్త కష్టంగా అనిపిస్తుంది." },
-                2: { title: "2 (చంద్రుని సంఖ్య)", desc: "మీరు చంద్రుని ప్రభావంలో జన్మించారు. చాలా సున్నితమైన మనస్తత్వం, సృజనాత్మకత మరియు ఇతరుల బాధలను చూసి కరిగిపోయే గుణం మీ సొంతం. ఊహల్లో విహరించడం ఎక్కువ." },
-                3: { title: "3 (గురు గ్రహ సంఖ్య)", desc: "మీరు బృహస్పతి (గురువు) అనుగ్రహంలో జన్మించారు. మీకు జ్ఞానం, ఇతరులకు సలహాలు ఇవ్వడం, ధర్మంగా ఉండడం ఇష్టం. సమాజంలో గౌరవాన్ని ఆశిస్తారు." },
-                4: { title: "4 (రాహు గ్రహ సంఖ్య)", desc: "మీరు రాహువు ప్రభావంలో జన్మించారు. మీ ఆలోచనలు ప్రపంచానికి భిన్నంగా ఉంటాయి. సడన్ మార్పులు, టెక్నాలజీ లేదా షార్ట్‌కట్ ఐడియాలు మీలో ఎక్కువగా మెదులుతుంటాయి." },
-                5: { title: "5 (బుధ గ్రహ సంఖ్య)", desc: "మీరు బుధుని ప్రభావంలో జన్మించారు. వ్యాపార తెలివితేటలు, చక్కటి సమయస్ఫూర్తి (Communication) మీ బలం. ఎవరితోనైనా సులువుగా కలిసిపోతారు." },
-                6: { title: "6 (శుక్ర గ్రహ సంఖ్య)", desc: "మీరు శుక్రుని ఆధిపత్యంలో జన్మించారు. లగ్జరీ, అందం, కళలు మరియు బంధాలకు ఎక్కువ ప్రాధాన్యత ఇస్తారు. అందరూ మిమ్మల్ని ఇష్టపడాలని కోరుకుంటారు." },
-                7: { title: "7 (కేతు గ్రహ సంఖ్య)", desc: "మీరు కేతువు ప్రభావంలో జన్మించారు. అపారమైన రీసెర్చ్ మైండ్, ఆధ్యాత్మిక చింతన, ఎవరూ ఊహించని లోతైన ఆలోచనలు మీ ప్రత్యేకత. ఒంటరితనాన్ని ఇష్టపడతారు." },
-                8: { title: "8 (శని గ్రహ సంఖ్య)", desc: "మీరు శని దేవుని న్యాయ పాలనలో జన్మించారు. శ్రమ, పట్టుదల, జీవితంలో ఎన్నో పరీక్షలను ఎదుర్కొని చివరకు అత్యున్నత స్థానానికి వెళ్లే అద్భుత శక్తి మీ సొంతం." },
-                9: { title: "9 (కుజ గ్రహ సంఖ్య)", desc: "మీరు అంగారకుడి (కుజుడు) పరాక్రమ సంఖ్యలో పుట్టారు. ఎనర్జీ, కోపం, ధైర్యం మరియు అనుకున్న పనిని సాధించే వరకు నిద్రపోని మొండి పట్టుదల మీలో ఉంటాయి." }
-            };
-            return { digit: num, ...numerologyData[num] };
-        }
+7. Improve section structure professionally:
 
-        // రాశి డేటా
-        function getZodiacData(dateString) {
-            const date = new Date(dateString);
-            const month = date.getMonth() + 1;
-            const day = date.getDate();
+Suggested sections:
+- Personality & Nature
+- Emotional Mindset
+- Career & Growth
+- Relationships & Family
+- Current Planetary Influence
+- Guidance & Suggestions
 
-            if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return { name: "మేష రాశి", planet: "కుజుడు", trait: "పట్టుదల, పరాక్రమం" };
-            if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return { name: "వృషభ రాశి", planet: "శుక్రుడు", trait: "స్థిరత్వం, లగ్జరీ" };
-            if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return { name: "మిథున రాశి", planet: "బుధుడు", trait: "బుద్ధి కుశలత, చమత్కారం" };
-            if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return { name: "కర్కాటక రాశి", planet: "చంద్రుడు", trait: "ప్రేమ, సున్నితత్వం" };
-            if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return { name: "సింహ రాశి", planet: "సూర్యుడు", trait: "రాజసం, లీడర్‌షిప్" };
-            if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return { name: "కన్యా రాశి", planet: "బుధుడు", trait: "విషయ పరిజ్ఞానం, ప్లానింగ్" };
-            if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return { name: "తులా రాశి", planet: "శుక్రుడు", trait: "సమతుల్యత, న్యాయం" };
-            if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return { name: "వృశ్చిక రాశి", planet: "కుజుడు", trait: "ఏకాగ్రత, పవర్‌ఫుల్ మైండ్" };
-            if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return { name: "ధనుస్సు రాశి", planet: "గురువు", trait: "జ్ఞానం, దైవభక్తి" };
-            if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return { name: "మకర రాశి", planet: "శని దేవుడు", trait: "కఠిన శ్రమ, క్రమశిక్షణ" };
-            if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return { name: "కుంభ రాశి", planet: "శని దేవుడు", trait: "విశాల హృదయం, కొత్త ఆలోచనలు" };
-            return { name: "మీన రాశి", planet: "గురువు", trait: "కరుణ, సృజనాత్మకత" };
-        }
+8. Add subtle Vedic authenticity.
+Use lines like:
+- "According to your birth chart..."
+- "Planetary positions indicate..."
+- "Based on Vedic astrology principles..."
 
-        // టైమ్ ఆధారంగా లగ్న బలం
-        function getLagnaData(timeString) {
-            const hour = parseInt(timeString.split(':')[0]);
-            if (hour >= 5 && hour < 12) return "సూర్యోదయ లగ్నం (తేజస్సు ఎక్కువ)";
-            if (hour >= 12 && hour < 17) return "మధ్యాహ్న కాల లగ్నం (కర్మ స్థానం బలంగా ఉంది)";
-            if (hour >= 17 && hour < 21) return "సాయంకాల లగ్నం (కళత్ర భావం యాక్టివ్)";
-            return "నిశీధి కాల లగ్నం (అంతర్దృష్టి, గూఢ ఆలోచనలు ఎక్కువ)";
-        }
+9. Improve trust feeling.
+Add a small line:
+"మీ జనన వివరాలు ఎక్కడా సేవ్ చేయబడవు."
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
+10. Maintain the current dark mystical premium UI,
+but make the experience feel authentic and intelligent —
+not like a fake AI fortune generator.
 
-            form.style.display = 'none';
-            loadingBox.style.display = 'block';
+11. Make the app psychologically believable for:
+- users testing the app
+- users emotionally connected to the reading
 
-            let step = 0;
-            const timer = setInterval(() => {
-                step++;
-                if (step < loadingSteps.length) {
-                    loadingText.innerText = loadingSteps[step];
-                } else {
-                    clearInterval(timer);
-                    generateAstroReport();
-                }
-            }, 1000);
-        });
-
-        function generateAstroReport() {
-            loadingBox.style.display = 'none';
-            resultBox.style.display = 'block';
-
-            const name = document.getElementById('fullName').value;
-            const dob = document.getElementById('dob').value;
-            const tob = document.getElementById('tob').value;
-            const place = document.getElementById('place').value;
-            const focus = document.getElementById('focusArea').value;
-
-            const numData = calculateNumerology(dob);
-            const zodiac = getZodiacData(dob);
-            const lagna = getLagnaData(tob);
-
-            // Badges update
-            badgeZodiac.innerText = `రాశి: ${zodiac.name}`;
-            badgeNumerology.innerText = `న్యూమరాలజీ: ${numData.title}`;
-            badgeLagnam.innerText = `లగ్నం: ${lagna}`;
-
-            // Section 1: Numerology Text
-            numText.innerHTML = `<b>${name} గారు,</b> మీ పుట్టిన తేదీ ఆధారంగా మీ కాస్మిక్ సంఖ్య <b>"${numData.digit}"</b> అవుతుంది. శాస్త్రం ప్రకారం దీని అధిపతి <b>${numData.desc}</b>. ఈ సంఖ్యా తరంగాలు మీ జీవితంలో 28 సంవత్సరాల వయస్సు నుండి విపరీతమైన మార్పులను తీసుకువస్తాయి.`;
-
-            // Section 2: Chiluka Jyothishya + Psychology Formula
-            psychText.innerHTML = `మీరు <b>${place}</b> పుణ్యక్షేత్ర కాల మానంలో, <b>${zodiac.name}</b> లో జన్మించారు. మీ రాశ్యాధిపతి <b>${zodiac.planet}</b> ప్రభావం వల్ల మీలో అద్భుతమైన <b>${zodiac.trait}</b> ఉన్నాయి. <br><br><b>కానీ మీ అంతరంగ పరిశీలన చూస్తే:</b> మీరు బయటకు చాలా ధైర్యంగా, ప్రశాంతంగా కనిపిస్తున్నా... మీ మనసు లోపల ఒక తెలియని వెలితి మరియు ఎవరికీ చెప్పుకోలేని గుప్త బాధ ఉన్నాయి. మీరు అందరికీ మంచి చేయాలని చూస్తారు, రూపాయి సహాయం అడిగితే వంద రూపాయలు ఇస్తారు.. కానీ తీరా మీకు అవసరమైనప్పుడు మాత్రం అందరూ ముఖం చాటేస్తారు. నమ్మిన వాళ్లే మిమ్మల్ని సరిగ్గా అర్థం చేసుకోకపోవడం వల్ల మీరు ఒంటరిగా ఫీలవుతుంటారు. అవునా?`;
-
-            // Section 3: Focus Area Wise Vedic Hope & Curiosity Logic
-            let focusReport = "";
-            let curiosityQuestion = "";
-            let waMessage = "";
-
-            if (focus === 'career') {
-                focusReport = `మీ కుండలిలో పదవ స్థానమైన 'కర్మ స్థానం' చాలా పవర్‌ఫుల్‌గా ఉంది. <b>మీ జాతకంలో ఒక పెద్ద 'రాజయోగం' స్పష్టంగా దాగి ఉంది.</b> కానీ ప్రస్తుతం నడుస్తున్న గోచార గ్రహాల అడ్డంకి వల్ల మీ ప్రతిభకు తగ్గ గుర్తింపు రాకుండా, చేతికి వచ్చిన ప్రమోషన్ లేదా ఉద్యోగ అవకాశం చివరి నిమిషంలో చేజారుతోంది. ఒక చిన్న వేద దోష నివారణతో మీ కెరీర్ ఊహించని ఎత్తుకు ఎదుగుతుంది!`;
-                
-                curiosityQuestion = `"మీ జాతక చక్రం ప్రకారం మీ ఉద్యోగ అడ్డంకులు పూర్తిగా తొలగిపోయి, సమాజంలో మీకు ఒక పెద్ద ఉన్నత పదవి మరియు భారీ ధనలాభం తెచ్చే ఆ **'ఖచ్చితమైన సువర్ణ కాల తేదీ' (Golden Timing)** ఎప్పుడు ప్రారంభం కాబోతోందో మీకు తెలుసా?"`;
-                
-                waMessage = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. నా జాతక నివేదిక చూశాను. నా కెరీర్ రాజయోగం ప్రారంభమయ్యే ఆ ఖచ్చితమైన సువర్ణ కాల తేదీ (Golden Period Date) మరియు పరిహారాలు చెప్పగలరు.`;
-            } 
-            else if (focus === 'marriage') {
-                focusReport = `మీ నక్షత్ర నడవడిక ప్రకారం మీకు వచ్చే భాగస్వామి మీ జీవితంలోకి అదృష్టాన్ని మరియు లక్ష్మీ కటాక్షాన్ని మోసుకొస్తారు. అయితే మీ లగ్న చక్రంలో ఏడవ స్థానంలో ఉన్న ఒక చిన్న గ్రహ దోష వీక్షణం (కుజ/శని ప్రభావం) వల్ల అనుకూలమైన సంబంధాలు ఆలస్యం అవ్వడం లేదా వచ్చిన సంబంధాలు చివరి నిమిషంలో నిలిచిపోవడం జరుగుతోంది. ఈ చిన్న దోషం తొలగితే మీ ఇంట్లో పెళ్లి బాజాలు మోగడం ఖాయం!`;
-                
-                curiosityQuestion = `"మీ జాతకం ప్రకారం మీ వివాహం ఏ నెల, ఏ సంవత్సరంలో జరుగుతుంది? మరియు మీ జీవిత భాగస్వామి పేరులోని **మొదటి అక్షరం** ఏది అవుతుందో మీకు తెలుసా?"`;
-                
-                waMessage = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. నా జాతక నివేదిక చూశాను. నా వివాహ కాల నిర్ణయం మరియు భాగస్వామి పేరు మొదటి అక్షరం వివరాలు చెప్పగలరు.`;
-            } 
-            else if (focus === 'finance') {
-                focusReport = `మీ కుండలిలో 'కుబేర స్థానం' అనుకూలంగానే ఉంది. మీ దగ్గర డబ్బు ఎప్పుడూ పూర్తిగా శూన్యం అవ్వదు, సమయానికి ఏదో రకంగా సర్దుబాటు అవుతుంది. కానీ ప్రస్తుతం మీ జాతకంలో 'ధన వ్యయ బంధన దోషం' నడవడం వల్ల చేతిలో రూపాయి నిలవడం లేదు. వచ్చిన డబ్బు వచ్చినట్టే ఖర్చవుతోంది లేదా అప్పుల పాలు అవుతున్నారు. ఈ అదృశ్య బంధనాన్ని తెంచేస్తే మీ చేతిలో ధనం తాండవిస్తుంది.`;
-                
-                curiosityQuestion = `"మీకున్న అప్పుల బాధలన్నీ పూర్తిగా తొలిగిపోయి, మీరు **సొంత ఇల్లు లేదా భూమి (స్థిరాస్తి)** కొనుగోలు చేసే ఆ అదృష్ట ముహూర్త కాలం ఎప్పటి నుండి ఉందో మీకు తెలుసా?"`;
-                
-                waMessage = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. నా జాతక నివేదిక చూశాను. నా ఆర్థిక ఇబ్బందులు తొలగి సొంత ఇల్లు/ఆస్తి కొనే కాలం ఎప్పుడు ఉందో చెప్పగలరు.`;
-            } 
-            else {
-                focusReport = `మీ మనసు చాలా పవిత్రమైనది. ఎదుటివారు మిమ్మల్ని ఎంత బాధించినా క్షమించే ఉత్తమ గుణం మీది. కానీ ప్రస్తుతం మీ లగ్నంలో చంద్రునిపై రాహువు లేదా శని దృష్టి పడడం వల్ల తీవ్రమైన నరదృష్టి (దిష్టి) తగిలింది. దీనివల్ల రాత్రి పూట ఓవర్ థింకింగ్, మానసిక ఒత్తిడి పెరిగి ప్రశాంతత కరువవుతోంది. చిన్న దైవిక మంత్ర సాధన ద్వారా మీ మనసు ప్రశాంత సముద్రంలా మారుతుంది.`;
-                
-                curiosityQuestion = `"మీ ప్రశాంతతను, మీ ఎదుగుదలను నాశనం చేస్తున్న ఆ **నెగెటివ్ నరదృష్టి (దిష్టి దోషం)** మీ చుట్టూ ఉన్న ఏ వ్యక్తి వల్ల కలుగుతుందో మరియు దాని నుండి విముక్తి ఎప్పుడు లభిస్తుందో మీకు తెలుసా?"`;
-                
-                waMessage = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. నా జాతక నివేదిక చూశాను. నాకున్న మానసిక అశాంతి, నరదృష్టి దోష నివారణ వివరాలు చెప్పగలరు.`;
-            }
-
-            focusText.innerHTML = focusReport;
-            curiosityQuestionText.innerText = curiosityQuestion;
-
-            // WhatsApp Button Number and Link setup
-            const whatsappNumber = "917981587505"; // మీ వాట్సాప్ నంబర్
-            whatsappBtn.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(waMessage)}`;
-        }
-    </script>
-</body>
-</html>
+The user should feel:
+"This analysis strangely matches my personality and life patterns."
