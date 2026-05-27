@@ -9,12 +9,12 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Georgia, Cambria, serif;
+            font-family: 'Segoe UI', Gautami, 'Noto Sans Telugu', Georgia, serif;
         }
         body {
-            background-color: #060410;
-            background-image: radial-gradient(circle at 50% 30%, #120b28 0%, #060410 100%);
-            color: #f1f5f9;
+            /* Cinematic Cosmic Gradient */
+            background: radial-gradient(circle at top, #1a0633 0%, #070019 45%, #03010d 100%);
+            color: #e9d5ff; /* Premium Soft White/Lavender */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -29,17 +29,18 @@
             height: 100%;
             background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/stars.png') repeat;
             z-index: 1;
-            opacity: 0.15;
+            opacity: 0.12;
             pointer-events: none;
         }
         .container {
-            background: rgba(11, 8, 28, 0.95);
-            border: 1px solid rgba(139, 92, 246, 0.15);
+            /* Soft Royal Purple-Black Card */
+            background: rgba(18, 4, 37, 0.95);
+            border: 1px solid rgba(168, 85, 247, 0.15);
             border-radius: 24px;
             padding: 40px;
             width: 100%;
             max-width: 680px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(16px);
             z-index: 2;
             position: relative;
@@ -53,11 +54,11 @@
             font-weight: 600;
             letter-spacing: 4px;
             color: #e9d5ff;
-            text-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.25);
         }
         .header p {
             font-size: 11px;
-            color: #64748b;
+            color: #9f8fbf; /* Grey-lavender Muted Text */
             margin-top: 8px;
             letter-spacing: 1.5px;
             text-transform: uppercase;
@@ -68,7 +69,7 @@
         .form-group label {
             display: block;
             font-size: 12.5px;
-            color: #c084fc;
+            color: #a855f7; /* Mystic Purple Accent */
             margin-bottom: 8px;
             font-weight: 500;
             letter-spacing: 0.5px;
@@ -76,8 +77,8 @@
         .form-control {
             width: 100%;
             padding: 14px 18px;
-            background: rgba(6, 4, 16, 0.8);
-            border: 1px solid rgba(139, 92, 246, 0.2);
+            background: rgba(7, 0, 25, 0.8);
+            border: 1px solid rgba(168, 85, 247, 0.25);
             border-radius: 10px;
             color: #fff;
             font-size: 14.5px;
@@ -86,10 +87,10 @@
         }
         .form-control:focus {
             border-color: #a855f7;
-            box-shadow: 0 0 12px rgba(168, 85, 247, 0.2);
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.25);
         }
         select.form-control option {
-            background: #0b081c;
+            background: #120425;
             color: #fff;
         }
         .row {
@@ -102,7 +103,8 @@
         .privacy-note {
             text-align: center;
             font-size: 12px;
-            color: #475569;
+            color: #9f8fbf;
+            opacity: 0.6;
             margin-top: 15px;
             letter-spacing: 0.5px;
         }
@@ -118,7 +120,7 @@
             letter-spacing: 1px;
             cursor: pointer;
             transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(91, 33, 182, 0.2);
+            box-shadow: 0 4px 15px rgba(91, 33, 182, 0.25);
             margin-top: 10px;
         }
         .btn-submit:hover {
@@ -144,7 +146,7 @@
         }
         .loading-text {
             font-size: 13.5px;
-            color: #94a3b8;
+            color: #9f8fbf;
             letter-spacing: 0.5px;
         }
         .result-box {
@@ -157,10 +159,10 @@
         }
         .result-title {
             font-size: 17px;
-            color: #cbd5e1;
+            color: #e9d5ff;
             text-align: center;
             margin-bottom: 25px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             padding-bottom: 15px;
             letter-spacing: 1.5px;
             font-weight: 400;
@@ -168,8 +170,8 @@
         
         /* Premium Matrix Summary Box */
         .summary-matrix {
-            background: rgba(6, 4, 16, 0.4);
-            border: 1px solid rgba(139, 92, 246, 0.12);
+            background: rgba(7, 0, 25, 0.5);
+            border: 1px solid rgba(168, 85, 247, 0.15);
             border-radius: 12px;
             padding: 20px;
             margin-bottom: 35px;
@@ -179,12 +181,12 @@
         }
         .matrix-item {
             font-size: 13px;
-            color: #94a3b8;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+            color: #9f8fbf;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.04);
             padding-bottom: 8px;
         }
         .matrix-item span {
-            color: #e2e8f0;
+            color: #e9d5ff;
             font-weight: 500;
             margin-left: 5px;
         }
@@ -193,7 +195,7 @@
             margin-bottom: 26px;
         }
         .section-title {
-            color: #94a3b8;
+            color: #9f8fbf;
             font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -203,25 +205,30 @@
             padding-left: 8px;
         }
         .prediction-text {
-            font-size: 14px;
+            font-size: 14.5px;
             line-height: 1.8;
-            color: #cbd5e1;
+            color: #e9d5ff;
             text-align: justify;
         }
+        
+        /* Luxurious Soft Gold Glow Highlight */
         .highlight {
-            color: #fde047;
+            color: #facc15;
             font-weight: 500;
+            text-shadow: 0 0 8px rgba(250, 204, 21, 0.25);
         }
+        
         .curiosity-box {
-            background: rgba(6, 4, 16, 0.6);
-            border: 1px solid rgba(217, 119, 6, 0.2);
+            background: rgba(7, 0, 25, 0.6);
+            border: 1px solid rgba(250, 204, 21, 0.15);
             border-radius: 14px;
             padding: 28px;
             text-align: center;
             margin-top: 40px;
         }
         .curiosity-title {
-            color: #d97706;
+            color: #facc15;
+            text-shadow: 0 0 6px rgba(250, 204, 21, 0.2);
             font-weight: 500;
             font-size: 13px;
             text-transform: uppercase;
@@ -230,13 +237,13 @@
         }
         .curiosity-question {
             font-size: 14px;
-            color: #e2e8f0;
+            color: #e9d5ff;
             line-height: 1.7;
             margin-bottom: 22px;
             background: rgba(0, 0, 0, 0.2);
             padding: 16px;
             border-radius: 8px;
-            border-left: 2px solid #d97706;
+            border-left: 2px solid #facc15;
             text-align: left;
             font-style: italic;
         }
@@ -262,6 +269,7 @@
             .row { flex-direction: column; gap: 0; }
             .container { padding: 25px 20px; }
             .summary-matrix { grid-template-columns: 1fr; gap: 10px; }
+            .prediction-text { text-align: left; }
         }
     </style>
 </head>
@@ -326,7 +334,7 @@
                 <div class="matrix-item">నామ నక్షత్రం: <span id="mStar">శ్రవణ/శతభిష ఆధారిత</span></div>
                 <div class="matrix-item">లగ్న భావన: <span id="mLagna">--</span></div>
                 <div class="matrix-item">ప్రస్తుత గ్రహ ప్రభావం: <span id="mInfluence">దశా సంధి చలనం</span></div>
-                <div class="matrix-item">కెరీర్ శక్తి: <span id="mCareer">పరిణామ దశ</span></div>
+                <div class="matrix-item">కెరీర్ శక్తి: <span id="mCareer">परिణామ దశ</span></div>
                 <div class="matrix-item">భావోద్వేగ స్థితి: <span id="mEmotional">అంతర్ముఖం</span></div>
             </div>
 
@@ -351,7 +359,7 @@
             </div>
 
             <div class="section-block">
-                <div class="section-title">Current Planetary Influence (ప్రస్తుత గ్రహ దశ प्रभावం)</div>
+                <div class="section-title">Current Planetary Influence (ప్రస్తుత గ్రహ దశ ప్రభావం)</div>
                 <div class="prediction-text" id="secPhase"></div>
             </div>
 
@@ -363,8 +371,8 @@
             <div class="curiosity-box">
                 <div class="curiosity-title">🔒 అంతర్గత గ్రహ స్థితి ప్రశ్న</div>
                 <div class="curiosity-question" id="curiosityQuestionText">...</div>
-                <p style="font-size: 13px; color: #64748b; margin-bottom: 20px; line-height: 1.6;">మీ వ్యక్తిగత కుండలి ఆధారంగా ఈ ప్రశ్న వెనుక ఉన్న సూక్ష్మ గ్రహ స్థితులను మరియు దానికి తగిన వేద మార్గదర్శకత్వాన్ని నేరుగా సిద్ధాంతి గారి ద్వారా తెలుసుకోండి.</p>
-                <a href="#" id="whatsappBtn" target="_blank" class="btn-whatsapp">వ్యвкиగత సంప్రదింపుల కొరకు వాట్సాప్ చేయండి</a>
+                <p style="font-size: 13px; color: #9f8fbf; margin-bottom: 20px; line-height: 1.6;">మీ వ్యక్తిగత కుండలి ఆధారంగా ఈ ప్రశ్న వెనుక ఉన్న సూక్ష్మ గ్రహ స్థితులను మరియు దానికి తగిన వేద మార్గదర్శకత్వాన్ని నేరుగా సిద్ధాంతి గారి ద్వారా తెలుసుకోండి.</p>
+                <a href="#" id="whatsappBtn" target="_blank" class="btn-whatsapp">వ్యక్తిగత సంప్రదింపుల కొరకు వాట్సాప్ చేయండి</a>
             </div>
         </div>
     </div>
@@ -374,6 +382,7 @@
         const loadingBox = document.getElementById('loadingBox');
         const resultBox = document.getElementById('resultBox');
         const loadingText = document.getElementById('loadingText');
+        const whatsappBtn = document.getElementById('whatsappBtn');
         
         const loadingSteps = [
             "Aligning natal coordinates and sound vibrations...",
@@ -438,7 +447,7 @@
             const zodiac = getZodiacData(dob);
             const lagnam = getLagnaData(tob);
 
-            // Matrix Summary Updates
+            // Dynamic Matrix Summary Updates
             document.getElementById('mZodiac').innerText = zodiac.name;
             document.getElementById('mLagna').innerText = lagnam;
 
@@ -451,7 +460,7 @@
             // 2. Emotional Mindset
             document.getElementById('secEmotional').innerHTML = 
                 `వైదిక జ్యోతిష్య సూత్రాల ప్రకారం, మీ జాతకంలో బయటకు వ్యక్తపరచని భావోద్వేగాలు మరియు అంతర్గత ఒత్తిళ్ల ప్రభావం కనిపిస్తోంది.<br>` +
-                `కొన్ని నిర్ణయాలు మీరు బాహ్య ప్రపంచానికి ప్రశాంతంగా కనిపించినా, లోపల ఎక్కువగా ఆలోచించి తీసుకునే స్వభావాన్ని సూచిస్తున్నాయి.<br>` +
+                `కొన్ని निर्णयాలు మీరు బాహ్య ప్రపంచానికి ప్రశాంతంగా కనిపించినా, లోపల ఎక్కువగా ఆలోచించి తీసుకునే స్వభావాన్ని సూచిస్తున్నాయి.<br>` +
                 `<span class="highlight">సమీప వ్యక్తుల నుండి ఆశించిన స్థాయిలో మానసిక మద్దతు లోపించినట్లు అనిపించడం</span> మీ అంతరంగంలో కొంత విరక్తిని కలిగించవచ్చు.`;
 
             // 3. Career & Growth
@@ -473,13 +482,13 @@
                 `గ్రహాల ప్రస్తుత సంచారాన్ని బట్టి, <span class="highlight">బంధాల స్థిరత్వం ఇంకా పరిణామం చెందుతున్నట్లు</span> సూచిస్తోంది.<br>` +
                 `కొన్ని సందర్భాలలో భావోద్వేగ బంధాలు లేదా పాత జ్ఞాపకాలు మీ జీవితంలోని ముఖ్యమైన నిర్ణయాలను ప్రభావితం చేసే అవకాశాలు ఉన్నాయి.`;
 
-            // 5. Current Planetary Influence (2024 - 2026)
+            // 5. Current Planetary Influence
             document.getElementById('secPhase').innerHTML = 
-                `ప్రస్తుతం మీ జాతకంలో నడుస్తున్న అంతర్దశల సంచారం ప్రకారం <span class="highlight">2024–2026</span> మధ్య కాలం మీ జీవితంలో ఒక ముఖ్యమైన సంధి కాలంగా మారే అవకాశం ఉంది.<br>` +
+                `ప్రస్తుతమ్ మీ జాతకంలో నడుస్తున్న అంతర్దశల సంచారం ప్రకారం <span class="highlight">2024–2026</span> మధ్య కాలం మీ జీవితంలో ఒక ముఖ్యమైన సంధి కాలంగా మారే అవకాశం ఉంది.<br>` +
                 `ఈ ఫేజ్‌లో సుదూర ప్రయాణాలు, స్థాన చలనాలు లేదా వృత్తిలో కీలక మార్పులు సంభవించే అవకాశాలు చాలా యాక్టివ్‌గా ఉన్నాయి.<br>` +
-                `గ్రహాల వీక్షణం వల్ల ముఖ్యమైన నిర్ణయాలు తీసుకునే సమయంలో కొంత నిదానం అవసరమని సూచిస్తోంది.`;
+                `ग्रहాల వీక్షణం వల్ల ముఖ్యమైన నిర్ణయాలు తీసుకునే సమయంలో కొంత నిదానం అవసరమని సూచిస్తోంది.`;
 
-            // 6. Guidance & Suggestions (Highly Personalized & Emotionally Intelligent)
+            // 6. Guidance & Suggestions
             document.getElementById('secAdvice').innerHTML = 
                 `త్వరగా నిర్ణయాలు తీసుకోవడం కంటే, కొంత సమయం తీసుకుని ఆలోచించడం ఈ దశలో మీకు మంచి ఫలితాలు ఇవ్వవచ్చు.<br>` +
                 `మీ చుట్టూ ఉన్న పరిస్థితులు మిమ్మల్ని ఒత్తిడికి గురిచేస్తున్నప్పుడు, కాసేపు అంతర్ముఖంగా మారి ప్రశాంతతను వెతుక్కోవడం శ్రేయస్కరం.<br>` +
