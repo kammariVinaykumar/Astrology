@@ -56,7 +56,7 @@
             text-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
         }
         .header p {
-            font-size: 12px;
+            font-size: 11px;
             color: #64748b;
             margin-top: 8px;
             letter-spacing: 1.5px;
@@ -156,45 +156,51 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .result-title {
-            font-size: 18px;
+            font-size: 17px;
             color: #cbd5e1;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             padding-bottom: 15px;
             letter-spacing: 1.5px;
             font-weight: 400;
         }
-        .badge-container {
-            display: flex;
-            gap: 12px;
+        
+        /* Premium Matrix Summary Box */
+        .summary-matrix {
+            background: rgba(6, 4, 16, 0.4);
+            border: 1px solid rgba(139, 92, 246, 0.12);
+            border-radius: 12px;
+            padding: 20px;
             margin-bottom: 35px;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
         }
-        .astro-badge {
-            flex: 1;
-            min-width: 150px;
-            background: rgba(6, 4, 16, 0.5);
-            border: 1px solid rgba(168, 85, 247, 0.2);
+        .matrix-item {
+            font-size: 13px;
+            color: #94a3b8;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+            padding-bottom: 8px;
+        }
+        .matrix-item span {
             color: #e2e8f0;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 12.5px;
-            text-align: center;
-            letter-spacing: 0.5px;
+            font-weight: 500;
+            margin-left: 5px;
         }
+
         .section-block {
-            margin-bottom: 28px;
+            margin-bottom: 26px;
         }
         .section-title {
             color: #94a3b8;
-            font-size: 13px;
+            font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             font-weight: 600;
             border-left: 2px solid #a855f7;
-            padding-left: 10px;
+            padding-left: 8px;
         }
         .prediction-text {
             font-size: 14px;
@@ -217,7 +223,7 @@
         .curiosity-title {
             color: #d97706;
             font-weight: 500;
-            font-size: 14px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             margin-bottom: 14px;
@@ -255,6 +261,7 @@
         @media (max-width: 480px) {
             .row { flex-direction: column; gap: 0; }
             .container { padding: 25px 20px; }
+            .summary-matrix { grid-template-columns: 1fr; gap: 10px; }
         }
     </style>
 </head>
@@ -265,7 +272,7 @@
     <div class="container">
         <div class="header">
             <div class="logo">✦ NAKSHTHRARAASHI ✦</div>
-            <p>Vedic Astrology & Planetary Alignment Analysis</p>
+            <p>Vedic Life-Pattern & Planetary Alignment Analysis</p>
         </div>
 
         <form id="astrologyForm">
@@ -312,12 +319,15 @@
         </div>
 
         <div class="result-box" id="resultBox">
-            <div class="result-title">✦ జన్మ గ్రహ స్థితి విశ్లేషణ నివేదిక ✦</div>
+            <div class="result-title">✦ జన్మ గ్రహ స్థితి సూక్ష్మ వీక్షణ ✦</div>
             
-            <div class="badge-container">
-                <div class="astro-badge" id="badgeZodiac">--</div>
-                <div class="astro-badge" id="badgeNumerology">--</div>
-                <div class="astro-badge" id="badgeLagnam">--</div>
+            <div class="summary-matrix">
+                <div class="matrix-item">గోచార రాశి: <span id="mZodiac">--</span></div>
+                <div class="matrix-item">నామ నక్షత్రం: <span id="mStar">శ్రవణ/శతభిష ఆధారిత</span></div>
+                <div class="matrix-item">లగ్న భావన: <span id="mLagna">--</span></div>
+                <div class="matrix-item">ప్రస్తుత గ్రహ ప్రభావం: <span id="mInfluence">దశా సంధి చలనం</span></div>
+                <div class="matrix-item">కెరీర్ శక్తి: <span id="mCareer">పరిణామ దశ</span></div>
+                <div class="matrix-item">భావోద్వేగ స్థితి: <span id="mEmotional">అంతర్ముఖం</span></div>
             </div>
 
             <div class="section-block">
@@ -341,12 +351,12 @@
             </div>
 
             <div class="section-block">
-                <div class="section-title">Current Planetary Influence (ప్రస్తుత గ్రహ దశ ప్రభావం)</div>
+                <div class="section-title">Current Planetary Influence (ప్రస్తుత గ్రహ దశ प्रभावం)</div>
                 <div class="prediction-text" id="secPhase"></div>
             </div>
 
             <div class="section-block">
-                <div class="section-title">Guidance & Suggestions (సూచనలు)</div>
+                <div class="section-title">Guidance & Suggestions (మార్గదర్శకత్వం)</div>
                 <div class="prediction-text" id="secAdvice"></div>
             </div>
             
@@ -354,7 +364,7 @@
                 <div class="curiosity-title">🔒 అంతర్గత గ్రహ స్థితి ప్రశ్న</div>
                 <div class="curiosity-question" id="curiosityQuestionText">...</div>
                 <p style="font-size: 13px; color: #64748b; margin-bottom: 20px; line-height: 1.6;">మీ వ్యక్తిగత కుండలి ఆధారంగా ఈ ప్రశ్న వెనుక ఉన్న సూక్ష్మ గ్రహ స్థితులను మరియు దానికి తగిన వేద మార్గదర్శకత్వాన్ని నేరుగా సిద్ధాంతి గారి ద్వారా తెలుసుకోండి.</p>
-                <a href="#" id="whatsappBtn" target="_blank" class="btn-whatsapp">వ్యక్తిగత సంప్రదింపుల కొరకు వాట్సాప్ చేయండి</a>
+                <a href="#" id="whatsappBtn" target="_blank" class="btn-whatsapp">వ్యвкиగత సంప్రదింపుల కొరకు వాట్సాప్ చేయండి</a>
             </div>
         </div>
     </div>
@@ -368,22 +378,8 @@
         const loadingSteps = [
             "Aligning natal coordinates and sound vibrations...",
             "Evaluating planetary transits relative to your birth indicators...",
-            "Generating verified historical Vedic chart profile..."
+            "Preparing verified historical Vedic chart profile..."
         ];
-
-        function calculateNumerology(dateString) {
-            const date = new Date(dateString);
-            const day = date.getDate();
-            let num = day;
-            while (num > 9) { num = Math.floor(num / 10) + (num % 10); }
-
-            const numDesc = {
-                1: "సూర్య కారకత్వం", 2: "చంద్ర కారకత్వం", 3: "గురు ఆధిపత్యం",
-                4: "రాహు ప్రభావం", 5: "బుధ తత్వం", 6: "శుక్ర కారకత్వం",
-                7: "కేతు ప్రభావం", 8: "శని ఆధిపత్యం", 9: "కుజ తత్వం"
-            };
-            return { digit: num, title: numDesc[num] };
-        }
 
         function getZodiacData(dateString) {
             const date = new Date(dateString);
@@ -406,10 +402,10 @@
 
         function getLagnaData(timeString) {
             const hour = parseInt(timeString.split(':')[0]);
-            if (hour >= 5 && hour < 12) return "సూర్యోదయ లగ్న వీక్షణం";
-            if (hour >= 12 && hour < 17) return "మధ్యాహ్న కర్మ భావన";
-            if (hour >= 17 && hour < 21) return "సాయంసంధి లగ్న స్థితి";
-            return "నిశీధి కాల అంతర్గత స్థితి";
+            if (hour >= 5 && hour < 12) return "సూర్యోదయ లగ్నం";
+            if (hour >= 12 && hour < 17) return "మధ్యాహ్న భావం";
+            if (hour >= 17 && hour < 21) return "సాయంసంధి స్థితి";
+            return "నిశీధి కాలం";
         }
 
         form.addEventListener('submit', function(e) {
@@ -439,36 +435,34 @@
             const place = document.getElementById('place').value;
             const focus = document.getElementById('focusArea').value;
 
-            const numData = calculateNumerology(dob);
             const zodiac = getZodiacData(dob);
             const lagnam = getLagnaData(tob);
 
-            // Set Badges
-            document.getElementById('badgeZodiac').innerText = `రాశి: ${zodiac.name}`;
-            document.getElementById('badgeNumerology').innerText = `సంఖ్యా బలం: ${numData.title}`;
-            document.getElementById('badgeLagnam').innerText = `లగ్న స్థితి: ${lagnam}`;
+            // Matrix Summary Updates
+            document.getElementById('mZodiac').innerText = zodiac.name;
+            document.getElementById('mLagna').innerText = lagnam;
 
             // 1. Personality & Nature
             document.getElementById('secPersonality').innerHTML = 
-                `According to your birth chart, మీ నామ నక్షత్ర తరంగాలు మరియు <b>${place}</b> ప్రాంత రేఖాంశాల కలయిక మీలో ఒక విశిష్టమైన అంతర్గత సామర్థ్యాన్ని సూచిస్తున్నాయి.<br>` +
-                `రాశ్యాధిపతి <span class="highlight">${zodiac.ruler}</span> ప్రభావం వల్ల మీ వ్యక్తిత్వంలో స్వయంకృషితో ఎదగాలనే ఒక <span class="highlight">strong tendency</span> వ్యక్తమవుతోంది.<br>` +
-                `సహజంగా ఇతరులకు సహాయపడే గుణం ఉన్నప్పటికీ, మీ నిశ్శబ్ద స్వభావాన్ని కొందరు తప్పుగా అంచనా వేసే అవకాశాలు ఉన్నాయి.`;
+                `జన్మ కుండలి ప్రకారం, మీ నామ నక్షత్ర తరంగాలు మరియు <b>${place}</b> ప్రాంత రేఖాంశాల కలయిక మీలో ఒక విశిష్టమైన అంతర్గత సామర్థ్యాన్ని సూచిస్తున్నాయి.<br>` +
+                `రాశ్యాధిపతి అయిన <span class="highlight">${zodiac.ruler}</span> ప్రభావం వల్ల మీ వ్యక్తిత్వంలో స్వయంకృషితో ఎదగాలనే ఒక బలమైన స్వభావ ధోరణి వ్యక్తమవుతోంది.<br>` +
+                `సహజంగా ఇతరులకు మేలు చేయాలనే ఆలోచన ఉన్నప్పటికీ, మీ నిశ్శబ్ద స్వభావాన్ని కొందరు తప్పుగా అంచనా వేసే అవకాశాలు ఉన్నాయి.`;
 
             // 2. Emotional Mindset
             document.getElementById('secEmotional').innerHTML = 
-                `Based on Vedic astrology principles, మీ జాతకంలో బయటకు చెప్పని భావోద్వేగాలు మరియు అంతర్గత ఒత్తిళ్ల ప్రభావం కనిపిస్తోంది.<br>` +
-                `కొన్ని నిర్ణయాలు మీరు బయటకు ప్రశాంతంగా కనిపించినా, లోపల ఎక్కువగా ఆలోచించి తీసుకునే స్వభావాన్ని సూచిస్తున్నాయి.<br>` +
-                `సమీప వ్యక్తుల నుండి ఆశించిన స్థాయిలో భావోద్వేగ మద్దతు లోపించినట్లు అనిపించినా, మీ మానసిక సంకల్పం మిమ్మల్ని ముందుకు నడిపిస్తుంది.`;
+                `వైదిక జ్యోతిష్య సూత్రాల ప్రకారం, మీ జాతకంలో బయటకు వ్యక్తపరచని భావోద్వేగాలు మరియు అంతర్గత ఒత్తిళ్ల ప్రభావం కనిపిస్తోంది.<br>` +
+                `కొన్ని నిర్ణయాలు మీరు బాహ్య ప్రపంచానికి ప్రశాంతంగా కనిపించినా, లోపల ఎక్కువగా ఆలోచించి తీసుకునే స్వభావాన్ని సూచిస్తున్నాయి.<br>` +
+                `<span class="highlight">సమీప వ్యక్తుల నుండి ఆశించిన స్థాయిలో మానసిక మద్దతు లోపించినట్లు అనిపించడం</span> మీ అంతరంగంలో కొంత విరక్తిని కలిగించవచ్చు.`;
 
             // 3. Career & Growth
             let careerText = "";
             if (focus === 'career' || focus === 'finance') {
-                careerText = `మీ కుండలిలోని దశమ స్థానాధిపత్యం ప్రకారం, వృత్తి జీవితంలో <span class="highlight">ఉన్నత స్థానాలను మరియు నిలకడను పొందే అవకాశాలు</span> బలంగా గోచరిస్తున్నాయి.<br>` +
-                             `అయితే, ప్రస్తుత గ్రహ చలనం కారణంగా మీ ప్రతిభకు తగిన గుర్తింపు లభించడంలో కొంత కాలయాపన లేదా తాత్కాలిక అడ్డంకులు ఎదురవుతున్న సూచనలు ఉన్నాయి.<br>` +
-                             `ధన వ్యయ స్థానాలపై ఉన్న కొన్ని వీక్షణల వల్ల, విదేశీ అవకాశాలు లేదా సుదూర ప్రాంతాల (foreign opportunities) ప్రభావం మీ వృద్ధికి కారణం కావచ్చు.`;
+                careerText = `మీ కుండలిలోని దశమ స్థానాధిపత్యం ప్రకారం, వృత్తి జీవితంలో ఉన్నత స్థానాలను మరియు నిలకడను పొందే అవకాశాలు బలంగా గోచరిస్తున్నాయి.<br>` +
+                             `అయితే, ప్రస్తుత గ్రహ చలనం కారణంగా మీ <span class="highlight">శ్రమకు తగిన గుర్తింపు లభించడంలో కొంత కాలయాపన</span> లేదా తాత్కాలిక అడ్డంకులు ఎదురవుతున్న సూచనలు ఉన్నాయి.<br>` +
+                             `ధన వ్యయ స్థానాలపై ఉన్న కొన్ని వీక్షణల వల్ల, సుదూర ప్రాంతాల ప్రభావం లేదా విదేశీ సంబంధాలు మీ వృద్ధికి కారణం కావచ్చు.`;
             } else {
                 careerText = `గోచార గ్రహాల అనుకూలత వల్ల వృత్తి పరమైన విషయాలలో స్థిరమైన ఆలోచనలు కొనసాగుతాయి.<br>` +
-                             `ప్రస్తుత కాలీన మార్పుల వల్ల పనితీరులో కొంత సందిగ్ధత ఏర్పడినట్లు అనిపించినా, అది కేవలం ఒక పరిణామ దశ (evolutionary phase) మాత్రమే.<br>` +
+                             `ప్రస్తుత కాలీన మార్పుల వల్ల పనితీరులో కొంత సందిగ్ధత ఏర్పడినట్లు అనిపించినా, అది కేవలం ఒక తాత్కాలిక పరిణామ దశ మాత్రమే.<br>` +
                              `ఆర్థిక నిలకడ క్రమంగా మెరుగయ్యే అవకాశాలు నక్షత్ర నడవడికలో స్పష్టమవుతున్నాయి.`;
             }
             document.getElementById('secCareer').innerHTML = careerText;
@@ -476,18 +470,19 @@
             // 4. Relationships & Family
             document.getElementById('secRelationships').innerHTML = 
                 `కుండలిలోని చతుర్థ మరియు సప్తమ భావాల విశ్లేషణ ప్రకారం, కుటుంబ బాధ్యతలు మీ జీవితంలో ఈ దశలో అత్యంత ప్రాధాన్యతను సంతరించుకునే వీలుంది.<br>` +
-                `గ్రహాల ప్రస్తుత సంచారాన్ని బట్టి, ఎమోషనల్ పార్ట్‌నర్‌షిప్స్ లేదా వివాహ బంధాల స్థిరత్వం ఇంకా పరిణామం చెందుతున్నట్లు (evolving) సూచిస్తోంది.<br>` +
-                `కొన్ని సందర్భాలలో భావోద్వేగ బంధాలు మీ జీవితంలోని ముఖ్యమైన నిర్ణయాలను ప్రభావితం చేసే <span class="highlight">possibilities</span> ఉన్నాయి.`;
+                `గ్రహాల ప్రస్తుత సంచారాన్ని బట్టి, <span class="highlight">బంధాల స్థిరత్వం ఇంకా పరిణామం చెందుతున్నట్లు</span> సూచిస్తోంది.<br>` +
+                `కొన్ని సందర్భాలలో భావోద్వేగ బంధాలు లేదా పాత జ్ఞాపకాలు మీ జీవితంలోని ముఖ్యమైన నిర్ణయాలను ప్రభావితం చేసే అవకాశాలు ఉన్నాయి.`;
 
-            // 5. Current Planetary Influence
+            // 5. Current Planetary Influence (2024 - 2026)
             document.getElementById('secPhase').innerHTML = 
-                `Planetary positions indicate, ప్రస్తుతం మీ జాతకంలో నడుస్తున్న అంతర్దశల సంచారం ప్రకారం <span class="highlight">2024–2026 మధ్య కాలం మీ జీవితంలో ఒక ముఖ్యమైన సంధి కాలంగా (Life Transition)</span> మారే అవకాశం ఉంది.<br>` +
-                `ఈ ఫేజ్‌లో ప్రయాణాలు, స్థాన చలనాలు (travel or relocation indications) లేదా కెరీర్‌లో కీలక మార్పులు సంభవించే అవకాశాలు చాలా యాక్టివ్‌గా ఉన్నాయి.<br>` +
-                `గోచార గ్రహాల వీక్షణం వల్ల నిర్ణయాలు తీసుకునే సమయంలో కొంత నిదానం అవసరమని సూచిస్తోంది.`;
+                `ప్రస్తుతం మీ జాతకంలో నడుస్తున్న అంతర్దశల సంచారం ప్రకారం <span class="highlight">2024–2026</span> మధ్య కాలం మీ జీవితంలో ఒక ముఖ్యమైన సంధి కాలంగా మారే అవకాశం ఉంది.<br>` +
+                `ఈ ఫేజ్‌లో సుదూర ప్రయాణాలు, స్థాన చలనాలు లేదా వృత్తిలో కీలక మార్పులు సంభవించే అవకాశాలు చాలా యాక్టివ్‌గా ఉన్నాయి.<br>` +
+                `గ్రహాల వీక్షణం వల్ల ముఖ్యమైన నిర్ణయాలు తీసుకునే సమయంలో కొంత నిదానం అవసరమని సూచిస్తోంది.`;
 
-            // 6. Guidance & Suggestions
+            // 6. Guidance & Suggestions (Highly Personalized & Emotionally Intelligent)
             document.getElementById('secAdvice').innerHTML = 
-                `మీ అంతర్గత సంఖ్యా బలం <b>"${numData.digit}"</b> సూచనల ప్రకారం, ఒత్తిడి సమయాల్లో తొందరపాటు నిర్ణయాలకు దూరంగా ఉండడం శ్రేయస్కరం.<br>` +
+                `త్వరగా నిర్ణయాలు తీసుకోవడం కంటే, కొంత సమయం తీసుకుని ఆలోచించడం ఈ దశలో మీకు మంచి ఫలితాలు ఇవ్వవచ్చు.<br>` +
+                `మీ చుట్టూ ఉన్న పరిస్థితులు మిమ్మల్ని ఒత్తిడికి గురిచేస్తున్నప్పుడు, కాసేపు అంతర్ముఖంగా మారి ప్రశాంతతను వెతుక్కోవడం శ్రేయస్కరం.<br>` +
                 `లగ్న చక్రంలోని సూక్ష్మ గ్రహ స్థితుల అనుకూలత కొరకు నిత్యం ఇష్టదైవ స్మరణ లేదా సాత్విక జీవన శైలిని పాటించడం ద్వారా ప్రతికూలతలు తొలిగిపోయే అవకాశాలు మెండుగా ఉన్నాయి.`;
 
             // Dynamic Curiosity Hook & WA Message Setup
@@ -495,16 +490,16 @@
             let waMsg = "";
 
             if (focus === 'career') {
-                curiosityQuestion = `"మీ వ్యక్తిగత జన్మ కుండలి ప్రకారం, వృత్తి జీవితంలో ఉన్న ఈ తాత్కాలిక గ్రహ అడ్డంకులు పూర్తిగా తొలగిపోయి, మీ సామర్థ్యానికి ఖచ్చితమైన గుర్తింపు లభించే ఆ **'అనుకూల సమయ కాల నిర్ణయం' (Timing of Growth Phase)** ఎప్పుడు ఉండబోతోంది?"`;
+                curiosityQuestion = `"మీ వ్యక్తిగత జన్మ కుండలి ప్రకారం, వృత్తి జీవితంలో ఉన్న ఈ తాత్కాలిక గ్రహ అడ్డంకులు పూర్తిగా తొలగిపోయి, మీ సామర్థ్యానికి ఖచ్చితమైన గుర్తింపు లభించే ఆ 'అనుకూల సమయ కాల నిర్ణయం' ఎప్పుడు ఉండబోతోంది?"`;
                 waMsg = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. జాతక విశ్లేషణ నివేదిక చూశాను. నా కెరీర్ లో ఉన్న గ్రహ అడ్డంకులు తొలగిపోయే అనుకూల కాల వివరాల కోసం సంప్రదిస్తున్నాను.`;
             } else if (focus === 'marriage') {
-                curiosityQuestion = `"మీ లగ్న చక్రంలోని సప్తమ భావన మరియు కళత్ర కారక గ్రహాల స్థితి ఆధారంగా, మీ జీవిత భాగస్వామితో బంధం మరింత బలపడి, మీ ఇంట వివాహ యోగ కాలం అనుకూలించే ఆ **'ఖచ్చితమైన గ్రహ సంచార కాలం'** ఏది కాబోతోంది?"`;
+                curiosityQuestion = `"మీ లగ్న చక్రంలోని సప్తమ భావన మరియు కళత్ర కారక గ్రహాల స్థితి ఆధారంగా, మీ జీవిత భాగస్వామితో బంధం మరింత బలపడి, మీ ఇంట వివాహ యోగ కాలం అనుకూలించే ఆ 'ఖచ్చితమైన గ్రహ సంచార కాలం' ఏది కాబోతోంది?"`;
                 waMsg = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. జాతక విశ్లేషణ నివేదిక చూశాను. నా కుండలి ప్రకారం వివాహ కాల నిర్ణయం మరియు గ్రహ స్థితి వివరాల కోసం సంప్రదిస్తున్నాను.`;
             } else if (focus === 'finance') {
-                curiosityQuestion = `"మీ జాతక చక్రంలోని ధన స్థానాలపై ఉన్న అడ్డంకులు తొలగిపోయి, మీకున్న ఆర్థిక ఒత్తిడుల నుండి విముక్తి లభించి మీరు **సొంత ఆస్తి లేదా స్థిరాస్తి** కొనుగోలు చేసే ఆ అనుకూల ముహూర్త కాలం ఎప్పటి నుండి సూచిస్తోంది?"`;
+                curiosityQuestion = `"మీ జాతక చక్రంలోని ధన స్థానాలపై ఉన్న అడ్డంకులు తొలగిపోయి, మీకున్న ఆర్థిక ఒత్తిడుల నుండి విముక్తి లభించి మీరు సొంత ఆస్తి లేదా స్థిరాస్తి కొనుగోలు చేసే ఆ అనుకూల ముహూర్త కాలం ఎప్పటి నుండి సూచిస్తోంది?"`;
                 waMsg = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. జాతక విశ్లేషణ నివేదిక చూశాను. నా ఆర్థిక స్థిరత్వం మరియు ధన స్థాన దోష నివారణల పూర్తి వివరాల కోసం సంప్రదిస్తున్నాను.`;
             } else {
-                curiosityQuestion = `"మీ మానసిక ప్రశాంతతను మరియు నిలకడను ప్రభావితం చేస్తున్న ఆ **బాహ్య నెగెటివ్ ఎనర్జీ వీక్షణం (Negative Planetary Influence)** ఏ గ్రహాల చలనం వల్ల కలుగుతోంది మరియు దానికి చేయాల్సిన వేద పరిహారాలు ఏమిటి?"`;
+                curiosityQuestion = `"మీ మానసిక ప్రశాంతతను మరియు నిలకడను ప్రభావితం చేస్తున్న ఆ బాహ్య నెగెటివ్ ఎనర్జీ వీక్షణం ఏ గ్రహాల చలనం వల్ల కలుగుతోంది మరియు దానికి చేయాల్సిన వేద పరిహారాలు ఏమిటి?"`;
                 waMsg = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. జాతక విశ్లేషణ నివేదిక చూశాను. నాకున్న మానసిక ఒత్తిడి, నరదృష్టి దోష నివారణ పరిహారాల పూర్తి వివరాల కోసం సంప్రదిస్తున్నాను.`;
             }
 
