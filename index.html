@@ -129,10 +129,16 @@
         
         .result-title {
             font-family: 'Cinzel', serif; font-size: 17px; color: #facc15;
-            text-align: center; margin-bottom: 25px;
-            border-bottom: 1px solid rgba(250, 204, 21, 0.15); padding-bottom: 15px; letter-spacing: 2px;
+            text-align: center; margin-bottom: 10px; letter-spacing: 2px;
         }
         
+        /* Live Date Stamp Area inside Report */
+        .live-report-date {
+            text-align: center; font-size: 13px; color: #a494c4; margin-bottom: 25px;
+            border-bottom: 1px solid rgba(250, 204, 21, 0.15); padding-bottom: 15px;
+        }
+        .live-report-date span { color: #facc15; font-weight: 500; }
+
         .summary-matrix {
             background: rgba(4, 1, 15, 0.6); border: 1px solid rgba(168, 85, 247, 0.2);
             border-radius: 14px; padding: 20px; margin-bottom: 25px;
@@ -254,7 +260,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn-submit">గణిత ఆధారిత వేద куండలిని గణించండి</button>
+                <button type="submit" class="btn-submit">గణిత ఆధారిత వేద కుండలిని గణించండి</button>
             </form>
 
             <div class="rashi-portal-section" id="rashiPortalWrapper">
@@ -266,7 +272,7 @@
                     <div class="rashi-card" onclick="showQuickRashi('కర్కాటకం', '♋')"><span class="rashi-icon">♋</span><span class="rashi-name">కర్కాటకం</span></div>
                     <div class="rashi-card" onclick="showQuickRashi('సింహం', '♌')"><span class="rashi-icon">♌</span><span class="rashi-name">సింహం</span></div>
                     <div class="rashi-card" onclick="showQuickRashi('కన్యా', '♍')"><span class="rashi-icon">♍</span><span class="rashi-name">కన్యా</span></div>
-                    <div class="rashi-card" onclick="showQuickRashi('తులా', '♎')"><span class="rashi-icon">♎</span><span class="rashi-name">తులా</span></div>
+                    <div class="rashi-card" onclick="showQuickRashi('तुला', '♎')"><span class="rashi-icon">♎</span><span class="rashi-name">తులా</span></div>
                     <div class="rashi-card" onclick="showQuickRashi('వృశ్చికం', '♏')"><span class="rashi-icon">♏</span><span class="rashi-name">వృశ్చికం</span></div>
                     <div class="rashi-card" onclick="showQuickRashi('ధనుస్సు', '♐')"><span class="rashi-icon">♐</span><span class="rashi-name">ధనుస్సు</span></div>
                     <div class="rashi-card" onclick="showQuickRashi('మకరం', '♑')"><span class="rashi-icon">♑</span><span class="rashi-name">మకరం</span></div>
@@ -291,6 +297,7 @@
 
         <div class="result-box" id="resultBox">
             <div class="result-title">✦ స్పష్ట జన్మ పత్రికా సాంకేతిక విశ్లేషణ ✦</div>
+            <div class="live-report-date">ప్రస్తుత గోచార కాలం (Live Transit): <span id="reportLiveDate">--</span></div>
             
             <div class="summary-matrix">
                 <div class="matrix-item">వేద చంద్ర రాశి: <span id="mZodiac">--</span></div>
@@ -373,23 +380,21 @@
             "లగ్న భావ రేఖాంశములు స్థిరపరచబడుతున్నాయి..."
         ];
 
-        // --- EXTENSIVE SCIENTIFIC PREDICTION MATRICES FOR THE ROTATION ENGINE ---
         const transitTrends = [
             "కుజ గ్రహ అనుకూలత వల్ల కార్యసిద్ధి బలంగా ఉంది. ఉద్యోగంలో మీ ప్రతిభకు తగిన గుర్తింపు లభిస్తుంది. నూతన పెట్టుబడుల విషయంలో కొంత ఆచితూచి వ్యవహరించడం మంచిది. కంటి నిండా నిద్ర అవసరం.",
             "రాశి ఇంట చంద్ర సంచారం వల్ల ఈ రోజు అత్యంత ఉత్సాహంగా గడుస్తుంది. ఆర్థిక లావాదేవీలు లాభసాటిగా సాగుతాయి. కుటుంబ సభ్యులతో చిన్నపాటి అపార్థాలు వచ్చే సూచనలు ఉన్నాయి, మాట్లాడేటప్పుడు సంయమనం వహించండి.",
             "రాశిలో గురు వీక్షణం మీకు ఉన్నత యోగాన్ని ఇస్తోంది. ఆగిపోయిన పనులు వేగం పుంజుకుంటాయి. వృత్తిపరంగా కీలకమైన నిర్ణయాలు తీసుకుంటారు. బంధువుల నుండి శుభవార్తలు వింటారు.",
-            "ఈ రోజు ఖర్చులు నియంత్రించుకోవడం అవసరం. మానసిక ఒత్తిడి స్వల్పంగా పెరగవచ్చు. ఇష్టదైవ ప్రార్థన వల్ల ఉపశమనం లభిస్తుంది. ఉద్యోగస్తులకు अधिकारियों నుండి పని ఒత్తిడి ఎక్కువగా ఉంటుంది.",
+            "ఈ రోజు ఖర్చులు నియంత్రించుకోవడం అవసరం. మానసిక ఒత్తిడి స్వల్పంగా పెరగవచ్చు. ఇష్టదైవ ప్రార్థన వల్ల ఉపశమనం లభిస్తుంది. ఉద్యోగస్తులకు అధికారుల నుండి పని ఒత్తిడి ఎక్కువగా ఉంటుంది.",
             "సూర్యుని అనుకూల దృష్టి వల్ల కీర్తి ప్రతిష్టలు పెరుగుతాయి. వ్యాపారస్తులకు ఆకస్మిక ధనలాభం సూచిస్తోంది. మిత్రుల సహాయంతో ఒక ముఖ్యమైన సమస్య పరిష్కారం అవుతుంది. ఆరోగ్యం అనుకూలిస్తుంది.",
             "వృత్తి, ఉద్యోగ రంగాలలో ప్రమోషన్ లేదా సానుకూల మార్పుల సూచనలు బలంగా ఉన్నాయి. సామాజిక సేవా కార్యక్రమాల్లో పాల్గొంటారు. కోర్టు వ్యవహారాలు సానుకూల మలుపు తిరుగుతాయి. సమయం ఎంతో బాగుంది.",
-            "భాగ్య స్థానంలో గ్రహాల సంచారం వల్ల అదృష్టం కలిసివస్తుంది. దూర ప్రయాణాలు అనుకూలిస్తాయి. తండ్రి గారి ఆరోగ్యం పై శ్రద్ధ వహించండి. आध्यात्मिक చింతన మానసిక శాంతిని ఇస్తుంది.",
+            "భాగ్య స్థానంలో గ్రహాల సంచారం వల్ల అదృష్టం కలిసివస్తుంది. దూర ప్రయాణాలు అనుకూలిస్తాయి. తండ్రి గారి ఆరోగ్యం పై శ్రద్ధ వహించండి. ఆధ్యాత్మిక చింతన మానసిక శాంతిని ఇస్తుంది.",
             "అష్టమ స్థానంలో చంద్రుని సంచారం వల్ల ఈ రోజు పనులలో స్వల్ప ఆటంకాలు ఎదురవుతాయి. వాహనాలు నడిపేటప్పుడు అత్యంత జాగ్రత్త అవసరం. అనవసర వాదనలకు దూరంగా ఉండటం శ్రేయస్కరం.",
             "భాగస్వామ్య వ్యాపారాలు లాభిస్తాయి. సంసార జీవితంలో సంతోషకరమైన సమయం గడుపుతారు. నూతన పరిచయాలు వ్యాపార విస్తరణకు ఉపయోగపడతాయి. ఆరోగ్యం పట్ల శ్రద్ధ అవసరం.",
             "శత్రువులపై విజయం సాధిస్తారు. కోర్టు కేసులు లేదా పాత రుణాలు తీరిపోయే మార్గం సుగమం అవుతుంది. అనారోగ్య సమస్యల నుండి ఉపశమనం లభిస్తుంది. శ్రమకు తగిన ప్రతిఫలం దక్కుతుంది.",
-            "సंतాన పరంగా శుభవార్తలు వింటారు. మీ మేధస్సుకు తగిన గుర్తింపు లభిస్తుంది. ప్రయాణాలలో నూతన మిత్రులు పరిచయమవుతారు. కళాకారులకు, విద్యార్థులకు అత్యంత అనుకూలమైన రోజు.",
+            "సంతాన పరంగా శుభవార్తలు వింటారు. మీ మేధస్సుకు తగిన గుర్తింపు లభిస్తుంది. ప్రయాణాలలో నూతన మిత్రులు పరిచయమవుతారు. కళాకారులకు, విద్యార్థులకు అత్యంత అనుకూలమైన రోజు.",
             "రాశిలో శని వేధ సంచారం వల్ల శారీరక శ్రమ ఎక్కువగా ఉంటుంది. స్థిరాస్తి కొనుగోలు వ్యవహారాల్లో జాగ్రత్త అవసరం. తల్లి గారి ఆరోగ్యం పై శ్రద్ధ పెట్టండి. సాయంత్రానికి వాతావరణం అనుకూలంగా మారుతుంది."
         ];
 
-        // --- ASTRONOMICAL DATE-ROTATION ALGORITHM FOR 12 RASHIS ---
         function showQuickRashi(rashiName, symbol) {
             document.querySelectorAll('.rashi-card').forEach(card => {
                 if(card.innerText.includes(rashiName)) card.classList.add('active');
@@ -423,7 +428,6 @@
             displayBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
-        // --- MATH BASE ENGINE FUNCTIONS ---
         function createSeed(str) {
             let hash = 0;
             for (let i = 0; i < str.length; i++) { hash = str.charCodeAt(i) + ((hash << 5) - hash); }
@@ -516,7 +520,7 @@
                 "మఖ", "పూర్వాఫల్గుణి", "ఉత్తరాఫల్గుణి", "హస్త", "చిత్తా", "స్వాతి", "విశాఖ", "అనూరాధ", "జ్యేష్ఠ",
                 "మూల", "పూర్వాషాఢ", "ఉత్తరాషాఢ", "శ్రవణం", "ధనిష్ఠ", "శతభిషం", "పూర్వాభాద్ర", "ఉత్తరాభాద్ర", "రేవతి"
             ];
-            const dashaLords = ["కేతువు", "శుక్రుడు", "సూర్యుడు", "చంద్రుడు", "కుజుడు", "రాహువు", "గురువు", "శని దేవుడు", "బుధుడు"];
+            const dashaLords = ["కేతువు", "శుక్రుడు", "సూర్యుడు", "చంద్రుడు", "కుజుడు", "రాహువు", "గురువు", "శని దేవుడు", "बुధుడు"];
             
             const totalMoonDegrees = astro.Moon.totalLong;
             const nakIndex = Math.floor(totalMoonDegrees / 13.3333) % 27;
@@ -525,10 +529,10 @@
 
             const hour = parseInt(tob.split(':')[0]);
             const lagnaIndex = Math.floor(((hour + 4) % 24) / 2);
-            const lagnaRashis = ["మేషం", "వృషభం", "మిథునం", "కర్కాటకం", "సింహం", "కన్యా", "तुలా", "వృశ్చికం", "ధనుస్సు", "మకరం", "కుంభం", "మీనం"];
+            const lagnaRashis = ["మేషం", "వృషభం", "మిథునం", "కర్కాటకం", "సింహం", "కన్యా", "తులా", "వృశ్చికం", "ధనుస్సు", "మకరం", "కుంభం", "మీనం"];
             const exactLagna = lagnaRashis[lagnaIndex];
 
-            const tithiArr = ["ప్రథమ", "ద్వితీయ", "תృతీయ", "చతుర్థి", "పంచమి", "షష్ఠి", "సప్తమి", "అష్టమి", "నవమి", "దశమి", "ఏకాదశి", "ద్వాదశి", "త్రయోదశి", "చతుర్దశి", "పూర్ణిమ"];
+            const tithiArr = ["ప్రథమ", "ద్వితీయ", "తృతీయ", "చతుర్థి", "పంచమి", "షష్ఠి", "సప్తమి", "అష్టమి", "నవమి", "దశమి", "ఏకాదశి", "ద్వాదశి", "త్రయోదశి", "చతుర్దశి", "పూర్ణిమ"];
             const derivedTithi = tithiArr[masterSeed % 15] + " తిథి";
             const dashaMain = dashaLords[(nakIndex) % 9];
             const dashaSub = dashaLords[(nakIndex + 2) % 9];
@@ -557,7 +561,7 @@
             switchTimeline('daily');
         }
 
-        // --- UPGRADED DATE-DRIVEN TIMELINE GENERATOR FOR USER DETAILS ---
+        // --- UPGRADED DATE-DRIVEN TIMELINE GENERATOR ---
         function switchTimeline(mode) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             const clickedBtn = event ? event.target : document.querySelector(`.tab-btn[onclick="switchTimeline('${mode}')"]`);
@@ -566,10 +570,16 @@
             const d = globalCachedData;
             if(!d.name) return;
 
+            // Current Live Date Logic for Report
             const today = new Date();
             const dayFactor = today.getDate(); 
             const monthFactor = today.getMonth() + 1; 
+            const currentYear = today.getFullYear(); // Will pull 2026 dynamically
             const magicSeed = (dayFactor + monthFactor + d.masterSeed) % 5; 
+
+            // Format dynamic date display in Telugu standard
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('reportLiveDate').innerText = today.toLocaleDateString('te-IN', options);
 
             let bar1 = 60 + ((dayFactor + 3) % 25); 
             let bar2 = 55 + ((dayFactor + 7) % 30); 
@@ -600,7 +610,7 @@
                     {
                         personality: `ఈ రోజు శారీరక శ్రమ కొంత ఎక్కువగా ఉండే సూచనలు ఉన్నాయి. అనుకోని ఖర్చులు ముందుకు రావచ్చు, బడ్జెట్ పై నియంత్రణ అవసరం.`,
                         emotional: `బంధుమిత్రులతో మాట్లాడేటప్పుడు కోపతాపాలకు దూరంగా ఉండండి. అనవసర విషయాల్లో జోక్యం చేసుకోవడం మంచిది కాదు.`,
-                        advice: `నేటి పరిహారం: దగ్గరలోని శివాలయ दर्शन చేసుకోవడం లేదా ఓం నమః శివాయ మంత్రాన్ని 21 సార్లు జపించడం మంచిది.`
+                        advice: `నేటి పరిహారం: దగ్గరలోని శివాలయ दर्शनం చేసుకోవడం లేదా ఓం నమః శివాయ మంత్రాన్ని 21 సార్లు జపించడం మంచిది.`
                     },
                     {
                         personality: `నేడు మీ రాశిపై శుభ గ్రహాల దృష్టి ఉండటం వల్ల ఆకస్మిక ధనలాభ సూచనలు ఉన్నాయి. నూతన వస్తువులు కొనుగోలు చేస్తారు.`,
@@ -623,7 +633,7 @@
                     const careerTexts = [
                         `మీ 10వ ఇంట కర్మ కారక శని వీక్షణం వల్ల ఉద్యోగంలో పైఅధికారులతో మాట్లాడేటప్పుడు సంయమనం అవసరం. కొత్త బాధ్యతలు దరిచేరుతాయి.`,
                         `ఉద్యోగ వాతావరణం అనుకూలిస్తుంది. మీ శ్రమకు తగిన ప్రశంసలు లభిస్తాయి. నూతన ఉద్యోగ ప్రయత్నాలకు ఈ రోజు అనుకూలం.`,
-                        `സഹோద్యోగులతో చిన్నపాటి విభేదాలు వచ్చే సూచనలు ఉన్నాయి. మీ పనిపై మాత్రమే శ్రద్ధ పెట్టడం ఈ రోజు అత్యంత ముఖ్యం.`
+                        `సహోద్యోగులతో చిన్నపాటి విభేదాలు వచ్చే సూచనలు ఉన్నాయి. మీ పనిపై మాత్రమే శ్రద్ధ పెట్టడం ఈ రోజు అత్యంత ముఖ్యం.`
                     ];
                     bText = careerTexts[dayFactor % 3];
                 } else if(d.focus==='marriage') {
@@ -631,7 +641,7 @@
                 } else if(d.focus==='finance') {
                     bText = `ధన స్థానంలో బుధ సంచారం వల్ల నేడు ఆర్థిక లావాదేవీలు ఫలవంతం అవుతాయి. అనవసర ఖర్చులు తగ్గుతాయి.`;
                 } else {
-                    bText = `చతుర్థ భావన ప్రశాంతంగా ఉంది. కుటుంబ సభ్యులతో గడిపే సమయం మానసిక ఉపశమనాన్ని ఇస్తుంది.`;
+                    bText = `చతుర్థ భావన ప్రశాంతంగా ఉంది.కుటుంబ సభ్యులతో గడిపే సమయం మానసిక ఉపశమనాన్ని ఇస్తుంది.`;
                 }
                 document.getElementById('secCareer').innerHTML = bText;
                 document.getElementById('secPhase').innerHTML = `ఈ రోజు నడుస్తున్న సూక్ష్మ అంతర్దశ కారకుడు <span class="highlight">${d.dashaSub}</span> అవ్వడం వల్ల సాయంత్రం వేళ అనుకోని సానుకూల మార్పులు చూస్తారు.`;
@@ -649,6 +659,7 @@
                 document.getElementById('secPersonality').innerHTML = `ఈ వారం సూర్యుని గమనం మీ లగ్నానికి అనుకూల స్థానంలో ఉండటం వల్ల ఆత్మవిశ్వాసం పెరుగుతుంది. శత్రువులపై విజయం సాధిస్తారు.`;
                 document.getElementById('secEmotional').innerHTML = `వారమధ్యంలో చంద్రుని సంచారం వల్ల కాస్త మానసిక ఆందోళన ఉండే సూచనలు ఉన్నాయి. ప్రయాణాలలో జాగ్రత్త అవసరం.`;
                 document.getElementById('secCareer').innerHTML = `వృత్తిపరంగా ఈ వారం సానుకూల మార్పులు ఉంటాయి. చాలా రోజులుగా ఆగుతున్న పనులు బుధవారం తర్వాత వేగం పుంజుకుంటాయి.`;
+                document.getElementById('secCareer').innerHTML += `<br><br><b>ఈ వారపు విశేషం:</b> మీ శ్రమకు తగిన ఆదాయ మార్గాలు మెరుగుపడతాయి.`;
                 document.getElementById('secPhase').innerHTML = `ఈ వారం వింశోత్తరి అంతర్దశ నాథుడైన <span class="highlight">${d.dashaSub}</span> యొక్క అనుకూల కిరణాల వల్ల పాత వివాదాలు సానుకూలంగా మారుతాయి.`;
                 document.getElementById('secAdvice').innerHTML = `వార పరిహారం: ప్రతి మంగళవారం లేదా శనివారం నాడు హనుమాన్ చాలీసా పఠించడం వల్ల కర్మ దోషాలు సమసిపోతాయి.`;
                 document.getElementById('curiosityQuestionText').innerText = `"ఈ వారంలో రాబోయే రాహుకాల వేధను దాటుకుని, మీ కెరీర్ లేదా వ్యక్తిగత నిర్ణయాలు వంద శాతం సక్సెస్ అవ్వడానికి ఏ రోజు ముహూర్తం ఎంచుకోవాలి?"`;
@@ -668,23 +679,23 @@
                 document.getElementById('curiosityQuestionText').innerText = `"ఈ నెలలో జరగబోయే సూర్య-బుధ గ్రహాల రాశి పరివర్తనం వల్ల మీ కుండలిలోని రాజయోగం ఏ తేదీన యాక్టివేట్ కాబోతోంది?"`;
 
             } else if(mode === 'yearly') {
-                document.getElementById('titlePersonality').innerText = "Yearly Transit Destiny (2026 వర్షఫలం)";
+                document.getElementById('titlePersonality').innerText = `Yearly Transit Destiny (${currentYear} వర్షఫలం)`;
                 document.getElementById('titleEmotional').innerText = "Yearly Evolution Curve (సంవత్సర మానసిక స్థితి)";
                 document.getElementById('titleCareer').innerText = "Yearly Bhava Destiny (సుదీర్ఘ కర్మ స్థాన బలం)";
                 document.getElementById('titlePhase').innerText = "Yearly Vimshottari Node (సుదీర్ఘ దశా కాల చక్రం)";
                 document.getElementById('titleAdvice').innerText = "Yearly Satvik Evolution (సంవత్సర పరిహార నియమాలు)";
 
-                document.getElementById('secPersonality').innerHTML = `2026 సంవత్సరంలో శని దేవుడు మీన రాశిలో మరియు గురువు మిథున రాశిలో సంచరించడం మీ జాతక చక్రానికి పెద్ద మలుపు కాబోతోంది. ఇది స్థిరత్వాన్ని ఇచ్చే సంవత్సరం.`;
+                document.getElementById('secPersonality').innerHTML = `${currentYear} సంవత్సరంలో శని దేవుడు మీన రాశిలో మరియు గురువు మిథున రాశిలో సంచరించడం మీ జాతక చక్రానికి పెద్ద మలుపు కాబోతోంది. ఇది స్థిరత్వాన్ని ఇచ్చే సంవత్సరం.`;
                 document.getElementById('secEmotional').innerHTML = `గత రెండేళ్లుగా ఉన్న మానసిక సందిగ్ధత, శూన్యత ఈ ఏడాది పూర్తిగా తొలగిపోతాయి. ఆధ్యాత్మిక చైతన్యం వైపు మీ అడుగులు పడతాయి.`;
-                document.getElementById('secCareer').innerHTML = `కార్య సాధన పరంగా 2026 అద్భుతమైన ఎదుగుదలను ఇస్తుంది. మీ కుండలి ప్రకారం, అక్టోబర్ 2026 లోపు ఉన్నత పదవి లేదా వ్యాపార విస్తరణ ఖాయంగా కనిపిస్తోంది.`;
+                document.getElementById('secCareer').innerHTML = `కార్య సాధన పరంగా ${currentYear} అద్భుతమైన ఎదుగుదలను ఇస్తుంది. మీ కుండలి ప్రకారం, ఈ ఏడాది ఆఖరి లోపు ఉన్నత పదవి లేదా వ్యాపార విస్తరణ ఖాయంగా కనిపిస్తోంది.`;
                 document.getElementById('secPhase').innerHTML = `ఈ ఏడాది పొడవునా నడిచే <span class="highlight">${d.dashaMain} మహాదశ</span> మీ జీవితంలో ఒక మేజర్ లైఫ్ స్టైల్ చేంజ్ ని తీసుకురాబోతోంది.`;
                 document.getElementById('secAdvice').innerHTML = `సంవత్సర పరిహారం: ఇష్టదైవ నామస్మరణతో పాటు, ప్రతి ఏకాదశి నాడు ఉపవాసం ఉండటం అత్యున్నత ఫలితాలను ఇస్తుంది.`;
-                document.getElementById('curiosityQuestionText').innerText = `"2026 వర్షఫల సిద్ధాంతం ప్రకారం, మీ జాతకంలో ఉన్న పితృదోషం లేదా శని వేధ పూర్తిగా తొలగిపోయి అఖండ ధనలాభం కలిగే ఆ మహోత్కృష్ట నెల ఏది?"`;
+                document.getElementById('curiosityQuestionText').innerText = `"${currentYear} వర్షఫల సిద్ధాంతం ప్రకారం, మీ జాతకంలో ఉన్న పితృదోషం లేదా శని వేధ పూర్తిగా తొలగిపోయి అఖండ ధనలాభం కలిగే ఆ మహోత్కృష్ట నెల ఏది?"`;
             }
 
-            // --- UPDATED WHATSAPP CHARGES RE-ROUTE CODE (₹50/- ONLY) ---
+            // --- FIXED LOW COST CHARGES WHATSAPP TEXT RO ROUTE ---
             const whatsappNumber = "917981587505";
-            let waMsg = `నమస్తే సిద్ధาంతి గారు, నా పేరు ${d.name}. నా స్పష్ట జాతక వివరాలు చూశాను. \n\nనా కుండలి ఆధారిత ${mode.toUpperCase()} కాల నిర్ణయం మరియు దోష నివారణల సంపూర్ణ పిడిఎఫ్ (PDF) రిపోర్ట్ కొరకు సంప్రదిస్తున్నాను. శాస్త్రోక్త దక్షిణ ₹50/- యూపీఐ (UPI) ద్వారా చెల్లించడానికి సిద్ధంగా ఉన్నాను. దయచేసి వివరాలు పంపగలరు.`;
+            let waMsg = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${d.name}. నా స్పష్ట జాతక వివరాలు చూశాను. \n\nనా కుండలి ఆధారిత ${mode.toUpperCase()} కాల నిర్ణయం మరియు దోష నివారణల సంపూర్ణ పిడిఎఫ్ (PDF) రిపోర్ట్ కొరకు సంప్రదిస్తున్నాను. శాస్త్రోక్త దక్షిణ ₹50/- యూపీఐ (UPI) ద్వారా చెల్లించడానికి సిద్ధంగా ఉన్నాను. దయచేసి వివరాలు పంపగలరు.`;
 
             whatsappBtn.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(waMsg)}`;
         }
