@@ -127,28 +127,37 @@
             transform: translateY(-1px);
             box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
         }
+        
+        /* Premium Loading Animations */
         .loading-box {
             display: none;
             text-align: center;
             padding: 60px 20px;
         }
         .spinner {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border: 2px solid rgba(168, 85, 247, 0.1);
             border-radius: 50%;
-            border-top-color: #a855f7;
-            animation: spin 1s linear infinite;
+            border-top-color: #facc15;
+            animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
             margin: 0 auto 25px auto;
+            box-shadow: 0 0 15px rgba(250, 204, 21, 0.15);
         }
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
         .loading-text {
-            font-size: 13.5px;
+            font-size: 14px;
             color: #9f8fbf;
             letter-spacing: 0.5px;
+            animation: pulseText 1.5s infinite alternate;
         }
+        @keyframes pulseText {
+            from { opacity: 0.5; }
+            to { opacity: 1; }
+        }
+        
         .result-box {
             display: none;
             animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
@@ -174,7 +183,7 @@
             border: 1px solid rgba(168, 85, 247, 0.15);
             border-radius: 12px;
             padding: 20px;
-            margin-bottom: 35px;
+            margin-bottom: 25px;
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 15px;
@@ -189,6 +198,42 @@
             color: #e9d5ff;
             font-weight: 500;
             margin-left: 5px;
+        }
+
+        /* Astrological Energy Bars */
+        .energy-section {
+            background: rgba(7, 0, 25, 0.3);
+            border: 1px solid rgba(168, 85, 247, 0.1);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 35px;
+        }
+        .energy-bar-group {
+            margin-bottom: 12px;
+        }
+        .energy-bar-group:last-child {
+            margin-bottom: 0;
+        }
+        .energy-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #9f8fbf;
+            margin-bottom: 5px;
+        }
+        .energy-track {
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .energy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a855f7, #facc15);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 1.5s cubic-bezier(0.1, 1, 0.1, 1);
         }
 
         .section-block {
@@ -225,6 +270,7 @@
             padding: 28px;
             text-align: center;
             margin-top: 40px;
+            margin-bottom: 25px;
         }
         .curiosity-title {
             color: #facc15;
@@ -264,6 +310,14 @@
             background: #166534;
             transform: translateY(-1px);
             box-shadow: 0 6px 18px rgba(22, 101, 52, 0.3);
+        }
+        .disclaimer {
+            text-align: center;
+            font-size: 11px;
+            color: #9f8fbf;
+            opacity: 0.4;
+            line-height: 1.6;
+            padding: 0 10px;
         }
         @media (max-width: 480px) {
             .row { flex-direction: column; gap: 0; }
@@ -323,7 +377,7 @@
 
         <div class="loading-box" id="loadingBox">
             <div class="spinner"></div>
-            <div class="loading-text" id="loadingText">According to your birth chart, calculating planetary positions...</div>
+            <div class="loading-text" id="loadingText">Aligning natal coordinates and sound vibrations...</div>
         </div>
 
         <div class="result-box" id="resultBox">
@@ -334,8 +388,23 @@
                 <div class="matrix-item">నామ నక్షత్రం: <span id="mStar">శ్రవణ/శతభిష ఆధారిత</span></div>
                 <div class="matrix-item">లగ్న భావన: <span id="mLagna">--</span></div>
                 <div class="matrix-item">ప్రస్తుత గ్రహ ప్రభావం: <span id="mInfluence">దశా సంధి చలనం</span></div>
-                <div class="matrix-item">కెరీర్ శక్తి: <span id="mCareer">परिణామ దశ</span></div>
+                <div class="matrix-item">కెరీర్ శక్తి: <span id="mCareer">పరిణామ దశ</span></div>
                 <div class="matrix-item">భావోద్వేగ స్థితి: <span id="mEmotional">అంతర్ముఖం</span></div>
+            </div>
+
+            <div class="energy-section">
+                <div class="energy-bar-group">
+                    <div class="energy-label"><span>ఆధ్యాత్మిక బలం (Spiritual Alignment)</span><span id="valSpi">82%</span></div>
+                    <div class="energy-track"><div class="energy-fill" id="fillSpi"></div></div>
+                </div>
+                <div class="energy-bar-group">
+                    <div class="energy-label"><span>మానసిక శక్తి (Mental Fortitude)</span><span id="valMen">74%</span></div>
+                    <div class="energy-track"><div class="energy-fill" id="fillMen"></div></div>
+                </div>
+                <div class="energy-bar-group">
+                    <div class="energy-label"><span>భాగ్యోదయ సూచీ (Luck Quotient)</span><span id="valLuk">68%</span></div>
+                    <div class="energy-track"><div class="energy-fill" id="fillLuk"></div></div>
+                </div>
             </div>
 
             <div class="section-block">
@@ -374,6 +443,8 @@
                 <p style="font-size: 13px; color: #9f8fbf; margin-bottom: 20px; line-height: 1.6;">మీ వ్యక్తిగత కుండలి ఆధారంగా ఈ ప్రశ్న వెనుక ఉన్న సూక్ష్మ గ్రహ స్థితులను మరియు దానికి తగిన వేద మార్గదర్శకత్వాన్ని నేరుగా సిద్ధాంతి గారి ద్వారా తెలుసుకోండి.</p>
                 <a href="#" id="whatsappBtn" target="_blank" class="btn-whatsapp">వ్యక్తిగత సంప్రదింపుల కొరకు వాట్సాప్ చేయండి</a>
             </div>
+
+            <div class="disclaimer">ఈ విశ్లేషణ కేవలం గోచార గ్రహ స్థితులు మరియు మీ జనన సమయ గణనల ఆధారంగా రూపొందించబడింది. లోతైన పరిహారాల కొరకు వ్యక్తిగత జాతక చక్ర పరిశీలన అవసరం.</div>
         </div>
     </div>
 
@@ -431,7 +502,7 @@
                     clearInterval(timer);
                     generatePremiumReport();
                 }
-            }, 1000);
+            }, 1200); // Slightly adjusted for premium feel
         });
 
         function generatePremiumReport() {
@@ -451,6 +522,13 @@
             document.getElementById('mZodiac').innerText = zodiac.name;
             document.getElementById('mLagna').innerText = lagnam;
 
+            // Triggering CSS Bar Animations
+            setTimeout(() => {
+                document.getElementById('fillSpi').style.width = "82%";
+                document.getElementById('fillMen').style.width = "74%";
+                document.getElementById('fillLuk').style.width = "68%";
+            }, 100);
+
             // 1. Personality & Nature
             document.getElementById('secPersonality').innerHTML = 
                 `జన్మ కుండలి ప్రకారం, మీ నామ నక్షత్ర తరంగాలు మరియు <b>${place}</b> ప్రాంత రేఖాంశాల కలయిక మీలో ఒక విశిష్టమైన అంతర్గత సామర్థ్యాన్ని సూచిస్తున్నాయి.<br>` +
@@ -460,7 +538,7 @@
             // 2. Emotional Mindset
             document.getElementById('secEmotional').innerHTML = 
                 `వైదిక జ్యోతిష్య సూత్రాల ప్రకారం, మీ జాతకంలో బయటకు వ్యక్తపరచని భావోద్వేగాలు మరియు అంతర్గత ఒత్తిళ్ల ప్రభావం కనిపిస్తోంది.<br>` +
-                `కొన్ని निर्णयాలు మీరు బాహ్య ప్రపంచానికి ప్రశాంతంగా కనిపించినా, లోపల ఎక్కువగా ఆలోచించి తీసుకునే స్వభావాన్ని సూచిస్తున్నాయి.<br>` +
+                `కొన్ని నిర్ణయాలు మీరు బాహ్య ప్రపంచానికి ప్రశాంతంగా కనిపించినా, లోపల ఎక్కువగా ఆలోచించి తీసుకునే స్వభావాన్ని సూచిస్తున్నాయి.<br>` +
                 `<span class="highlight">సమీప వ్యక్తుల నుండి ఆశించిన స్థాయిలో మానసిక మద్దతు లోపించినట్లు అనిపించడం</span> మీ అంతరంగంలో కొంత విరక్తిని కలిగించవచ్చు.`;
 
             // 3. Career & Growth
@@ -479,12 +557,12 @@
             // 4. Relationships & Family
             document.getElementById('secRelationships').innerHTML = 
                 `కుండలిలోని చతుర్థ మరియు సప్తమ భావాల విశ్లేషణ ప్రకారం, కుటుంబ బాధ్యతలు మీ జీవితంలో ఈ దశలో అత్యంత ప్రాధాన్యతను సంతరించుకునే వీలుంది.<br>` +
-                `గ్రహాల ప్రస్తుత సంచారాన్ని బట్టి, <span class="highlight">బంధాల స్థిరత్వం ఇంకా పరిణామం చెందుతున్నట్లు</span> సూచిస్తోంది.<br>` +
+                `ग्रहాల ప్రస్తుత సంచారాన్ని బట్టి, <span class="highlight">బంధాల స్థిరత్వం ఇంకా పరిణామం చెందుతున్నట్లు</span> సూచిస్తోంది.<br>` +
                 `కొన్ని సందర్భాలలో భావోద్వేగ బంధాలు లేదా పాత జ్ఞాపకాలు మీ జీవితంలోని ముఖ్యమైన నిర్ణయాలను ప్రభావితం చేసే అవకాశాలు ఉన్నాయి.`;
 
             // 5. Current Planetary Influence
             document.getElementById('secPhase').innerHTML = 
-                `ప్రస్తుతమ్ మీ జాతకంలో నడుస్తున్న అంతర్దశల సంచారం ప్రకారం <span class="highlight">2024–2026</span> మధ్య కాలం మీ జీవితంలో ఒక ముఖ్యమైన సంధి కాలంగా మారే అవకాశం ఉంది.<br>` +
+                `ప్రస్తుతం మీ జాతకంలో నడుస్తున్న అంతర్దశల సంచారం ప్రకారం <span class="highlight">2024–2026</span> మధ్య కాలం మీ జీవితంలో ఒక ముఖ్యమైన సంధి కాలంగా మారే అవకాశం ఉంది.<br>` +
                 `ఈ ఫేజ్‌లో సుదూర ప్రయాణాలు, స్థాన చలనాలు లేదా వృత్తిలో కీలక మార్పులు సంభవించే అవకాశాలు చాలా యాక్టివ్‌గా ఉన్నాయి.<br>` +
                 `ग्रहాల వీక్షణం వల్ల ముఖ్యమైన నిర్ణయాలు తీసుకునే సమయంలో కొంత నిదానం అవసరమని సూచిస్తోంది.`;
 
