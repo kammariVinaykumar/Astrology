@@ -106,7 +106,23 @@
         .matrix-item { font-size: 13px; color: #a494c4; border-bottom: 1px dashed rgba(168, 85, 247, 0.08); padding-bottom: 6px; }
         .matrix-item span { color: #fff; font-weight: 500; margin-left: 4px; }
 
-        /* Planetary Positions Bar */
+        /* Dynamic Timeline Tabs Component */
+        .timeline-tabs {
+            display: flex; background: rgba(4, 1, 15, 0.8);
+            border: 1px solid rgba(168, 85, 247, 0.3);
+            border-radius: 12px; padding: 5px; margin-bottom: 25px; gap: 5px;
+        }
+        .tab-btn {
+            flex: 1; padding: 10px; background: transparent; border: none;
+            color: #a494c4; font-family: 'Cinzel', serif; font-size: 12px;
+            font-weight: 600; border-radius: 8px; cursor: pointer; transition: 0.2s ease;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #5b21b6 0%, #4c1d95 100%);
+            color: #facc15; box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Ephemeris Longitude Display */
         .deg-container {
             background: rgba(4, 1, 15, 0.4); border: 1px solid rgba(168, 85, 247, 0.15);
             border-radius: 12px; padding: 14px 18px; margin-bottom: 25px;
@@ -156,6 +172,7 @@
             .row { flex-direction: column; gap: 0; }
             .container { padding: 25px 16px; }
             .summary-matrix { grid-template-columns: 1fr; gap: 8px; }
+            .timeline-tabs { font-size: 10px; }
         }
     </style>
 </head>
@@ -196,7 +213,7 @@
                     <select id="focusArea" class="form-control" required>
                         <option value="" disabled selected>Select focus area...</option>
                         <option value="career">10th House: Karma & Profession (జీవన వృత్తి - ఉద్యోగం)</option>
-                        <option value="marriage">7th House: Kalatra & Union (కళత్ర స్థానం - బంధాలు)</option>
+                        <option value="marriage">7th House: Kalatra & Union (కళత్ర స్థానం - બં‍ధాలు)</option>
                         <option value="finance">2nd & 11th House: Dhana & Labha (ఆర్థిక నిలకడ - లాభాలు)</option>
                         <option value="peace">4th House: Sukha & Inner Equilibrium (మానసిక ప్రశాంతత)</option>
                     </select>
@@ -225,6 +242,13 @@
                 <div class="matrix-item">విధి సంఖ్య (Destiny): <span id="mDest">--</span></div>
             </div>
 
+            <div class="timeline-tabs">
+                <button class="tab-btn active" onclick="switchTimeline('daily')">DAILY (ఈ రోజు)</button>
+                <button class="tab-btn" onclick="switchTimeline('weekly')">WEEKLY (ఈ వారం)</button>
+                <button class="tab-btn" onclick="switchTimeline('monthly')">MONTHLY (ఈ నెల)</button>
+                <button class="tab-btn" onclick="switchTimeline('yearly')">YEARLY (ఈ ఏడాది)</button>
+            </div>
+
             <div class="deg-container" id="planetaryDegrees"></div>
 
             <div class="energy-section">
@@ -236,27 +260,27 @@
             </div>
 
             <div class="section-block">
-                <div class="section-title">Lagna & Kundali Structure (లగ్న భావన - శరీర తత్వము)</div>
+                <div class="section-title" id="titlePersonality">Lagna & Kundali Structure (లగ్న భావన)</div>
                 <div class="prediction-text" id="secPersonality"></div>
             </div>
 
             <div class="section-block">
-                <div class="section-title">Emotional Disposition (అంతరంగ మనోభావ విశ్లేషణ)</div>
+                <div class="section-title" id="titleEmotional">Emotional Disposition (అन्तरंग విశ్లేషణ)</div>
                 <div class="prediction-text" id="secEmotional"></div>
             </div>
 
             <div class="section-block">
-                <div class="section-title">Bhava Alignment & Life Dynamics (భావ బలము - కార్య సిద్ధి)</div>
+                <div class="section-title" id="titleCareer">Bhava Alignment & Life Dynamics (భావ బలము)</div>
                 <div class="prediction-text" id="secCareer"></div>
             </div>
 
             <div class="section-block">
-                <div class="section-title">Dasha Timeline & Planetary Synthesis (కాల నిర్ణయ విభాగాలు)</div>
+                <div class="section-title" id="titlePhase">Dasha Timeline & Planetary Synthesis (కాల నిర్ణయం)</div>
                 <div class="prediction-text" id="secPhase"></div>
             </div>
 
             <div class="section-block">
-                <div class="section-title">Satvik Remedial Guidance (శాస్త్రోక్త మార్గదర్శకత్వం)</div>
+                <div class="section-title" id="titleAdvice">Satvik Remedial Guidance (శాస్త్రోక్త మార్గదర్శకత్వం)</div>
                 <div class="prediction-text" id="secAdvice"></div>
             </div>
             
@@ -278,6 +302,8 @@
         const loadingText = document.getElementById('loadingText');
         const whatsappBtn = document.getElementById('whatsappBtn');
         
+        let globalCachedData = {}; // Stores core values to enable swift tab switching
+
         const loadingSteps = [
             "జన్మ గ్రహ స్థితులు విశ్లేషించబడుతున్నాయి...",
             "నక్షత్ర గమనాలు పరిశీలించబడుతున్నాయి...",
@@ -285,31 +311,25 @@
             "లగ్న భావ రేఖాంశములు స్థిరపరచబడుతున్నాయి..."
         ];
 
-        // --- SEEDED DETERMINISTIC SELECTION ENGINE (Deterministic Output) ---
         function createSeed(str) {
             let hash = 0;
-            for (let i = 0; i < str.length; i++) {
-                hash = str.charCodeAt(i) + ((hash << 5) - hash);
-            }
+            for (let i = 0; i < str.length; i++) { hash = str.charCodeAt(i) + ((hash << 5) - hash); }
             return Math.abs(hash);
         }
+
         function getDeterministicItem(arr, seedValue, offset = 0) {
             const idx = (seedValue + offset) % arr.length;
             return arr[idx];
         }
 
-        // --- MATHEMATICAL SIDEREAL EPHEMERIS ENGINE (Lahiri Ayanamsa Applied) ---
         function calculateSiderealPlanets(dateString, timeString) {
             const date = new Date(dateString);
             const year = date.getFullYear();
             const dayOfYear = Math.floor((date - new Date(year, 0, 0)) / 86400000);
             const hour = parseInt(timeString.split(':')[0]) || 12;
             const decimalTime = hour / 24;
-
-            // 2026 Mean Lahiri Ayanamsa Approximation (~24.23°)
             const ayanamsa = 24.23;
 
-            // Planetary Base Positions (Mean motions adjusted for Sidereal boundaries)
             let sunLong = (((dayOfYear * 0.9856) + 280 - ayanamsa) % 360 + 360) % 360;
             let moonLong = (((dayOfYear * 13.176) + 115 + (decimalTime * 13.17) - ayanamsa) % 360 + 360) % 360;
             let saturnLong = (((year - 2000) * 12.21 + (dayOfYear * 0.033) + 335 - ayanamsa) % 360 + 360) % 360;
@@ -325,21 +345,16 @@
                 return { rashi: rashis[rIdx], lord: rashiLords[rIdx], deg: deg, totalLong: long, rIdx: rIdx };
             };
 
-            // Real 2026 Transit Overlay for Gochara Validation
-            let saturnTransit = "శని మీనంలో సంచరిస్తూ వేధ కలిగిస్తున్నాడు";
-            if (saturnLong < 330) saturnTransit = "శని కుంభ/మీన సంధి సంచారం";
-
             return {
                 Sun: formatPlanet(sunLong),
                 Moon: formatPlanet(moonLong),
                 Saturn: formatPlanet(saturnLong),
                 Jupiter: formatPlanet(jupiterLong),
                 Mars: formatPlanet(marsLong),
-                transitString: `గురువు మిథునంలో, ${saturnTransit}`
+                transitString: `గురువు మిథునంలో, శని మీనంలో సంచరిస్తూ వేధ కలిగిస్తున్నాడు`
             };
         }
 
-        // --- CHALDEAN NUMEROLOGY ADVANCED ENGINE ---
         function getChaldeanMetrics(name, dobString) {
             const cleanName = name.toUpperCase().replace(/[^A-Z]/g, '');
             const charMap = {
@@ -348,16 +363,13 @@
             };
             let expSum = 0;
             for(let i=0; i<cleanName.length; i++) { expSum += charMap[cleanName[i]] || 0; }
-            
             const reduce = (num) => {
                 while(num > 9) { num = num.toString().split('').reduce((a,b) => parseInt(a)+parseInt(b), 0); }
                 return num === 0 ? 5 : num;
             };
-
             const cleanDate = dobString.replace(/[^0-9]/g, '');
             let destSum = 0;
             for(let i=0; i<cleanDate.length; i++) { destSum += parseInt(cleanDate[i]); }
-
             return { expression: reduce(expSum), destiny: reduce(destSum) };
         }
 
@@ -373,27 +385,24 @@
                     loadingText.innerText = loadingSteps[step];
                 } else {
                     clearInterval(timer);
-                    generateDeterministicAnalysis();
+                    processCoreAstrology();
                 }
             }, 900);
         });
 
-        function generateDeterministicAnalysis() {
+        function processCoreAstrology() {
             loadingBox.style.display = 'none';
             resultBox.style.display = 'block';
 
             const name = document.getElementById('fullName').value;
             const dob = document.getElementById('dob').value;
             const tob = document.getElementById('tob').value;
-            const place = document.getElementById('place').value;
             const focus = document.getElementById('focusArea').value;
 
-            // Compute Engine Properties
             const astro = calculateSiderealPlanets(dob, tob);
             const num = getChaldeanMetrics(name, dob);
             const masterSeed = createSeed(name + dob + tob);
 
-            // 1. Nakshatra via exact Moon Longitude (Moon Longitude / 13.3333)
             const nakshatras = [
                 "అశ్విని", "భరణి", "కృత్తిక", "రోహిణి", "మృగశిర", "ఆరుద్ర", "పునర్వసు", "పుష్యమి", "ఆశ్లేష",
                 "మఖ", "పూర్వాఫల్గుణి", "ఉత్తరాఫల్గుణి", "హస్త", "చిత్త", "स्वाती", "విశాఖ", "అనూరాధ", "జ్యేష్ఠ",
@@ -407,19 +416,22 @@
             const pada = Math.floor(remDeg / 3.3333) + 1;
             const nakLord = dashaLords[nakIndex % 9];
 
-            // 2. Exact Lagna Arc via Time Component
             const hour = parseInt(tob.split(':')[0]);
             const lagnaIndex = Math.floor(((hour + 4) % 24) / 2);
             const lagnaRashis = ["మేషం", "వృషభం", "మిథునం", "కర్కాటకం", "సింహం", "కన్యా", "తులా", "వృశ్చికం", "ధనుస్సు", "మకరం", "కుంభం", "మీనం"];
             const exactLagna = lagnaRashis[lagnaIndex];
 
-            // 3. Panchang & Dasha Architecture
-            const tithiArr = ["ప్రథమ", "ద్వితీయ", "తృతీయ", "చతుర్థి", "పంచమి", "షష్ఠి", "సప్తమి", "అష్టమి", "నవమి", "దశమి", "ఏకాదశి", "ద్వాదశి", "త్రయోదశి", "చతుర్దశి", "పూర్ణిమ"];
+            const tithiArr = ["ప్రథమ", "ద్వితీయ", "తృతీయ", "చతుర్థి", "పంచమి", "షష్ਠి", "సప్తమి", "అష్టమి", "నవమి", "దశమి", "ఏకాదశి", "ద్వాదశి", "త్రయోదశి", "చతుర్దశి", "పూర్ణిమ"];
             const derivedTithi = tithiArr[masterSeed % 15] + " తిథి";
             const dashaMain = dashaLords[(nakIndex) % 9];
             const dashaSub = dashaLords[(nakIndex + 2) % 9];
 
-            // Render Core Metrics Matrix
+            // Cache computations for the Dynamic Switch Engine
+            globalCachedData = {
+                name, focus, astro, num, masterSeed, exactLagna, nakshatras, nakIndex, pada, nakLord, dashaMain, dashaSub, derivedTithi
+            };
+
+            // Static Render Core Matrix UI Elements
             document.getElementById('mZodiac').innerText = astro.Moon.rashi;
             document.getElementById('mStar').innerText = `${nakshatras[nakIndex]} (${pada}వ పాదం)`;
             document.getElementById('mLagna').innerText = `${exactLagna} లగ్న భావం`;
@@ -429,7 +441,6 @@
             document.getElementById('mExp').innerText = num.expression;
             document.getElementById('mDest').innerText = num.destiny;
 
-            // Render Exact Technical Degrees Bar
             document.getElementById('planetaryDegrees').innerHTML = `
                 <div class="deg-item">సూర్యుడు: <b>${astro.Sun.deg}° ${astro.Sun.rashi}</b></div>
                 <div class="deg-item">చంద్రుడు: <b>${astro.Moon.deg}° ${astro.Moon.rashi}</b></div>
@@ -438,84 +449,125 @@
                 <div class="deg-item">కుజుడు: <b>${astro.Mars.deg}° ${astro.Mars.rashi}</b></div>
             `;
 
-            // Shadbala Calculations Derived from Planets & Numerological Concordance
-            let bar1 = Math.min(95, Math.max(55, 60 + (num.expression * 3.5)));
-            let bar2 = Math.min(95, Math.max(55, 58 + (num.destiny * 3.8)));
-            document.getElementById('valSpi').innerText = Math.round(bar1) + "%";
-            document.getElementById('valMen').innerText = Math.round(bar2) + "%";
-            setTimeout(() => {
-                document.getElementById('fillSpi').style.width = bar1 + "%";
-                document.getElementById('fillMen').style.width = bar2 + "%";
-            }, 100);
+            // Display Default Daily Target Matrix View
+            switchTimeline('daily');
+        }
 
-            // --- 210 DETERMINISTIC SENTENCE BANK MATRIX (70% Astro + 30% Num Split) ---
-            const personalityVariants = [
-                `మీ జన్మ లగ్నం ${exactLagna} కావడం వల్ల మీ శరీరం మరియు ప్రాథమిక ఆలోచనా విధానంలో ఒక క్రమశిక్షణ, స్పష్టమైన గమ్యం సహజంగా ఏర్పడతాయి. లగ్నాధిపతి యొక్క క్షేత్ర బలం మీ వ్యక్తిత్వాన్ని సమాజంలో ఉన్నతంగా నిలబెడుతుంది.`,
-                `లగ్న కేంద్రములో ఉన్న గ్రహ వీక్షణల తీవ్రత వల్ల మీ నిర్ణయాలలో త్వరితగతిన మార్పులు రావు, స్థిరమైన ప్రణాళికతో ముందడుగు వేయడం మీ సహజ శైలి.`,
-                `మీ నామ సంఖ్యా బలం (${num.expression}) మరియు నక్షత్రాధిపతి ${nakLord} కలయిక వల్ల మీ బాహ్య వ్యక్తిత్వం ఎంతో ఆకర్షణీయంగా ఉంటూ, ఇతరులలో లీడర్‌షిప్ నమ్మకాన్ని కలిగిస్తుంది.`,
-                `సమస్యలు వచ్చినప్పుడు భావోద్వేగాలకు లోనుకాకుండా, వాటి వెనుక ఉన్న నైతిక కారణాలను అన్వేషించే తత్వం మీ లగ్న రాశి లక్షణం.`
-            ];
+        // --- TIME-VARIANT HOROSCOPE TRANSLATION SWITCH ENGINE ---
+        function switchTimeline(mode) {
+            // Adjust active CSS states dynamically
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            const clickedBtn = event ? event.target : document.querySelector(`.tab-btn[onclick="switchTimeline('${mode}')"]`);
+            if (clickedBtn) clickedBtn.classList.add('active');
 
-            const emotionalVariants = [
-                `చంద్రుని స్పష్ట రేఖాంశం ${astro.Moon.deg}° ${astro.Moon.rashi} లో ఉండటం వల్ల మీ అంతరంగ మనోభావాలలో తీవ్రమైన ఆలోచనా సంచారం జరుగుతుంటుంది. చంద్రునిపై శని/గురు గ్రహ వీక్షణం వల్ల ఒంటరితనాన్ని జయించే మనోబలం మీకు లభిస్తుంది.`,
-                `నక్షత్ర పాద గమనం ప్రకారం, కొన్నిసార్లు అతిగా ఆలోచించడం (Overthinking) వల్ల మానసిక శక్తి స్వల్పంగా క్షీణించే సూచనలు ఉన్నాయి. బంధాల విషయంలో మీ నమ్మకానికి భంగం వాటిల్లినప్పుడు తీవ్రంగా హర్ట్ అవుతారు.`,
-                `మీ అంతర్గత సోల్ ఉర్జ్ నెంబర్ మరియు చంద్ర స్థితుల సమన్వయం వల్ల, ఒత్తిడి సమయాల్లో గంభీరమైన మౌనాన్ని ఆశ్రయించడం మీ మానసిక వ్యూహం.`
-            ];
+            const d = globalCachedData;
+            if(!d.name) return; // Guard clause if data missing
 
-            const adviceVariants = [
-                `మీ జాతక చక్రంలోని బలహీన గ్రహాల శాంతి కొరకు మరియు నక్షత్రాధిపతి అనుగ్రహం కొరకు నిత్యం ధ్యాన ప్రక్రియలను ఆచరించడం ఉత్తమమైన మార్గం.`,
-                `విధి సంఖ్య ${num.destiny} సూచనల ప్రకారం, శని మరియు బుధ గ్రహాల సాత్విక శక్తుల కోసం శనివార నియమాలను పాటించడం వల్ల రాబోయే కాలంలో ఆటంకాలు తొలగిపోతాయి.`,
-                `ముఖ్యమైన పనులను ప్రారంభించే ముందు లగ్న శుద్ధి చూసుకోవడం మరియు లేత రంగులకు ప్రాధాన్యత ఇవ్వడం ద్వారా సానుకూల తరంగాలు పెరుగుతాయి.`
-            ];
-
-            // Deterministic Assignment via Master Seed to completely remove pure randomization
-            document.getElementById('secPersonality').innerHTML = getDeterministicItem(personalityVariants, masterSeed, 0) + " " + getDeterministicItem(personalityVariants, masterSeed, 1);
-            document.getElementById('secEmotional').innerHTML = getDeterministicItem(emotionalVariants, masterSeed, 2) + " " + getDeterministicItem(emotionalVariants, masterSeed, 3);
-            document.getElementById('secAdvice').innerHTML = getDeterministicItem(adviceVariants, masterSeed, 4) + " " + getDeterministicItem(adviceVariants, masterSeed, 5);
-
-            // Bhava Calculations (Purely determined by user's target focus)
-            let bhavaText = "";
-            if (focus === 'career') {
-                bhavaText = `మీ జాతక చక్రంలోని <b>దశమ భావం (10th House of Karma)</b> పై ప్రస్తుతం నడుస్తున్న <span class="highlight">${dashaMain} మహాదశ</span> యొక్క దృష్టి కేంద్రీకృతమై ఉంది. నవమాంశ (D-9) మరియు దశమాంశ (D-10) వర్గ విభజనల ప్రకారం, వృత్తి రంగంలో మార్పులు మరియు నూతన బాధ్యతలు స్వీకరించే అనుకూల కాలం స్పష్టంగా గోచరిస్తోంది. శ్రమకు తగిన ఫలితం నిలకడగా అందుతుంది.`;
-            } else if (focus === 'marriage') {
-                bhavaText = `సప్తమ భావమైన <b>కళత్ర స్థానం (7th House)</b> మరియు నవమాంశ లగ్న దోషములను పరిశీలించగా, బంధాల మధ్య చిన్నపాటి సమన్వయ లోపాలు ఏర్పడే సంధి కాలంగా కనిపిస్తోంది. ప్రస్తుత గోచారంలో గురు దృష్టి అనుకూలత వల్ల పెండింగ్‌లో ఉన్న వివాహ ప్రయత్నాలు ఒక కొలిక్కి వచ్చే సూచనలు ఉన్నాయి.`;
-            } else if (focus === 'finance') {
-                bhavaText = `ధన మరియు లాభ స్థానాలైన <b>ద్వితీయ, ఏకాదశ భావాలను (2nd & 11th Houses)</b> వీక్షిస్తున్న గ్రహాల నడవడిక ప్రకారం, రాబడికి ఎటువంటి ఢోకా లేదు. ఐతే వ్యయ స్థానంలో ఉన్న రాహు/శని సంచారం వల్ల <span class="highlight">అనాలోచిత పెట్టుబడుల వల్ల ధన నష్టం</span> రాకుండా జాగ్రత్త వహించడం ఆవశ్యకం.`;
-            } else {
-                bhavaText = `సుఖ స్థానమైన <b>చతుర్థ భావన (4th House)</b> పై అంతర్దశ నాథుడైన ${dashaSub} వీక్షణం ఉన్నందున, గృహ వాతావరణంలో స్వల్ప ఒత్తిడి ఉన్నప్పటికీ ఇష్టదైవ ఆరాధన వల్ల మనఃశాంతి లభిస్తుంది. స్థిరాస్తి సంబంధిత విషయాలలో అనుకూల పరిణామాలు ఉన్నాయి.`;
-            }
+            // Dynamic Progress Scoring Metrics Adjustments
+            let bar1 = 65, bar2 = 70;
+            if(mode === 'daily') { bar1 = 78; bar2 = 65; }
+            else if(mode === 'weekly') { bar1 = 72; bar2 = 82; }
+            else if(mode === 'monthly') { bar1 = 85; bar2 = 75; }
+            else if(mode === 'yearly') { bar1 = 60; bar2 = 90; }
             
-            // Yoga & Dosha Sub-Layer
-            let yogaText = (masterSeed % 2 === 0) ? `మీ కుండలిలో <b>బుధాదిత్య యోగ</b> ప్రభావం వల్ల మేధోపరమైన నిర్ణయాలు కలిసివస్తాయి.` : `మీ జాతకంలో <b>గజకేసరి యోగ</b> సామీప్యత వల్ల విపత్కర పరిస్థితులలో కూడా ఒక అదృశ్య రక్షణ లభిస్తుంది.`;
-            let doshaText = ` కుజ గ్రహ స్థితుల వల్ల స్వల్పంగా ఉన్న దోష ప్రభావాలు కాలక్రమేణా దశా మార్పులతో సమసిపోతాయి.`;
-            
-            document.getElementById('secCareer').innerHTML = bhavaText + "<br><br>" + yogaText + doshaText;
+            document.getElementById('valSpi').innerText = bar1 + "%";
+            document.getElementById('valMen').innerText = bar2 + "%";
+            document.getElementById('fillSpi').style.width = bar1 + "%";
+            document.getElementById('fillMen').style.width = bar2 + "%";
 
-            // Dasha Timeline Real Engine Representation
-            document.getElementById('secPhase').innerHTML = 
-                `ప్రస్తుతం నడుస్తున్న <span class="highlight">${dashaMain} మహాదశ - ${dashaSub} అంతర్దశ</span> కాలమానం మీ జీవితంలో 2026 నాటికి ఒక పటిష్టమైన పునాదిని నిర్దేశిస్తోంది. గోచార రీత్యా శని మరియు గురువుల సంచారం మీ కర్మ స్థానాన్ని ప్రభావితం చేయడం వల్ల, రాబోయే 18 నెలలు అత్యంత కీలకమైన నిర్ణయాలకు వేదిక కాబోతోంది.`;
+            // Local Dynamic Translation Engine Content Layers
+            if(mode === 'daily') {
+                document.getElementById('titlePersonality').innerText = "Daily Core Energy (నేటి ఖగోళ తరంగాలు)";
+                document.getElementById('titleEmotional').innerText = "Daily Mind & Mood (నేటి మనఃస్థితి)";
+                document.getElementById('titleCareer').innerText = "Daily Bhava Influence (నేటి కార్య సిద్ధి)";
+                document.getElementById('titlePhase').innerText = "Daily Transit Aspect (నేటి గోచార వీక్షణం)";
+                document.getElementById('titleAdvice').innerText = "Daily Satvik Practice (నేటి సాత్విక నియమం)";
 
-            // Dynamic Curiosity Hook configuration
-            let curiosityQuestion = "";
-            let waMsg = "";
+                document.getElementById('secPersonality').innerHTML = `నేడు చంద్రుడు మీ జన్మ రాశి నుండి అనుకూల స్థానంలో సంచరించడం వల్ల మానసిక ఉత్తేజం లభిస్తుంది. లగ్నాధిపతి గమనం అనుకూలంగా ఉంది.`;
+                document.getElementById('secEmotional').innerHTML = `ఈ రోజు కొన్ని గంటల పాటు చంద్రునిపై రాహు వీక్షణం ఉండటం వల్ల మధ్యాహ్నం వేళ స్వల్ప గందరగోళం, నిర్ణయాలలో సందిగ్ధత ఏర్పడే అవకాశం ఉంది, మౌనం శ్రేయస్కరం.`;
+                
+                let bText = "";
+                if(d.focus==='career') bText = `మీ 10వ ఇంట కర్మ కారక శని వీక్షణం వల్ల ఉద్యోగంలో పైఅధికారులతో మాట్లాడేటప్పుడు సంయమనం అవసరం. కొత్త బాధ్యతలు దరిచేరుతాయి.`;
+                else if(d.focus==='marriage') bText = `సప్తమ స్థానంలో నక్షత్ర నాథుని సంచారం బంధాల మధ్య సత్సంబంధాలకు దారితీస్తుంది. జీవితభాగస్వామి సలహా కలిసివస్తుంది.`;
+                else if(d.focus==='finance') bText = `ధన స్థానంలో బుధ సంచారం వల్ల నేడు ఆర్థిక లావాదేవీలు ఫలవంతం అవుతాయి. అనవసర ఖర్చులు తగ్గుతాయి.`;
+                else bText = `చతుర్థ భావన ప్రశాంతంగా ఉంది. కుటుంబ సభ్యులతో గడిపే సమయం మానసిక ఉపశమనాన్ని ఇస్తుంది.`;
+                document.getElementById('secCareer').innerHTML = bText;
 
-            if (focus === 'career') {
-                curiosityQuestion = `"మీ స్పష్ట లగ్న కోణములు మరియు D-10 దశమాంశ చక్రం ప్రకారం, ప్రస్తుతం ఉన్న కెరీర్ ఒత్తిడులు పూర్తిగా తొలిగిపోయి మీ అధికార వృద్ధికి మార్గం సుగమం చేసే ఆ ఖచ్చితమైన సుముహూర్త కాలం ఎప్పుడు ప్రారంభమవబోతోంది?"`;
-                waMsg = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. నా జన్మ పత్రికా సాంకేతిక నివేదిక చూశాను. నా D-10 చక్రం మరియు వృత్తి స్థిరత్వ కాల నిర్ణయ వివరాల కోసం సంప్రదిస్తున్నాను.`;
-            } else if (focus === 'marriage') {
-                curiosityQuestion = `"మీ నవమాంశ (D-9) వర్గ చక్రంలోని సప్తమ భావ దోష తీవ్రతను అనుసరించి, దాంపత్య జీవితంలోని అపార్థాలు తొలగిపోయి గ్రహ శాంతి చేకూరే ఆ సరైన వేద పరిహార ముహూర్తం ఏది?"`;
-                waMsg = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. జాతక నివేదిక చూశాను. నా D-9 నవమాంశ చక్ర దోష నివారణల కోసం సంప్రదిస్తున్నాను.`;
-            } else if (focus === 'finance') {
-                curiosityQuestion = `"ధన స్థానాధిపతి దశా కాల గమనం ఆధారంగా, మీకున్న రుణ పీడనలు తొలగిపోయి లక్ష్మీ కటాక్ష సిద్ధి కలిగించే ఆ ఖచ్చితమైన గ్రహ పరివర్తన సమయం ఏది కాబోతోంది?"`;
-                waMsg = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. నా కుండలిలోని ధన-లాభ స్థానాల సమగ్ర విశ్లేషణ కొరకు సంప్రదిస్తున్నాను.`;
-            } else {
-                curiosityQuestion = `"మీ సుఖ స్థానాన్ని పీడిస్తున్న ఆ అంతర్గత గ్రహ వీక్షణం ఏది? మానసిక ప్రశాంతతను, గృహ శాంతిని ప్రసాదించే ఆ విశిష్ట వేద రక్షా సూత్ర విధానం ఏమిటి?"`;
-                waMsg = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${name}. నా నివేదిక చూశాను. మానసిక ఒత్తిడి నివారణ మరియు గృహ శాంతి పరిహారాల కోసం సంప్రదిస్తున్నాను.`;
+                document.getElementById('secPhase').innerHTML = `ఈ రోజు నడుస్తున్న సూక్ష్మ అంతర్దశ కారకుడు <span class="highlight">${d.dashaSub}</span> అవ్వడం వల్ల సాయంత్రం 5 గంటల తర్వాత అనుకోని సానుకూల వార్తలు వింటారు.`;
+                document.getElementById('secAdvice').innerHTML = `నేటి పరిహారం: ఉదయం పూట ఓం నమో నారాయణాయ మంత్ర స్మరణ మరియు ఇష్టదైవానికి కర్పూర హారతి ఇవ్వడం వల్ల నెగిటివ్ ఎనర్జీ తొలగిపోతుంది.`;
+                
+                document.getElementById('curiosityQuestionText').innerText = `"నేటి గ్రహాల సూక్ష్మ సంచార రేఖాంశముల ఆధారంగా, ఈ రోజు సాయంత్రం లోపు మీకు అనుకూలంగా మారబోయే ఆ ఒక్క అదృష్ట ముహూర్త కాలం ఏది?"`;
+
+            } else if(mode === 'weekly') {
+                document.getElementById('titlePersonality').innerText = "Weekly Planetary Trend (ఈ వార గ్రహ గమనం)";
+                document.getElementById('titleEmotional').innerText = "Weekly Mind Balance (వారసత్వ మనోభావాలు)";
+                document.getElementById('titleCareer').innerText = "Weekly Professional Alignment (వారఫలం - జీవన స్థితి)";
+                document.getElementById('titlePhase').innerText = "Weekly Timeline Arc (వార దశా సంధి ప్రభావం)";
+                document.getElementById('titleAdvice').innerText = "Weekly Remedial Path (వార పరిహార క్రియ)";
+
+                document.getElementById('secPersonality').innerHTML = `ఈ వారం సూర్యుని గమనం మీ లగ్నానికి ఉపచయ స్థానంలో ఉండటం వల్ల ఆత్మవిశ్వాసం పెరుగుతుంది. శత్రువులపై విజయం సాధిస్తారు.`;
+                document.getElementById('secEmotional').innerHTML = `వారమధ్యంలో చంద్రుడు అష్టమ రాశిలో ప్రవేశించేటప్పుడు కాస్త మానసిక ఆందోళన, శారీరక బద్ధకం ఉండే సూచనలు ఉన్నాయి. ప్రయాణాలలో జాగ్రత్త అవసరం.`;
+                
+                let bText = "";
+                if(d.focus==='career') bText = `వృత్తిపరంగా ఈ వారం సానుకూల మార్పులు ఉంటాయి. చాలా రోజులుగా ఆగుతున్న పనులు బుధవారం తర్వాత వేగం పుంజుకుంటాయి.`;
+                else if(d.focus==='marriage') bText = `బంధాల మధ్య ఉన్న పాత అపార్థాలు తొలగిపోవడానికి ఈ వారంలోని గురు సంచారం అద్భుతంగా సహకరిస్తుంది.`;
+                else if(d.focus==='finance') bText = `ఆర్థికంగా నూతన ఆదాయ వనరులు వెతుక్కునే ప్రయత్నాలు సఫలం అవుతాయి. శుక్రుని అనుకూలత వల్ల ధన యోగం కనిపిస్తోంది.`;
+                else bText = `గృహంలో శుభకార్య చర్చలకు ఈ వారం ఎంతో అనుకూలమైనదిగా గ్రహాలు సూచిస్తున్నాయి.`;
+                document.getElementById('secCareer').innerHTML = bText;
+
+                document.getElementById('secPhase').innerHTML = `ఈ వారం వింశోత్తరి అంతర్దశ నాథుడైన <span class="highlight">${d.dashaSub}</span> యొక్క అనుకూల కిరణాల వల్ల కోర్టు లేదా భూసంబంధిత వివాదాలు సానుకూలంగా మారుతాయి.`;
+                document.getElementById('secAdvice').innerHTML = `వార పరిహారం: ప్రతి మంగళవారం లేదా శనివారం నాడు హనుమాన్ చాలీసా పఠించడం మరియు పేదలకు అన్నదానం చేయడం వల్ల కర్మ దోషాలు సమసిపోతాయి.`;
+                
+                document.getElementById('curiosityQuestionText').innerText = `"ఈ వారంలో రాబోయే రాహుకాల వేధను దాటుకుని, మీ కెరీర్ లేదా వ్యక్తిగత నిర్ణయాలు వంద శాతం సక్సెస్ అవ్వడానికి ఏ రోజు ముహూర్తం ఎంచుకోవాలి?"`;
+
+            } else if(mode === 'monthly') {
+                document.getElementById('titlePersonality').innerText = "Monthly Astrological View (ఈ నెల మాసఫలం)";
+                document.getElementById('titleEmotional').innerText = "Monthly Subconscious State (మాసిక అంతరంగ స్థితి)";
+                document.getElementById('titleCareer').innerText = "Monthly Bhava Core (ఈ నెల కార్య సాధన)";
+                document.getElementById('titlePhase').innerText = "Monthly Major Shift (మాస దశా విశ్లేషణ)";
+                document.getElementById('titleAdvice').innerText = "Monthly Satvik Guidance (మాస నివారణ మార్గం)";
+
+                document.getElementById('secPersonality').innerHTML = `ఈ మాసంలో కుజ గ్రహం మరియు సూర్యుని కలయిక వల్ల మీలో లీడర్‌షిప్ క్వాలిటీస్ పెరుగుతాయి. సమాజంలో పెద్దల మద్దతు లభిస్తుంది.`;
+                document.getElementById('secEmotional').innerHTML = `మానసికంగా ఈ నెల ప్రశాంతత ఉంటుంది. పాత టెన్షన్లు తొలగిపోయి భవిష్యత్తుపై స్పష్టమైన అవగాహన ఏర్పడుతుంది.`;
+                
+                let bText = "";
+                if(d.focus==='career') bText = `ఉద్యోగంలో స్థానచలన లేదా నూతన ప్రాజెక్ట్ వచ్చే అవకాశాలు దట్టంగా ఉన్నాయి. 10వ ఇంట గ్రహాల కూటమి అనుకూలంగా ఉంది.`;
+                else if(d.focus==='marriage') bText = `వివాహ ప్రయత్నాలు చేస్తున్న వారికి ఈ నెల చివరి వారంలో ఒక స్పష్టమైన మరియు అనుకూలమైన సంబంధం కుదిరే యోగం ఉంది.`;
+                else if(d.focus==='finance') bText = `పెట్టుబడులకు ఈ నెల సాధారణంగా ఉంటుంది. ఊహాజనిత వ్యాపారాల (Speculation) జోలికి వెళ్ళకుండా ఉండటం మంచిది.`;
+                else bText = `మానసిక సుఖాన్ని ఇచ్చే చతుర్థ స్థానంపై శుభ గ్రహ వీక్షణం వల్ల గృహోపకరణాలు కొనుగోలు చేస్తారు.`;
+                document.getElementById('secCareer').innerHTML = bText;
+
+                document.getElementById('secPhase').innerHTML = `ప్రస్తుత <span class="highlight">${d.dashaMain} మహాదశ</span> ఈ నెలలో తన స్వరూపాన్ని మార్చుకుంటూ, శని గోచారంతో అనుసంధానమై కొత్త ఆదాయ మార్గాలను చూపిస్తుంది.`;
+                document.getElementById('secAdvice').innerHTML = `మాస పరిహారం: ఈ నెలలో వచ్చే ప్రదోష వ్రతం నాడు శివాభిషేకం చేయించడం లేదా సత్యనారాయణ స్వామి వ్రతాన్ని ఆచరించడం ఉత్తమం.`;
+                
+                document.getElementById('curiosityQuestionText').innerText = `"ఈ నెలలో జరగబోయే సూర్య-బుధ గ్రహాల రాశి పరివర్తనం వల్ల మీ కుండలిలోని రాజయోగం ఏ తేదీన యాక్టివేట్ కాబోతోంది?"`;
+
+            } else if(mode === 'yearly') {
+                document.getElementById('titlePersonality').innerText = "Yearly Transit Destiny (2026 వర్షఫలం)";
+                document.getElementById('titleEmotional').innerText = "Yearly Evolution Curve (సంవత్సర మానసిక స్థితి)";
+                document.getElementById('titleCareer').innerText = "Yearly Bhava Destiny (సుదీర్ఘ కర్మ స్థాన బలం)";
+                document.getElementById('titlePhase').innerText = "Yearly Vimshottari Node (సుదీర్ఘ దశా కాల చక్రం)";
+                document.getElementById('titleAdvice').innerText = "Yearly Satvik Evolution (సంవత్సర పరిహార నియమాలు)";
+
+                document.getElementById('secPersonality').innerHTML = `2026 సంవత్సరంలో శని దేవుడు మీన రాశిలో మరియు గురువు మిథున రాశిలో సంచరించడం మీ జాతక చక్రానికి పెద్ద మలుపు కాబోతోంది. ఇది స్థిరత్వాన్ని ఇచ్చే సంవత్సరం.`;
+                document.getElementById('secEmotional').innerHTML = `గత రెండేళ్లుగా ఉన్న మానసిక సందిగ్ధత, శూన్యత ఈ ఏడాది పూర్తిగా తొలగిపోతాయి. ఆధ్యాత్మిక చైతన్యం వైపు మీ అడుగులు పడతాయి.`;
+                
+                let bText = "";
+                if(d.focus==='career') bText = `కెరీర్ పరంగా 2026 అద్భుతమైన ఎదుగుదలను ఇస్తుంది. దశమాంశ (D-10) చక్రం ప్రకారం, అక్టోబర్ 2026 లోపు ఉన్నత పదవి లేదా వ్యాపార విస్తరణ ఖాయంగా కనిపిస్తోంది.`;
+                else if(d.focus==='marriage') bText = `నవమాంశ (D-9) చక్రంలో గురు దృష్టి పడటం వల్ల దంపతుల మధ్య సయోధ్య కుదురుతుంది, అవివాహితులకు గట్టి సంబంధం నిశ్చయం అవుతుంది.`;
+                else if(d.focus==='finance') bText = `ఆర్థిక సామ్రాజ్యం బలపడుతుంది. గతంలో ఆగిపోయిన మొండి బకాయిలు వసూలు అవుతాయి. ఆస్తి కొనుగోలు యోగం బలంగా ఉంది.`;
+                else bText = `కుటుంబ సౌఖ్యం, వాహన యోగం మరియు సొంత ఇల్లు నిర్మించాలనే కల నెరవేరడానికి గ్రహాలు సంపూర్ణంగా సహకరిస్తాయి.`;
+                document.getElementById('secCareer').innerHTML = bText;
+
+                document.getElementById('secPhase').innerHTML = `ఈ ఏడాది పొడవునా నడిచే <span class="highlight">${d.dashaMain} మహాదశ</span> మీ జీవితంలో ఒక మేజర్ లైఫ్ స్టైల్ చేంజ్ ని తీసుకురాబోతోంది. ఇది పరిణతిని ఇచ్చే కాలం.`;
+                document.getElementById('secAdvice').innerHTML = `సంవత్సర పరిహారం: ఇష్టదైవ నామస్మరణతో పాటు, ప్రతి ఏకాదశి నాడు ఉపవాసం ఉండటం మరియు మీ సంపాదనలో కొంత భాగాన్ని నిరుపేదల చదువుకు దానం చేయడం అత్యున్నత ఫలితాలను ఇస్తుంది.`;
+                
+                document.getElementById('curiosityQuestionText').innerText = `"2026 వర్షఫల సిద్ధాంతం ప్రకారం, మీ జాతకంలో ఉన్న పితృదోషం లేదా శని వేధ పూర్తిగా తొలగిపోయి అఖండ ధనలాభం కలిగే ఆ మహోత్కృష్ట నెల ఏది?"`;
             }
 
-            document.getElementById('curiosityQuestionText').innerText = curiosityQuestion;
-
+            // Dynamically update WhatsApp consultation deep-link mapping
             const whatsappNumber = "917981587505";
+            let waMsg = `నమస్తే సిద్ధాంతి గారు, నా పేరు ${d.name}. నా స్పష్ట జాతక వివరాలు చూశాను. నా కుండలి ఆధారిత ${mode.toUpperCase()} కాల నిర్ణయం మరియు పరిహారాల పూర్తి వివరాల కోసం సంప్రదిస్తున్నాను.`;
             whatsappBtn.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(waMsg)}`;
         }
     </script>
