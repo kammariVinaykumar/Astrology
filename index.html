@@ -18,57 +18,91 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 40px 20px; /* Added padding for zoom controls */
+            padding: 20px;
+            /* Zoom feature fallback for some browsers */
+            transition: zoom 0.2s ease;
         }
+        
+        /* --- ZOOM CONTROLS --- */
+        .zoom-controls {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+        .zoom-btn {
+            background: rgba(91, 33, 182, 0.9);
+            color: #facc15;
+            border: 1px solid #facc15;
+            padding: 8px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            transition: 0.2s;
+        }
+        .zoom-btn:hover {
+            background: #facc15;
+            color: #140526;
+            transform: scale(1.05);
+        }
+
         .stars {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: transparent url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/123163/stars.png') repeat;
             z-index: 1; opacity: 0.06; pointer-events: none;
         }
-        
-        /* Zoom Controls */
-        .zoom-controls {
-            position: fixed; top: 15px; right: 20px; z-index: 1000; display: flex; gap: 10px;
-        }
-        .zoom-controls button {
-            background: rgba(12, 3, 25, 0.9); border: 1px solid #facc15; color: #facc15;
-            padding: 8px 14px; border-radius: 8px; cursor: pointer; font-weight: bold;
-            font-size: 16px; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-        .zoom-controls button:hover {
-            background: #facc15; color: #140526; transform: translateY(-2px);
-        }
-
         .container {
             background: rgba(12, 3, 25, 0.97);
             border: 1px solid rgba(168, 85, 247, 0.22);
             border-radius: 24px;
             padding: 40px;
-            width: 100%; max-width: 780px;
+            width: 100%; max-width: 760px;
             box-shadow: 0 30px 70px rgba(0, 0, 0, 0.9), inset 0 1px 2px rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(20px);
             z-index: 2; position: relative;
-            transition: transform 0.3s ease;
+            transition: transform 0.2s ease;
+            transform-origin: top center;
         }
-        .header { text-align: center; margin-bottom: 35px; }
+        
+        .header { text-align: center; margin-bottom: 25px; }
         .header .logo {
             font-family: 'Cinzel', serif;
-            font-size: 28px; font-weight: 700; letter-spacing: 6px;
+            font-size: 30px; font-weight: 700; letter-spacing: 6px;
             color: #facc15; text-shadow: 0 0 20px rgba(250, 204, 21, 0.25);
+            margin-bottom: 10px;
         }
         .header p {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 15px; color: #a494c4; margin-top: 8px;
-            letter-spacing: 2px; text-transform: uppercase; font-weight: 600;
+            font-size: 16px; color: #a494c4; margin-top: 8px;
+            letter-spacing: 2px; text-transform: uppercase;
         }
+
+        /* --- NEW LIVE DATE DISPLAY --- */
+        .header-date {
+            text-align: center;
+            font-size: 16px;
+            color: #facc15;
+            margin-bottom: 30px;
+            font-family: 'Noto Sans Telugu', sans-serif;
+            border: 1px dashed rgba(250, 204, 21, 0.4);
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(0,0,0,0.4);
+            font-weight: 500;
+        }
+
         .form-group { margin-bottom: 22px; }
         .form-group label {
             display: block; font-size: 15px; color: #b072f1;
-            margin-bottom: 8px; font-weight: 600; letter-spacing: 0.5px;
+            margin-bottom: 8px; font-weight: 500; letter-spacing: 0.5px;
         }
         .form-control {
-            width: 100%; padding: 14px 18px;
+            width: 100%; padding: 15px 18px;
             background: rgba(4, 1, 15, 0.9);
             border: 1px solid rgba(168, 85, 247, 0.25);
             border-radius: 10px; color: #fff; font-size: 16px;
@@ -83,8 +117,8 @@
             width: 100%; padding: 18px;
             background: linear-gradient(135deg, #441787 0%, #5b21b6 100%);
             border: 1px solid rgba(250, 204, 21, 0.2); border-radius: 10px;
-            color: #fff; font-family: 'Cinzel', serif; font-size: 16px;
-            font-weight: 700; letter-spacing: 1px; cursor: pointer;
+            color: #fff; font-family: 'Cinzel', serif; font-size: 17px;
+            font-weight: 600; letter-spacing: 1px; cursor: pointer;
             transition: 0.3s; box-shadow: 0 4px 20px rgba(76, 29, 149, 0.25);
             margin-top: 15px;
         }
@@ -99,10 +133,10 @@
         }
         .rashi-section-title {
             font-family: 'Cinzel', serif; text-align: center; color: #facc15;
-            font-size: 18px; letter-spacing: 2px; margin-bottom: 25px; font-weight: 600;
+            font-size: 18px; letter-spacing: 2px; margin-bottom: 20px;
         }
         .rashi-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 25px;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px;
         }
         .rashi-card {
             background: rgba(4, 1, 15, 0.7); border: 1px solid rgba(168, 85, 247, 0.15);
@@ -110,11 +144,11 @@
             transition: 0.2s ease;
         }
         .rashi-card:hover, .rashi-card.active {
-            border-color: #facc15; background: rgba(91, 33, 182, 0.2);
-            box-shadow: 0 0 10px rgba(250, 204, 21, 0.15);
+            border-color: #facc15; background: rgba(91, 33, 182, 0.3);
+            box-shadow: 0 0 15px rgba(250, 204, 21, 0.2);
         }
         .rashi-icon { font-size: 22px; margin-bottom: 6px; display: block; }
-        .rashi-name { font-size: 14px; color: #ebd9ff; font-weight: 600; }
+        .rashi-name { font-size: 15px; color: #ebd9ff; font-weight: 500; }
         
         .rashi-result-box {
             background: rgba(4, 1, 15, 0.9); border: 1px solid rgba(250, 204, 21, 0.2);
@@ -122,28 +156,28 @@
             animation: fadeIn 0.4s ease;
         }
         .rashi-result-header {
-            font-family: 'Cinzel', serif; color: #facc15; font-size: 16px; font-weight: bold;
+            font-family: 'Cinzel', serif; color: #facc15; font-size: 16px;
             margin-bottom: 12px; display: flex; justify-content: space-between;
             border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 10px;
         }
-        .rashi-result-text { font-size: 16px; line-height: 1.8; color: #ebd9ff; text-align: justify; }
+        .rashi-result-text { font-size: 16.5px; line-height: 1.8; color: #ebd9ff; text-align: justify; }
         
         /* Loading Phase */
         .loading-box { display: none; text-align: center; padding: 60px 20px; }
         .spinner {
-            width: 55px; height: 55px; border: 3px dashed rgba(250, 204, 21, 0.2);
+            width: 60px; height: 60px; border: 3px dashed rgba(250, 204, 21, 0.2);
             border-radius: 50%; border-top-color: #facc15; border-bottom-color: #facc15;
             animation: spin 1.4s linear infinite; margin: 0 auto 25px auto;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .loading-text { font-size: 16px; color: #ebd9ff; font-style: italic; }
+        .loading-text { font-size: 17px; color: #ebd9ff; font-style: italic; }
         
         /* Results Presentation */
         .result-box { display: none; animation: fadeIn 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         .result-title {
-            font-family: 'Cinzel', serif; font-size: 20px; color: #facc15; font-weight: bold;
+            font-family: 'Cinzel', serif; font-size: 20px; color: #facc15;
             text-align: center; margin-bottom: 12px; letter-spacing: 2px;
         }
         
@@ -152,7 +186,7 @@
             text-align: center; font-size: 15px; color: #a494c4; margin-bottom: 25px;
             border-bottom: 1px solid rgba(250, 204, 21, 0.15); padding-bottom: 15px;
         }
-        .live-report-date span { color: #facc15; font-weight: 600; }
+        .live-report-date span { color: #facc15; font-weight: 500; }
 
         .summary-matrix {
             background: rgba(4, 1, 15, 0.6); border: 1px solid rgba(168, 85, 247, 0.2);
@@ -160,7 +194,7 @@
             display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px 20px;
         }
         .matrix-item { font-size: 15px; color: #a494c4; border-bottom: 1px dashed rgba(168, 85, 247, 0.08); padding-bottom: 8px; }
-        .matrix-item span { color: #fff; font-weight: 600; margin-left: 6px; }
+        .matrix-item span { color: #fff; font-weight: 500; margin-left: 4px; }
 
         .timeline-tabs {
             display: flex; background: rgba(4, 1, 15, 0.8);
@@ -170,7 +204,7 @@
         .tab-btn {
             flex: 1; padding: 12px; background: transparent; border: none;
             color: #a494c4; font-family: 'Cinzel', serif; font-size: 14px;
-            font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.2s ease;
+            font-weight: 600; border-radius: 8px; cursor: pointer; transition: 0.2s ease;
         }
         .tab-btn.active {
             background: linear-gradient(135deg, #5b21b6 0%, #4c1d95 100%);
@@ -179,74 +213,75 @@
 
         .deg-container {
             background: rgba(4, 1, 15, 0.4); border: 1px solid rgba(168, 85, 247, 0.15);
-            border-radius: 12px; padding: 16px 20px; margin-bottom: 25px;
+            border-radius: 12px; padding: 18px 20px; margin-bottom: 25px;
             display: flex; flex-wrap: wrap; gap: 12px 20px; justify-content: space-between;
         }
-        .deg-item { font-size: 14px; color: #b2a4d4; }
-        .deg-item b { color: #facc15; font-weight: 600; }
+        .deg-item { font-size: 15px; color: #b2a4d4; }
+        .deg-item b { color: #facc15; font-weight: 500; }
 
         .energy-section {
             background: rgba(4, 1, 15, 0.3); border: 1px solid rgba(168, 85, 247, 0.12);
-            border-radius: 14px; padding: 20px 24px; margin-bottom: 30px;
+            border-radius: 14px; padding: 22px 25px; margin-bottom: 30px;
         }
-        .energy-label { display: flex; justify-content: space-between; font-size: 14px; color: #a494c4; margin-bottom: 8px; font-weight: 500; }
-        .energy-track { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.03); border-radius: 10px; overflow: hidden; }
+        .energy-label { display: flex; justify-content: space-between; font-size: 15px; color: #a494c4; margin-bottom: 8px; }
+        .energy-track { width: 100%; height: 8px; background: rgba(255, 255, 255, 0.03); border-radius: 10px; overflow: hidden; }
         .energy-fill { height: 100%; background: linear-gradient(90deg, #5b21b6, #facc15); border-radius: 10px; width: 0%; transition: width 1.6s ease; }
 
         .section-block { margin-bottom: 30px; }
         .section-title {
             font-family: 'Cinzel', serif; color: #facc15; font-size: 16px;
-            letter-spacing: 2px; margin-bottom: 12px; font-weight: 700;
+            letter-spacing: 2px; margin-bottom: 12px; font-weight: 600;
             border-left: 4px solid #6d28d9; padding-left: 12px;
         }
-        .prediction-text { font-size: 16px; line-height: 1.85; color: #ebd9ff; text-align: justify; }
-        .highlight { color: #facc15; font-weight: 600; }
+        .prediction-text { font-size: 16.5px; line-height: 1.85; color: #ebd9ff; text-align: justify; }
+        .highlight { color: #facc15; font-weight: 500; }
         
         .curiosity-box {
             background: rgba(4, 1, 15, 0.7); border: 1px solid rgba(250, 204, 21, 0.18);
-            border-radius: 16px; padding: 32px; text-align: center; margin-top: 40px; margin-bottom: 25px;
+            border-radius: 16px; padding: 30px; text-align: center; margin-top: 40px; margin-bottom: 30px;
         }
-        .curiosity-title { font-family: 'Cinzel', serif; color: #facc15; font-weight: 700; font-size: 16px; letter-spacing: 2px; margin-bottom: 15px; }
+        .curiosity-title { font-family: 'Cinzel', serif; color: #facc15; font-weight: 600; font-size: 16px; letter-spacing: 2px; margin-bottom: 15px; }
         .curiosity-question {
             font-family: 'Cormorant Garamond', serif; font-size: 19px; color: #fff;
             line-height: 1.7; margin-bottom: 25px; background: rgba(0, 0, 0, 0.35);
-            padding: 20px; border-radius: 8px; border-left: 4px solid #facc15; text-align: left; font-weight: 500;
+            padding: 22px; border-radius: 8px; border-left: 4px solid #facc15; text-align: left;
         }
         .btn-whatsapp {
             display: inline-block; padding: 16px 35px; background: #166534; color: white;
             text-decoration: none; border-radius: 8px; font-family: 'Cinzel', serif;
-            font-weight: 700; font-size: 15px; letter-spacing: 1px; transition: 0.3s;
+            font-weight: 600; font-size: 16px; letter-spacing: 1px; transition: 0.3s;
             box-shadow: 0 4px 15px rgba(22, 101, 52, 0.2); border: 1px solid rgba(250, 204, 21, 0.12);
         }
         .btn-whatsapp:hover { background: #14532d; transform: translateY(-2px); border-color: #facc15; }
-        .disclaimer { text-align: center; font-size: 13px; color: #9f8fbf; opacity: 0.55; line-height: 1.6; }
+        .disclaimer { text-align: center; font-size: 14px; color: #9f8fbf; opacity: 0.55; line-height: 1.6; }
         
         @media (max-width: 480px) {
             .row { flex-direction: column; gap: 0; }
             .container { padding: 25px 16px; }
             .summary-matrix { grid-template-columns: 1fr; gap: 10px; }
-            .timeline-tabs { font-size: 12px; }
+            .timeline-tabs { font-size: 12px; flex-wrap: wrap; }
             .rashi-grid { grid-template-columns: repeat(3, 1fr); }
-            .zoom-controls { top: 5px; right: 5px; }
-            .zoom-controls button { padding: 6px 10px; font-size: 14px; }
+            .zoom-controls { top: 10px; right: 10px; }
         }
     </style>
 </head>
 <body>
 
     <div class="zoom-controls">
-        <button onclick="changeZoom(0.1)" title="Zoom In">🔍 A+</button>
-        <button onclick="changeZoom(-0.1)" title="Zoom Out">🔍 A-</button>
+        <button class="zoom-btn" onclick="zoomIn()" title="Zoom In (పెద్దదిగా)">A+</button>
+        <button class="zoom-btn" onclick="zoomOut()" title="Zoom Out (చిన్నదిగా)">A-</button>
     </div>
 
     <div class="stars"></div>
 
-    <div class="container" id="mainContainer">
+    <div class="container" id="mainAppContainer">
         <div id="mainWorkbench">
             <div class="header">
                 <div class="logo">✦ NAKSHTHRARAASHI ✦</div>
                 <p>Mathematical Sidereal Engine & Deterministic Jyotish Analysis</p>
             </div>
+
+            <div class="header-date" id="topLiveDate">లోడ్ అవుతోంది...</div>
 
             <form id="astrologyForm">
                 <div class="form-group">
@@ -322,7 +357,6 @@
             <div class="live-report-date">ప్రస్తుత గోచార కాలం (Live Transit): <span id="reportLiveDate">--</span></div>
             
             <div class="summary-matrix">
-                <div class="matrix-item">పుట్టిన తేదీ (DOB): <span id="mDobDisplay">--</span></div>
                 <div class="matrix-item">వేద చంద్ర రాశి: <span id="mZodiac">--</span></div>
                 <div class="matrix-item">జనన నక్షత్రం: <span id="mStar">--</span></div>
                 <div class="matrix-item">స్పష్ట లగ్నం (Ascendant): <span id="mLagna">--</span></div>
@@ -346,7 +380,7 @@
                 <div class="energy-label"><span>మానసిక కేంద్రిత శైలి (Moon Aspect Quotient)</span><span id="valSpi">0%</span></div>
                 <div class="energy-track"><div class="energy-fill" id="fillSpi"></div></div>
                 
-                <div class="energy-label" style="margin-top:12px;"><span>కర్మ స్థాన ప్రతిపత్తి (Shadbala Strength Scale)</span><span id="valMen">0%</span></div>
+                <div class="energy-label" style="margin-top:15px;"><span>కర్మ స్థాన ప్రతిపత్తి (Shadbala Strength Scale)</span><span id="valMen">0%</span></div>
                 <div class="energy-track"><div class="energy-fill" id="fillMen"></div></div>
             </div>
 
@@ -378,7 +412,7 @@
             <div class="curiosity-box">
                 <div class="curiosity-title">🔒 వర్గ కుండలి సూక్ష్మ గోచార ప్రశ్న</div>
                 <div class="curiosity-question" id="curiosityQuestionText">...</div>
-                <p style="font-size: 15px; color: #a494c4; margin-bottom: 22px; line-height: 1.6;">మీ లగ్న రేఖాంశముల ఆధారంగా నవమాంశ (D-9) మరియు దశమాంశ (D-10) వర్గ చక్రములలోని గ్రహ వీక్షణలను సమగ్రముగా సిద్ధాంతి గారి ద్వారా విశ్లేషించుకోండి.</p>
+                <p style="font-size: 15px; color: #a494c4; margin-bottom: 20px; line-height: 1.6;">మీ లగ్న రేఖాంశముల ఆధారంగా నవమాంశ (D-9) మరియు దశమాంశ (D-10) వర్గ చక్రములలోని గ్రహ వీక్షణలను సమగ్రముగా సిద్ధాంతి గారి ద్వారా విశ్లేషించుకోండి.</p>
                 <a href="#" id="whatsappBtn" target="_blank" class="btn-whatsapp">వ్యక్తిగత సిద్ధాంత విశ్లేషణ కొరకు వాట్సాప్ చేయండి</a>
             </div>
 
@@ -387,24 +421,28 @@
     </div>
 
     <script>
-        // --- ZOOM IN / OUT FUNCTIONALITY ---
+        // --- ZOOM FUNCTIONALITY ---
         let currentZoom = 1;
-        function changeZoom(step) {
-            currentZoom += step;
-            if(currentZoom < 0.8) currentZoom = 0.8;
-            if(currentZoom > 1.5) currentZoom = 1.5;
-            
-            // Apply zoom for standard browsers (Chrome, Edge, Safari)
+        function zoomIn() {
+            currentZoom += 0.05;
+            if(currentZoom > 1.5) currentZoom = 1.5; // Max zoom
             document.body.style.zoom = currentZoom;
-            
-            // Fallback for Firefox
-            if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-                const container = document.getElementById('mainContainer');
-                container.style.transform = `scale(${currentZoom})`;
-                container.style.transformOrigin = `top center`;
-                container.style.marginBottom = `${(currentZoom - 1) * 100}vh`; // Adjust bottom spacing
-            }
         }
+        function zoomOut() {
+            currentZoom -= 0.05;
+            if(currentZoom < 0.6) currentZoom = 0.6; // Min zoom
+            document.body.style.zoom = currentZoom;
+        }
+
+        // --- LIVE DATE UPDATER (Date, Month, Year, Time) ---
+        function updateLiveDate() {
+            const today = new Date();
+            // Shows explicit Date, Month, Year, Time in Telugu
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit', second:'2-digit' };
+            document.getElementById('topLiveDate').innerText = "ఈ రోజు: " + today.toLocaleDateString('te-IN', options);
+        }
+        setInterval(updateLiveDate, 1000);
+        updateLiveDate(); // Call immediately on load
 
         const form = document.getElementById('astrologyForm');
         const loadingBox = document.getElementById('loadingBox');
@@ -530,6 +568,7 @@
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             mainWorkbench.style.display = 'none';
+            document.getElementById('topLiveDate').style.display = 'none'; // Hide date in loading
             loadingBox.style.display = 'block';
 
             let step = 0;
@@ -544,4 +583,184 @@
             }, 900);
         });
 
-        function processCoreAstrology
+        function processCoreAstrology() {
+            loadingBox.style.display = 'none';
+            resultBox.style.display = 'block';
+
+            const name = document.getElementById('fullName').value;
+            const dob = document.getElementById('dob').value;
+            const tob = document.getElementById('tob').value;
+            const focus = document.getElementById('focusArea').value;
+
+            const astro = calculateSiderealPlanets(dob, tob);
+            const num = getChaldeanMetrics(name, dob);
+            const masterSeed = createSeed(name + dob + tob);
+
+            const nakshatras = [
+                "అశ్విని", "భరణి", "కృత్తిక", "రోహిణి", "మృగశిర", "ఆరుద్ర", "పునర్వసు", "పుష్యమి", "ఆశ్లేష",
+                "మఖ", "పూర్వాఫల్గుణి", "ఉత్తరాఫల్గుణి", "హస్త", "చిత్తా", "స్వాతి", "విశాఖ", "అనూరాధ", "జ్యేష్ఠ",
+                "మూల", "పూర్వాషాఢ", "ఉత్తరాషాఢ", "శ్రవణం", "ధనిష్ఠ", "శతభిషం", "పూర్వాభాద్ర", "ఉత్తరాభాద్ర", "రేవతి"
+            ];
+            const dashaLords = ["కేతువు", "శుక్రుడు", "సూర్యుడు", "చంద్రుడు", "కుజుడు", "రాహువు", "గురువు", "శని దేవుడు", "बुధుడు"];
+            
+            const totalMoonDegrees = astro.Moon.totalLong;
+            const nakIndex = Math.floor(totalMoonDegrees / 13.3333) % 27;
+            const remDeg = totalMoonDegrees % 13.3333;
+            const pada = Math.floor(remDeg / 3.3333) + 1;
+
+            const hour = parseInt(tob.split(':')[0]);
+            const lagnaIndex = Math.floor(((hour + 4) % 24) / 2);
+            const lagnaRashis = ["మేషం", "వృషభం", "మిథునం", "కర్కాటకం", "సింహం", "కన్యా", "తులా", "వృశ్చికం", "ధనుస్సు", "మకరం", "కుంభం", "మీనం"];
+            const exactLagna = lagnaRashis[lagnaIndex];
+
+            const tithiArr = ["ప్రథమ", "ద్వితీయ", "తృతీయ", "చతుర్థి", "పంచమి", "షష్ఠి", "సప్తమి", "అష్టమి", "నవమి", "దశమి", "ఏకాదశి", "ద్వాదశి", "త్రయోదశి", "చతుర్దశి", "పూర్ణిమ"];
+            const derivedTithi = tithiArr[masterSeed % 15] + " తిథి";
+            const dashaMain = dashaLords[(nakIndex) % 9];
+            const dashaSub = dashaLords[(nakIndex + 2) % 9];
+
+            globalCachedData = {
+                name, focus, astro, num, masterSeed, exactLagna, nakshatras, nakIndex, pada, dashaMain, dashaSub, derivedTithi
+            };
+
+            document.getElementById('mZodiac').innerText = astro.Moon.rashi;
+            document.getElementById('mStar').innerText = `${nakshatras[nakIndex]} (${pada}వ పాదం)`;
+            document.getElementById('mLagna').innerText = `${exactLagna} లగ్న భావం`;
+            document.getElementById('mDasha').innerText = `${dashaMain} మహాదశ - ${dashaSub} అంతర్దశ`;
+            document.getElementById('mPanchang').innerText = `${derivedTithi} / సౌమ్య వాసరము`;
+            document.getElementById('mGoChara').innerText = astro.transitString;
+            document.getElementById('mExp').innerText = num.expression;
+            document.getElementById('mDest').innerText = num.destiny;
+
+            document.getElementById('planetaryDegrees').innerHTML = `
+                <div class="deg-item">సూర్యుడు: <b>${astro.Sun.deg}° ${astro.Sun.rashi}</b></div>
+                <div class="deg-item">చంద్రుడు: <b>${astro.Moon.deg}° ${astro.Moon.rashi}</b></div>
+                <div class="deg-item">గురువు: <b>${astro.Jupiter.deg}° ${astro.Jupiter.rashi}</b></div>
+                <div class="deg-item">శని: <b>${astro.Saturn.deg}° ${astro.Saturn.rashi}</b></div>
+                <div class="deg-item">కుజుడు: <b>${astro.Mars.deg}° ${astro.Mars.rashi}</b></div>
+            `;
+
+            switchTimeline('daily');
+        }
+
+        // --- UPGRADED DATE-DRIVEN TIMELINE GENERATOR ---
+        function switchTimeline(mode) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            const clickedBtn = event ? event.target : document.querySelector(`.tab-btn[onclick="switchTimeline('${mode}')"]`);
+            if (clickedBtn) clickedBtn.classList.add('active');
+
+            const d = globalCachedData;
+            if(!d.name) return;
+
+            // Current Live Date Logic for Report
+            const today = new Date();
+            const dayFactor = today.getDate(); 
+            const monthFactor = today.getMonth() + 1; 
+            const currentYear = today.getFullYear(); 
+            const magicSeed = (dayFactor + monthFactor + d.masterSeed) % 5; 
+
+            // Format dynamic date display in Telugu standard (Shows Month and Year clearly)
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('reportLiveDate').innerText = today.toLocaleDateString('te-IN', options);
+
+            let bar1 = 60 + ((dayFactor + 3) % 25); 
+            let bar2 = 55 + ((dayFactor + 7) % 30); 
+            
+            document.getElementById('valSpi').innerText = bar1 + "%";
+            document.getElementById('valMen').innerText = bar2 + "%";
+            document.getElementById('fillSpi').style.width = bar1 + "%";
+            document.getElementById('fillMen').style.width = bar2 + "%";
+
+            if(mode === 'daily') {
+                document.getElementById('titlePersonality').innerText = "Daily Core Energy (నేటి ఖగోళ తరంగాలు)";
+                document.getElementById('titleEmotional').innerText = "Daily Mind & Mood (నేటి మనఃస్థితి)";
+                document.getElementById('titleCareer').innerText = "Daily Bhava Influence (నేటి కార్య సిద్ధి)";
+                document.getElementById('titlePhase').innerText = "Daily Transit Aspect (నేటి గోచార వీక్షణం)";
+                document.getElementById('titleAdvice').innerText = "Daily Satvik Practice (నేటి సాత్విక నియమం)";
+
+                const dailyVariations = [
+                    {
+                        personality: `నేడు చంద్రుడు మీ జన్మ రాశి నుండి అనుకూల స్థానంలో సంచరించడం వల్ల మానసిక ఉత్తేజం లభిస్తుంది. ఆత్మవిశ్వాసంతో ముందడుగు వేస్తారు.`,
+                        emotional: `ఈ రోజు మధ్యాహ్నం వేళ స్వల్ప గందరగోళం, నిర్ణయాలలో సందిగ్ధత ఏర్పడే అవకాశం ఉంది. ప్రశాంతంగా ఉండటం శ్రేయస్కరం.`,
+                        advice: `నేటి పరిహారం: ఉదయం పూట ఓం నమో నారాయణాయ మంత్ర స్మరణ మరియు ఇష్టదైవానికి నైవేద్యం సమర్పించడం వల్ల నెగిటివ్ ఎనర్జీ తొలగిపోతుంది.`
+                    },
+                    {
+                        personality: `నేడు గ్రహాల అనుకూలత వల్ల పెండింగ్ పనులు పూర్తి అవుతాయి. సమాజంలో గౌరవ మర్యాదలు పెరుగుతాయి. ప్రయాణాలు లాభిస్తాయి.`,
+                        emotional: `ఈ రోజు మానసిక ప్రశాంతత లభిస్తుంది. పాత మిత్రులను కలుసుకోవడం వల్ల రోజంతా ఎంతో సంతోషంగా గడుపుతారు.`,
+                        advice: `నేటి పరిహారం: ఈ రోజు ఉదయం సూర్య నమస్కారాలు చేయడం మరియు ఎరుపు రంగు పుష్పాలతో పూజించడం వల్ల కీర్తి పెరుగుతుంది.`
+                    },
+                    {
+                        personality: `ఈ రోజు శారీరక శ్రమ కొంత ఎక్కువగా ఉండే సూచనలు ఉన్నాయి. అనుకోని ఖర్చులు ముందుకు రావచ్చు, బడ్జెట్ పై నియంత్రణ అవసరం.`,
+                        emotional: `బంధుమిత్రులతో మాట్లాడేటప్పుడు కోపతాపాలకు దూరంగా ఉండండి. అనవసర విషయాల్లో జోక్యం చేసుకోవడం మంచిది కాదు.`,
+                        advice: `నేటి పరిహారం: దగ్గరలోని శివాలయ దర్శనం చేసుకోవడం లేదా ఓం నమః శివాయ మంత్రాన్ని 21 సార్లు జపించడం మంచిది.`
+                    },
+                    {
+                        personality: `నేడు మీ రాశిపై శుభ గ్రహాల దృష్టి ఉండటం వల్ల ఆకస్మిక ధనలాభ సూచనలు ఉన్నాయి. నూతన వస్తువులు కొనుగోలు చేస్తారు.`,
+                        emotional: `కుటుంబ సభ్యుల నుండి సంపూర్ణ మద్దతు లభిస్తుంది. మనస్సు ఎంతో తేలికగా, ప్రశాంతంగా మారుతుంది.`,
+                        advice: `నేటి పరిహారం: ఇష్టదైవానికి కర్పూర హారతి ఇవ్వడం మరియు పేదలకు తోచిన సహాయం చేయడం వల్ల యోగం సిద్ధిస్తుంది.`
+                    },
+                    {
+                        personality: `ఈ రోజు పనులలో స్వల్ప ఆటంకాలు ఎదురైనా, సాయంత్రానికి విజయం మీదే అవుతుంది. ఓపిక పట్టడం చాలా అవసరం.`,
+                        emotional: `భవిష్యత్తు గురించి అనవసరమైన ఆలోచనలు పక్కన పెట్టి, ప్రస్తుత పనులపై దృష్టి కేంద్రీకరించడం వల్ల మేలు జరుగుతుంది.`,
+                        advice: `నేటి పరిహారం: ఈ రోజు హనుమాన్ చాలీసా పఠించడం వల్ల సర్వ విఘ్నాలు తొలగిపోయి కార్యసిద్ధి కలుగుతుంది.`
+                    }
+                ];
+
+                let selected = dailyVariations[magicSeed];
+                document.getElementById('secPersonality').innerHTML = selected.personality;
+                document.getElementById('secEmotional').innerHTML = selected.emotional;
+                
+                let bText = "";
+                if(d.focus==='career') {
+                    const careerTexts = [
+                        `మీ 10వ ఇంట కర్మ కారక శని వీక్షణం వల్ల ఉద్యోగంలో పైఅధికారులతో మాట్లాడేటప్పుడు సంయమనం అవసరం. కొత్త బాధ్యతలు దరిచేరుతాయి.`,
+                        `ఉద్యోగ వాతావరణం అనుకూలిస్తుంది. మీ శ్రమకు తగిన ప్రశంసలు లభిస్తాయి. నూతన ఉద్యోగ ప్రయత్నాలకు ఈ రోజు అనుకూలం.`,
+                        `సహోద్యోగులతో చిన్నపాటి విభేదాలు వచ్చే సూచనలు ఉన్నాయి. మీ పనిపై మాత్రమే శ్రద్ధ పెట్టడం ఈ రోజు అత్యంత ముఖ్యం.`
+                    ];
+                    bText = careerTexts[dayFactor % 3];
+                } else if(d.focus==='marriage') {
+                    bText = `సપ્તమ స్థానంలో నక్షత్ర నాథుని సంచారం బంధాల మధ్య సత్సంబంధాలకు దారితీస్తుంది. జీవితభాగస్వామి సలహా కలిసివస్తుంది.`;
+                } else if(d.focus==='finance') {
+                    bText = `ధన స్థానంలో బుధ సంచారం వల్ల నేడు ఆర్థిక లావాదేవీలు ఫలవంతం అవుతాయి. అనవసర ఖర్చులు తగ్గుతాయి.`;
+                } else {
+                    bText = `చతుర్థ భావన ప్రశాంతంగా ఉంది.కుటుంబ సభ్యులతో గడిపే సమయం మానసిక ఉపశమనాన్ని ఇస్తుంది.`;
+                }
+                document.getElementById('secCareer').innerHTML = bText;
+                document.getElementById('secPhase').innerHTML = `ఈ రోజు నడుస్తున్న సూక్ష్మ అంతర్దశ కారకుడు <span class="highlight">${d.dashaSub}</span> అవ్వడం వల్ల సాయంత్రం వేళ అనుకోని సానుకూల మార్పులు చూస్తారు.`;
+                document.getElementById('secAdvice').innerHTML = selected.advice;
+                
+                document.getElementById('curiosityQuestionText').innerText = `"నేటి గ్రహాల సూక్ష్మ సంచార రేఖాంశముల ఆధారంగా, ఈ రోజు సాయంత్రం లోపు మీకు అనుకూలంగా మారబోయే ఆ ఒక్క అదృష్ట ముహూర్త కాలం ఏది?"`;
+
+            } else if(mode === 'weekly') {
+                document.getElementById('titlePersonality').innerText = "Weekly Planetary Trend (ఈ వార గ్రహ గమనం)";
+                document.getElementById('titleEmotional').innerText = "Weekly Mind Balance (వారసత్వ మనోభావాలు)";
+                document.getElementById('titleCareer').innerText = "Weekly Professional Alignment (వారఫలం - జీవన స్థితి)";
+                document.getElementById('titlePhase').innerText = "Weekly Timeline Arc (వార దశా సంధి ప్రభావం)";
+                document.getElementById('titleAdvice').innerText = "Weekly Remedial Path (వార పరిహార క్రియ)";
+
+                document.getElementById('secPersonality').innerHTML = `ఈ వారం సూర్యుని గమనం మీ లగ్నానికి అనుకూల స్థానంలో ఉండటం వల్ల ఆత్మవిశ్వాసం పెరుగుతుంది. శత్రువులపై విజయం సాధిస్తారు.`;
+                document.getElementById('secEmotional').innerHTML = `వారమధ్యంలో చంద్రుని సంచారం వల్ల కాస్త మానసిక ఆందోళన ఉండే సూచనలు ఉన్నాయి. ప్రయాణాలలో జాగ్రత్త అవసరం.`;
+                document.getElementById('secCareer').innerHTML = `వృత్తిపరంగా ఈ వారం సానుకూల మార్పులు ఉంటాయి. చాలా రోజులుగా ఆగుతున్న పనులు బుధవారం తర్వాత వేగం పుంజుకుంటాయి.`;
+                document.getElementById('secCareer').innerHTML += `<br><br><b>ఈ వారపు విశేషం:</b> మీ శ్రమకు తగిన ఆదాయ మార్గాలు మెరుగుపడతాయి.`;
+                document.getElementById('secPhase').innerHTML = `ఈ వారం వింశోత్తరి అంతర్దశ నాథుడైన <span class="highlight">${d.dashaSub}</span> యొక్క అనుకూల కిరణాల వల్ల పాత వివాదాలు సానుకూలంగా మారుతాయి.`;
+                document.getElementById('secAdvice').innerHTML = `వార పరిహారం: ప్రతి మంగళవారం లేదా శనివారం నాడు హనుమాన్ చాలీసా పఠించడం వల్ల కర్మ దోషాలు సమసిపోతాయి.`;
+                document.getElementById('curiosityQuestionText').innerText = `"ఈ వారంలో రాబోయే రాహుకాల వేధను దాటుకుని, మీ కెరీర్ లేదా వ్యక్తిగత నిర్ణయాలు వంద శాతం సక్సెస్ అవ్వడానికి ఏ రోజు ముహూర్తం ఎంచుకోవాలి?"`;
+
+            } else if(mode === 'monthly') {
+                document.getElementById('titlePersonality').innerText = "Monthly Astrological View (ఈ నెల మాసఫలం)";
+                document.getElementById('titleEmotional').innerText = "Monthly Subconscious State (మాసిక అంతరంగ స్థితి)";
+                document.getElementById('titleCareer').innerText = "Monthly Bhava Core (ఈ నెల కార్య సాధన)";
+                document.getElementById('titlePhase').innerText = "Monthly Major Shift (మాస దశా విశ్లేషణ)";
+                document.getElementById('titleAdvice').innerText = "Monthly Satvik Guidance (మాస నివారణ మార్గం)";
+
+                document.getElementById('secPersonality').innerHTML = `ఈ మాసంలో కుజ గ్రహం మరియు సూర్యుని కలయిక వల్ల మీలో లీడర్‌షిప్ క్వాలిటీస్ పెరుగుతాయి. సమాజంలో పెద్దల మద్దతు లభిస్తుంది.`;
+                document.getElementById('secEmotional').innerHTML = `మానసికంగా ఈ నెల ప్రశాంతత ఉంటుంది. పాత టెన్షన్లు తొలగిపోయి భవిష్యత్తుపై స్పష్టమైన అవగాహన ఏర్పడుతుంది.`;
+                document.getElementById('secCareer').innerHTML = `ఉద్యోగంలో స్థానచలన లేదా నూతన ప్రాజెక్ట్ వచ్చే అవకాశాలు దట్టంగా ఉన్నాయి. 10వ ఇంట గ్రహాల కూటమి అనుకూలంగా ఉంది.`;
+                document.getElementById('secPhase').innerHTML = `ప్రస్తుత <span class="highlight">${d.dashaMain} మహాదశ</span> ఈ నెలలో తన స్వరూపాన్ని మార్చుకుంటూ, శని గోచారంతో అనుసంధానమై కొత్త ఆదాయ మార్గాలను చూపిస్తుంది.`;
+                document.getElementById('secAdvice').innerHTML = `మాస పరిహారం: ఈ నెలలో వచ్చే ప్రదోష వ్రతం నాడు శివాభిషేకం చేయించడం ఉత్తమం.`;
+                document.getElementById('curiosityQuestionText').innerText = `"ఈ నెలలో జరగబోయే సూర్య-బుధ గ్రహాల రాశి పరివర్తనం వల్ల మీ కుండలిలోని రాజయోగం ఏ తేదీన యాక్టివేట్ కాబోతోంది?"`;
+
+            } else if(mode === 'yearly') {
+                document.getElementById('titlePersonality').innerText = `Yearly Transit Destiny (${currentYear} వర్షఫలం)`;
+                document.getElementById('titleEmotional').innerText = "Yearly Evolution Curve (సంవత్సర మానసిక స్థితి)";
+                document.getElementById('titleCareer').innerText = "Yearly Bhava Destiny (సుదీర్ఘ కర్మ స్థాన బలం)";
+                document.
